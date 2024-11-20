@@ -86,11 +86,11 @@ namespace tgreiner.amy.chess.engine
 				}
 				if (board.getPieceAt(attSq) == tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN)
 				{
-					if (board.Wtm && victimSq >= tgreiner.amy.bitboard.BoardConstants_Fields.A8)
+					if (board.Wtm && victimSq >= tgreiner.amy.bitboard.BoardConstants_Fields.HA8)
 					{
 						return attSq | (victimSq << 6) | Move.CAPTURE | Move.PROMO_QUEEN;
 					}
-					if (!board.Wtm && victimSq <= tgreiner.amy.bitboard.BoardConstants_Fields.H1)
+					if (!board.Wtm && victimSq <= tgreiner.amy.bitboard.BoardConstants_Fields.HH1)
 					{
 						return attSq | (victimSq << 6) | Move.CAPTURE | Move.PROMO_QUEEN;
 					}

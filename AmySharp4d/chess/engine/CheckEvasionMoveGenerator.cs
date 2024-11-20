@@ -292,7 +292,7 @@ namespace tgreiner.amy.chess.engine
 							}
 							if ((validToSquares.SetBit(to)) != 0L)
 							{
-								if (to >= tgreiner.amy.bitboard.BoardConstants_Fields.A8)
+								if (to >= tgreiner.amy.bitboard.BoardConstants_Fields.HA8)
 								{
 									theMoves.add(Move.makeMove(from, to) | Move.PROMO_QUEEN);
 									theMoves.add(Move.makeMove(from, to) | Move.PROMO_ROOK);
@@ -304,10 +304,10 @@ namespace tgreiner.amy.chess.engine
 									theMoves.add(Move.makeMove(from, to));
 								}
 							}
-							if (from <= tgreiner.amy.bitboard.BoardConstants_Fields.H2)
+							if (from <= tgreiner.amy.bitboard.BoardConstants_Fields.HH2)
 							{
 								to = from + 16;
-								if ((validToSquares & BitBoard.SET_MASK[to]) != 0L)
+								if (validToSquares[to] != 0)
 								{
 									theMoves.add(Move.makeMove(from, to) | Move.PAWN_DOUBLE);
 								}
@@ -320,9 +320,9 @@ namespace tgreiner.amy.chess.engine
 							{
 								continue;
 							}
-							if ((validToSquares & BitBoard.SET_MASK[to]) != 0L)
+							if (validToSquares[to] != 0)
 							{
-								if (to <= tgreiner.amy.bitboard.BoardConstants_Fields.H1)
+								if (to <= tgreiner.amy.bitboard.BoardConstants_Fields.HH1)
 								{
 									theMoves.add(Move.makeMove(from, to) | Move.PROMO_QUEEN);
 									theMoves.add(Move.makeMove(from, to) | Move.PROMO_ROOK);
@@ -334,10 +334,10 @@ namespace tgreiner.amy.chess.engine
 									theMoves.add(Move.makeMove(from, to));
 								}
 							}
-							if (from >= tgreiner.amy.bitboard.BoardConstants_Fields.A7)
+							if (from >= tgreiner.amy.bitboard.BoardConstants_Fields.HA7)
 							{
 								to = from - 16;
-								if ((validToSquares & BitBoard.SET_MASK[to]) != 0L)
+								if (validToSquares[to] != 0)
 								{
 									theMoves.add(Move.makeMove(from, to) | Move.PAWN_DOUBLE);
 								}
