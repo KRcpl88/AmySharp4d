@@ -225,7 +225,7 @@ namespace tgreiner.amy.chess.engine
                     while (victims != 0L)
                     {
                         int sq = BitBoard.findFirstOne(victims);
-                        victims &= BitBoard.CLEAR_MASK[sq];
+                        victims.ClearBit(sq);
                         board.generateTo(sq, captures);
                     }
                     nCaptures = captures.size();
@@ -356,7 +356,7 @@ namespace tgreiner.amy.chess.engine
                     while (all != 0L)
                     {
                         int sq = BitBoard.findFirstOne(all);
-                        all &= BitBoard.CLEAR_MASK[sq];
+                        all.ClearBit(sq);
                         board.generateFrom(sq, moves);
                     }
                     idx = moves.size();

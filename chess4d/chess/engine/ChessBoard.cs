@@ -605,11 +605,11 @@ namespace tgreiner.amy.chess.engine
                 
                 nsq = nd[square];
                 
-                attackFrom[nsq] &= BitBoard.CLEAR_MASK[square];
+                attackFrom[nsq].ClearBit(square);
                 
                 if ((nsq = nd[nsq]) >= 0)
                 {
-                    attackFrom[nsq] &= BitBoard.CLEAR_MASK[square];
+                    attackFrom[nsq].ClearBit(square);
                 }
             }
             else
@@ -621,7 +621,7 @@ namespace tgreiner.amy.chess.engine
                 
                 while (nsq >= 0)
                 {
-                    attackFrom[nsq] &= BitBoard.CLEAR_MASK[square];
+                    attackFrom[nsq].ClearBit(square);
                     
                     if (board[nsq] != 0)
                     {
@@ -781,8 +781,8 @@ namespace tgreiner.amy.chess.engine
                     break;
                 }
                 
-                attackTo[from] &= BitBoard.CLEAR_MASK[sq];
-                attackFrom[sq] &= BitBoard.CLEAR_MASK[from];
+                attackTo[from].ClearBit(sq);
+                attackFrom[sq].ClearBit(from);
                 
                 if (board[sq] != 0)
                 {
@@ -799,12 +799,12 @@ namespace tgreiner.amy.chess.engine
         /// </param>
         private void  gainAttacks(int to)
         {
-            long tmp = attackFrom[to] & slidingPieces;
+            BitBoard tmp = attackFrom[to] & slidingPieces;
             
-            while (tmp != 0L)
+            while (tmp.IsEmpty() == false)
             {
-                int i = BitBoard.findFirstOne(tmp);
-                tmp &= BitBoard.CLEAR_MASK[i];
+                int i = tmp.findFirstOne();
+                tmp.ClearBit(i);
                 gainAttack(i, to);
             }
         }
@@ -817,12 +817,12 @@ namespace tgreiner.amy.chess.engine
         /// </param>
         private void  looseAttacks(int to)
         {
-            long tmp = attackFrom[to] & slidingPieces;
+            BitBoard tmp = attackFrom[to] & slidingPieces;
             
-            while (tmp != 0L)
+            while (tmp.IsEmpty() == false)
             {
-                int i = BitBoard.findFirstOne(tmp);
-                tmp &= BitBoard.CLEAR_MASK[i];
+                int i = tmp.findFirstOne();
+                tmp.ClearBit(i);
                 looseAttack(i, to);
             }
         }
@@ -861,8 +861,8 @@ namespace tgreiner.amy.chess.engine
                 
                 if (pc > 0)
                 {
-                    pieceMask[0][0][sq] = 1;
-                    pieceMask[0][pc][sq] = 1;
+                    pieceMask[0][0].SetBit(sq);
+                    pieceMask[0][pc].SetBit(sq);
                     materialSignature[0] |= (ushort)MATERIAL_SIGNATURE_BITS[pc];
                     
                     if (IS_SLIDING[pc])
@@ -882,8 +882,8 @@ namespace tgreiner.amy.chess.engine
                 }
                 else if (pc < 0)
                 {
-                    pieceMask[1][0][sq] = 1;
-                    pieceMask[1][- pc][sq] = 1;
+                    pieceMask[1][0].SetBit(sq);
+                    pieceMask[1][- pc].SetBit(sq);
                     materialSignature[1] |= (ushort)MATERIAL_SIGNATURE_BITS[-pc];
                     
                     if (IS_SLIDING[- pc])
@@ -966,11 +966,11 @@ namespace tgreiner.amy.chess.engine
             attackClr(type, whiteToMove, from);
             
             board[from] = 0;
-            pieceMask[side][0] &= BitBoard.CLEAR_MASK[from];
-            pieceMask[side][type] &= BitBoard.CLEAR_MASK[from];
+            pieceMask[side][0].ClearBit(from);
+            pieceMask[side][type].ClearBit(from);
             if (IS_SLIDING[type])
             {
-                slidingPieces &= BitBoard.CLEAR_MASK[from];
+                slidingPieces.ClearBit(from);
             }
             gainAttacks(from);
             
@@ -996,11 +996,11 @@ namespace tgreiner.amy.chess.engine
                 
                 attackClr(captured, !whiteToMove, to);
                 hist.capturedPiece = captured;
-                pieceMask[1 ^ side][0] &= BitBoard.CLEAR_MASK[to];
-                pieceMask[1 ^ side][captured] &= BitBoard.CLEAR_MASK[to];
+                pieceMask[1 ^ side][0].ClearBit(to);
+                pieceMask[1 ^ side][captured].ClearBit(to);
                 if (IS_SLIDING[captured])
                 {
-                    slidingPieces &= BitBoard.CLEAR_MASK[to];
+                    slidingPieces.ClearBit(to);
                 }
                 
                 // Update castling rights if rook captured
@@ -1054,8 +1054,8 @@ namespace tgreiner.amy.chess.engine
                 int epto = EN_PASSANT_TRANSLATE[to];
                 attackClr(ChessConstants_Fields.PAWN, !whiteToMove, epto);
                 hist.capturedPiece = ChessConstants_Fields.PAWN;
-                pieceMask[1 ^ side][0] &= BitBoard.CLEAR_MASK[epto];
-                pieceMask[1 ^ side][ChessConstants_Fields.PAWN] &= BitBoard.CLEAR_MASK[epto];
+                pieceMask[1 ^ side][0].ClearBit(epto);
+                pieceMask[1 ^ side][ChessConstants_Fields.PAWN].ClearBit(epto);
                 board[epto] = 0;
                 gainAttacks(epto);
                 looseAttacks(to);
@@ -2300,31 +2300,31 @@ namespace tgreiner.amy.chess.engine
             
             if ((Geometry.ROOK_EPM[oppKing] & BitBoard.SET_MASK[from]) != 0L)
             {
-                long rookOrQueen = Geometry.RAY[oppKing][from] & (getMask(whiteToMove, ChessConstants_Fields.ROOK) | getMask(whiteToMove, ChessConstants_Fields.QUEEN));
-                while (rookOrQueen != 0L)
+                BitBoard rookOrQueen = Geometry.RAY[oppKing][from] & (getMask(whiteToMove, ChessConstants_Fields.ROOK) | getMask(whiteToMove, ChessConstants_Fields.QUEEN));
+                while (rookOrQueen.IsEmpty() == false)
                 {
-                    int idx = BitBoard.findFirstOne(rookOrQueen);
-                    long tmp = (pieceMask[0][0] | pieceMask[1][0]) & Geometry.INTER_PATH[idx][oppKing];
-                    if (BitBoard.countBits(tmp) == 1)
+                    int idx = rookOrQueen.findFirstOne();
+                    BitBoard tmp = (pieceMask[0][0] | pieceMask[1][0]) & Geometry.INTER_PATH[idx][oppKing];
+                    if (tmp.countBits() == 1)
                     {
                         return true;
                     }
-                    rookOrQueen &= BitBoard.CLEAR_MASK[idx];
+                    rookOrQueen.ClearBit(idx);
                 }
             }
             
             if ((Geometry.BISHOP_EPM[oppKing] & BitBoard.SET_MASK[from]) != 0L)
             {
-                long bishopOrQueen = Geometry.RAY[oppKing][from] & (getMask(whiteToMove, ChessConstants_Fields.BISHOP) | getMask(whiteToMove, ChessConstants_Fields.QUEEN));
-                while (bishopOrQueen != 0L)
+                BitBoard bishopOrQueen = Geometry.RAY[oppKing][from] & (getMask(whiteToMove, ChessConstants_Fields.BISHOP) | getMask(whiteToMove, ChessConstants_Fields.QUEEN));
+                while (bishopOrQueen.IsEmpty() == false)
                 {
-                    int idx = BitBoard.findFirstOne(bishopOrQueen);
-                    long tmp = (pieceMask[0][0] | pieceMask[1][0]) & Geometry.INTER_PATH[idx][oppKing];
-                    if (BitBoard.countBits(tmp) == 1)
+                    int idx = bishopOrQueen.findFirstOne();
+                    BitBoard tmp = (pieceMask[0][0] | pieceMask[1][0]) & Geometry.INTER_PATH[idx][oppKing];
+                    if (tmp.countBits() == 1)
                     {
                         return true;
                     }
-                    bishopOrQueen &= BitBoard.CLEAR_MASK[idx];
+                    bishopOrQueen.ClearBit(idx);
                 }
             }
             

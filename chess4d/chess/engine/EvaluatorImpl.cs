@@ -244,14 +244,14 @@ namespace tgreiner.amy.chess.engine
 				while (all != 0L)
 				{
 					int sq = BitBoard.findFirstOne(all);
-					all &= BitBoard.CLEAR_MASK[sq];
+					all.ClearBit(sq);
 					posScore += pieceSquare[type][sq];
 				}
 				all = board.getMask(false, type);
 				while (all != 0L)
 				{
 					int sq = BitBoard.findFirstOne(all);
-					all &= BitBoard.CLEAR_MASK[sq];
+					all.ClearBit(sq);
 					posScore -= pieceSquare[type][Geometry.flipX(sq)];
 				}
 			}
@@ -519,7 +519,7 @@ namespace tgreiner.amy.chess.engine
 			while (mask != 0L)
 			{
 				int sq = BitBoard.findFirstOne(mask);
-				mask &= BitBoard.CLEAR_MASK[sq];
+				mask.ClearBit(sq);
 				
 				int rank = (sq >> 3) - 1;
 				
@@ -530,7 +530,7 @@ namespace tgreiner.amy.chess.engine
 			while (mask != 0L)
 			{
 				int sq = BitBoard.findFirstOne(mask);
-				mask &= BitBoard.CLEAR_MASK[sq];
+				mask.ClearBit(sq);
 				
 				int rank = 6 - (sq >> 3);
 				
@@ -583,7 +583,7 @@ namespace tgreiner.amy.chess.engine
 			while (wbishops != 0)
 			{
 				int sq = BitBoard.findFirstOne(wbishops);
-				wbishops &= BitBoard.CLEAR_MASK[sq];
+				wbishops.ClearBit(sq);
 				
 				score += bishopMobility * (BitBoard.countBits(board.getAttackTo(sq)) - 6);
 				cnt++;
@@ -598,7 +598,7 @@ namespace tgreiner.amy.chess.engine
 			while (bbishops != 0)
 			{
 				int sq = BitBoard.findFirstOne(bbishops);
-				bbishops &= BitBoard.CLEAR_MASK[sq];
+				bbishops.ClearBit(sq);
 				
 				score -= bishopMobility * (BitBoard.countBits(board.getAttackTo(sq)) - 6);
 				cnt++;
@@ -630,7 +630,7 @@ namespace tgreiner.amy.chess.engine
 			while (wrooks != 0)
 			{
 				int sq = BitBoard.findFirstOne(wrooks);
-				wrooks &= BitBoard.CLEAR_MASK[sq];
+				wrooks.ClearBit(sq);
 				
 				score += rookMobility * (BitBoard.countBits(board.getAttackTo(sq)) - 7);
 				
@@ -652,7 +652,7 @@ namespace tgreiner.amy.chess.engine
 			while (brooks != 0)
 			{
 				int sq = BitBoard.findFirstOne(brooks);
-				brooks &= BitBoard.CLEAR_MASK[sq];
+				brooks.ClearBit(sq);
 				
 				score -= rookMobility * (BitBoard.countBits(board.getAttackTo(sq)) - 7);
 				

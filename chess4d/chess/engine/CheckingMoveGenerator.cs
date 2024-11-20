@@ -108,14 +108,14 @@ namespace tgreiner.amy.chess.engine
 			while (tmp != 0L)
 			{
 				int from = BitBoard.findFirstOne(tmp);
-				tmp &= BitBoard.CLEAR_MASK[from];
+				tmp.ClearBit(from);
 				
 				long targets = board.getAttackTo(from) & toSquares;
 				
 				while (targets != 0L)
 				{
 					int to = BitBoard.findFirstOne(targets);
-					targets &= BitBoard.CLEAR_MASK[to];
+					targets.ClearBit(to);
 					
 					if (ignoreInterPath || (allPieces & Geometry.INTER_PATH[to][oppKing]) == 0L)
 					{

@@ -159,7 +159,7 @@ namespace tgreiner.amy.chess.engine
 					while (all != 0L)
 					{
 						int sq = BitBoard.findFirstOne(all);
-						all &= BitBoard.CLEAR_MASK[sq];
+						all.ClearBit(sq);
 						board.generateFrom(sq, moves);
 					}
 					idx = moves.size();

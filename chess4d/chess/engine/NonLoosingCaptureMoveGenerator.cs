@@ -93,7 +93,7 @@ namespace tgreiner.amy.chess.engine
                     while (victims != 0L)
                     {
                         int sq = BitBoard.findFirstOne(victims);
-                        victims &= BitBoard.CLEAR_MASK[sq];
+                        victims.ClearBit(sq);
                         board.generateTo(sq, moves);
                     }
 
@@ -102,7 +102,7 @@ namespace tgreiner.amy.chess.engine
                     while (pawnOn7th != 0L)
                     {
                         int sq = BitBoard.findFirstOne(pawnOn7th);
-                        pawnOn7th &= BitBoard.CLEAR_MASK[sq];
+                        pawnOn7th.ClearBit(sq);
 
                         int to = board.Wtm ? sq + 8 : sq - 8;
                         if (board.getPieceAt(to) != 0)
