@@ -398,10 +398,10 @@ namespace tgreiner.amy.chess.engine
 		}
 		
 		/// <summary>BitBoard for the white passed pawns, set by evalPawns(). </summary>
-		private long whitePassedPawns;
+		private BitBoard whitePassedPawns;
 		
 		/// <summary>BitBoard for the black passed pawns, set by evalPawns(). </summary>
-		private long blackPassedPawns;
+		private BitBoard blackPassedPawns;
 		
 		/// <summary> Evaluate the pawn structure.
 		/// 
@@ -420,61 +420,62 @@ namespace tgreiner.amy.chess.engine
 			
 			int score = 0;
 			
-			long wpawns = board.getMask(true, tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN);
-			long bpawns = board.getMask(false, tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN);
-			long mask;
+			BitBoard wpawns = board.getMask(true, tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN);
+			BitBoard bpawns = board.getMask(false, tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN);
+			BitBoard mask;
 			
-			whitePassedPawns = blackPassedPawns = 0L;
+			whitePassedPawns = new BitBoard();
+			blackPassedPawns = new BitBoard();
 			
 			mask = wpawns;
-			while (mask != 0)
+			while (mask.IsEmpty() == false)
 			{
-				int sq = BitBoard.findFirstOne(mask);
-				mask &= BitBoard.CLEAR_MASK[sq];
+				int sq = mask.findFirstOne();
+				mask.ClearBit(sq);
 				
-				if ((wpawns & EvalMasks.ISOLATED[sq]) == 0L)
+				if ((wpawns & EvalMasks.ISOLATED[sq]).IsEmpty())
 				{
 					score += isolatedPawn[sq & 7];
 				}
-				else if ((wpawns & EvalMasks.WHITE_BACKWARD[sq]) == 0L)
+				else if ((wpawns & EvalMasks.WHITE_BACKWARD[sq]).IsEmpty())
 				{
 					score += backwardPawn;
 				}
 				
-				if ((wpawns & EvalMasks.WHITE_DOUBLED[sq]) != 0L)
+				if ((wpawns & EvalMasks.WHITE_DOUBLED[sq]).IsEmpty() == false)
 				{
 					score += doubledPawn;
 				}
 				
-				if ((bpawns & EvalMasks.WHITE_PASSED[sq]) == 0L)
+				if ((bpawns & EvalMasks.WHITE_PASSED[sq]).IsEmpty())
 				{
-					whitePassedPawns |= BitBoard.SET_MASK[sq];
+					whitePassedPawns.SetBit(sq);
 				}
 			}
 			
 			mask = bpawns;
-			while (mask != 0)
+			while (mask.IsEmpty() == false)
 			{
-				int sq = BitBoard.findFirstOne(mask);
-				mask &= BitBoard.CLEAR_MASK[sq];
+				int sq = mask.findFirstOne();
+				mask.ClearBit(sq);
 				
-				if ((bpawns & EvalMasks.ISOLATED[sq]) == 0L)
+				if ((bpawns & EvalMasks.ISOLATED[sq]).IsEmpty())
 				{
 					score -= isolatedPawn[sq & 7];
 				}
-				else if ((bpawns & EvalMasks.BLACK_BACKWARD[sq]) == 0L)
+				else if ((bpawns & EvalMasks.BLACK_BACKWARD[sq]).IsEmpty() == true)
 				{
 					score -= backwardPawn;
 				}
 				
-				if ((bpawns & EvalMasks.BLACK_DOUBLED[sq]) != 0L)
+				if ((bpawns & EvalMasks.BLACK_DOUBLED[sq]).IsEmpty() == true)
 				{
 					score -= doubledPawn;
 				}
 				
-				if ((wpawns & EvalMasks.BLACK_PASSED[sq]) == 0L)
+				if ((wpawns & EvalMasks.BLACK_PASSED[sq]).IsEmpty())
 				{
-					blackPassedPawns |= BitBoard.SET_MASK[sq];
+					blackPassedPawns.SetBit(sq);
 				}
 			}
 			

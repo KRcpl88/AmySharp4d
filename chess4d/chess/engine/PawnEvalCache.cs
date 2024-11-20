@@ -26,6 +26,7 @@
 * $Id: PawnEvalCache.java 2 2007-08-09 07:05:44Z tetchu $
 */
 using System;
+using tgreiner.amy.bitboard;
 using AbstractCache = tgreiner.amy.common.engine.AbstractCache;
 namespace tgreiner.amy.chess.engine
 {
@@ -42,7 +43,7 @@ namespace tgreiner.amy.chess.engine
 		/// </summary>
 		/// <returns> the bitboard of white passed pawns
 		/// </returns>
-		virtual public long WhitePassedPawns
+		virtual public BitBoard WhitePassedPawns
 		{
 			get
 			{
@@ -55,7 +56,7 @@ namespace tgreiner.amy.chess.engine
 		/// </summary>
 		/// <returns> the bitboard of black passed pawns
 		/// </returns>
-		virtual public long BlackPassedPawns
+		virtual public BitBoard BlackPassedPawns
 		{
 			get
 			{
@@ -68,10 +69,10 @@ namespace tgreiner.amy.chess.engine
 		new protected internal class Entry:AbstractCache.Entry
 		{
 			/// <summary>Bitboard for white passed pawns. </summary>
-			public long whitePassedPawns;
+			public BitBoard whitePassedPawns = new BitBoard();
 			
 			/// <summary>Bitboard for black passed pawns. </summary>
-			public long blackPassedPawns;
+			public BitBoard blackPassedPawns = new BitBoard();
 		}
 		
 		/// <seealso cref="AbstractCache.createEntry">
@@ -92,7 +93,7 @@ namespace tgreiner.amy.chess.engine
 		/// </param>
 		/// <param name="blackPassedPawns">bitboard for black passed pawns
 		/// </param>
-		public virtual void  store(long key, int value_Renamed, long whitePassedPawns, long blackPassedPawns)
+		public virtual void  store(long key, int value_Renamed, BitBoard whitePassedPawns, BitBoard blackPassedPawns)
 		{
 			Entry e = (Entry) getEntry(key);
 			e.key = key;
