@@ -1,0 +1,10 @@
+c:\GitHub\AmySharp4d\chess4d\Chess4d\obj\Debug\net9.0\Chess4d.GeneratedMSBuildEditorConfig.editorconfig
+c:\GitHub\AmySharp4d\chess4d\Chess4d\obj\Debug\net9.0\Chess4d.AssemblyInfoInputs.cache
+c:\GitHub\AmySharp4d\chess4d\Chess4d\obj\Debug\net9.0\Chess4d.AssemblyInfo.cs
+c:\GitHub\AmySharp4d\chess4d\Chess4d\obj\Debug\net9.0\Chess4d.csproj.CoreCompileInputs.cache
+c:\GitHub\AmySharp4d\chess4d\Chess4d\obj\Debug\net9.0\Chess4d.sourcelink.json
+c:\GitHub\AmySharp4d\chess4d\obj\Debug\net9.0\Chess4d.GeneratedMSBuildEditorConfig.editorconfig
+c:\GitHub\AmySharp4d\chess4d\obj\Debug\net9.0\Chess4d.AssemblyInfoInputs.cache
+c:\GitHub\AmySharp4d\chess4d\obj\Debug\net9.0\Chess4d.AssemblyInfo.cs
+c:\GitHub\AmySharp4d\chess4d\obj\Debug\net9.0\Chess4d.csproj.CoreCompileInputs.cache
+c:\GitHub\AmySharp4d\chess4d\obj\Debug\net9.0\Chess4d.sourcelink.json
