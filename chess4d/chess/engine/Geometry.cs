@@ -60,40 +60,40 @@ namespace tgreiner.amy.chess.engine
 		/// <summary>Bitboard of ray squares. </summary>
 		//UPGRADE_NOTE: Final was removed from the declaration of 'RAY '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
 		//UPGRADE_NOTE: The initialization of  'RAY' was moved to static method 'tgreiner.amy.chess.engine.Geometry'. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1005'"
-		public static readonly long[][] RAY;
+		public static readonly BitBoard[][] RAY;
 		
 		/// <summary>Bitboard of squares between two squares. </summary>
 		//UPGRADE_NOTE: Final was removed from the declaration of 'INTER_PATH '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
 		//UPGRADE_NOTE: The initialization of  'INTER_PATH' was moved to static method 'tgreiner.amy.chess.engine.Geometry'. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1005'"
-		public static readonly long[][] INTER_PATH;
+		public static readonly BitBoard[][] INTER_PATH;
 		
 		/// <summary>White pawn ever possible moves. </summary>
 		//UPGRADE_NOTE: Final was removed from the declaration of 'WHITE_PAWN_EPM '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
-		public static readonly long[] WHITE_PAWN_EPM;
+		public static readonly BitBoard[] WHITE_PAWN_EPM;
 		
 		/// <summary>Black pawn ever possible moves. </summary>
 		//UPGRADE_NOTE: Final was removed from the declaration of 'BLACK_PAWN_EPM '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
-		public static readonly long[] BLACK_PAWN_EPM;
+		public static readonly BitBoard[] BLACK_PAWN_EPM;
 		
 		/// <summary>Knight ever possible moves. </summary>
 		//UPGRADE_NOTE: Final was removed from the declaration of 'KNIGHT_EPM '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
-		public static readonly long[] KNIGHT_EPM;
+		public static readonly BitBoard[] KNIGHT_EPM;
 		
 		/// <summary>Bishop ever possible moves. </summary>
 		//UPGRADE_NOTE: Final was removed from the declaration of 'BISHOP_EPM '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
-		public static readonly long[] BISHOP_EPM;
+		public static readonly BitBoard[] BISHOP_EPM;
 		
 		/// <summary>Rook ever possible moves. </summary>
 		//UPGRADE_NOTE: Final was removed from the declaration of 'ROOK_EPM '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
-		public static readonly long[] ROOK_EPM;
+		public static readonly BitBoard[] ROOK_EPM;
 		
 		/// <summary>Queen ever possible moves. </summary>
 		//UPGRADE_NOTE: Final was removed from the declaration of 'QUEEN_EPM '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
-		public static readonly long[] QUEEN_EPM;
+		public static readonly BitBoard[] QUEEN_EPM;
 		
 		/// <summary>King ever possible moves. </summary>
 		//UPGRADE_NOTE: Final was removed from the declaration of 'KING_EPM '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
-		public static readonly long[] KING_EPM;
+		public static readonly BitBoard[] KING_EPM;
 		
 		/// <summary>The major directions on a 10x10 board. </summary>
 		//UPGRADE_NOTE: Final was removed from the declaration of 'DIRS_10'. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
@@ -500,11 +500,11 @@ namespace tgreiner.amy.chess.engine
 						int y = trto[k];
 						for (l = j + d; l != k; l += d)
 						{
-							INTER_PATH[x][y] |= BitBoard.SET_MASK[trto[l]];
+							INTER_PATH[x][y].SetBit(trto[l]);
 						}
 						for (l = k + d; !edge[l]; l += d)
 						{
-							RAY[x][y] |= BitBoard.SET_MASK[trto[l]];
+							RAY[x][y].SetBit(trto[l]);
 						}
 					}
 				}
@@ -513,8 +513,8 @@ namespace tgreiner.amy.chess.engine
 					int d = DIRS_BISHOP_10[i];
 					for (k = j + d; !edge[k]; k += d)
 					{
-						BISHOP_EPM[x] |= BitBoard.SET_MASK[trto[k]];
-						QUEEN_EPM[x] |= BitBoard.SET_MASK[trto[k]];
+						BISHOP_EPM[x].SetBit(trto[k]);
+						QUEEN_EPM[x].SetBit(trto[k]);
 					}
 				}
 				for (i = 0; i < DIRS_ROOK_10.Length; i++)
@@ -522,8 +522,8 @@ namespace tgreiner.amy.chess.engine
 					int d = DIRS_ROOK_10[i];
 					for (k = j + d; !edge[k]; k += d)
 					{
-						ROOK_EPM[x] |= BitBoard.SET_MASK[trto[k]];
-						QUEEN_EPM[x] |= BitBoard.SET_MASK[trto[k]];
+						ROOK_EPM[x].SetBit(trto[k]);
+						QUEEN_EPM[x].SetBit(trto[k]);
 					}
 				}
 				for (i = 0; i < OFFSETS_KNIGHT_10.Length; i++)
@@ -531,7 +531,7 @@ namespace tgreiner.amy.chess.engine
 					k = j + OFFSETS_KNIGHT_10[i];
 					if (k >= 0 && k < 100 && !edge[k])
 					{
-						KNIGHT_EPM[x] |= BitBoard.SET_MASK[trto[k]];
+						KNIGHT_EPM[x].SetBit(trto[k]);
 					}
 				}
 				for (i = 0; i < OFFSETS_KING_10.Length; i++)
@@ -539,24 +539,24 @@ namespace tgreiner.amy.chess.engine
 					k = j + OFFSETS_KING_10[i];
 					if (k >= 0 && k < 100 && !edge[k])
 					{
-						KING_EPM[x] |= BitBoard.SET_MASK[trto[k]];
+						KING_EPM[x].SetBit(trto[k]);
 					}
 				}
 				if (!edge[j + 9])
 				{
-					WHITE_PAWN_EPM[x] |= BitBoard.SET_MASK[x + 7];
+					WHITE_PAWN_EPM[x].SetBit(x + 7);
 				}
 				if (!edge[j + 11])
 				{
-					WHITE_PAWN_EPM[x] |= BitBoard.SET_MASK[x + 9];
+					WHITE_PAWN_EPM[x].SetBit(x + 9);
 				}
 				if (!edge[j - 9])
 				{
-					BLACK_PAWN_EPM[x] |= BitBoard.SET_MASK[x - 7];
+					BLACK_PAWN_EPM[x].SetBit(x - 7);
 				}
 				if (!edge[j - 11])
 				{
-					BLACK_PAWN_EPM[x] |= BitBoard.SET_MASK[x - 9];
+					BLACK_PAWN_EPM[x].SetBit(x - 9);
 				}
 			}
 		}

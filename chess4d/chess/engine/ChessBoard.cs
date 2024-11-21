@@ -114,7 +114,7 @@ namespace tgreiner.amy.chess.engine
         /// </summary>
         /// <returns> the bitboard of sliding pieces
         /// </returns>
-        virtual internal long SlidingPieces
+        virtual internal BitBoard SlidingPieces
         {
             get
             {
@@ -2252,14 +2252,14 @@ namespace tgreiner.amy.chess.engine
             {
                 
                 case ChessConstants_Fields.PAWN: 
-                    if ((Geometry.BLACK_PAWN_EPM[oppKing] & BitBoard.SET_MASK[to]) != 0L)
+                    if ((Geometry.BLACK_PAWN_EPM[oppKing].GetBit(to)) != 0L)
                     {
                         return true;
                     }
                     break;
                 
                 case - ChessConstants_Fields.PAWN: 
-                    if ((Geometry.WHITE_PAWN_EPM[oppKing] & BitBoard.SET_MASK[to]) != 0L)
+                    if ((Geometry.WHITE_PAWN_EPM[oppKing].GetBit(to)) != 0L)
                     {
                         return true;
                     }
@@ -2267,7 +2267,7 @@ namespace tgreiner.amy.chess.engine
                 
                 case ChessConstants_Fields.KNIGHT: 
                 case - ChessConstants_Fields.KNIGHT: 
-                    if ((Geometry.KNIGHT_EPM[oppKing] & BitBoard.SET_MASK[to]) != 0L)
+                    if ((Geometry.KNIGHT_EPM[oppKing].GetBit(to)) != 0L)
                     {
                         return true;
                     }
@@ -2298,7 +2298,7 @@ namespace tgreiner.amy.chess.engine
                     break;
                 }
             
-            if ((Geometry.ROOK_EPM[oppKing] & BitBoard.SET_MASK[from]) != 0L)
+            if ((Geometry.ROOK_EPM[oppKing].GetBit(from)) != 0L)
             {
                 BitBoard rookOrQueen = Geometry.RAY[oppKing][from] & (getMask(whiteToMove, ChessConstants_Fields.ROOK) | getMask(whiteToMove, ChessConstants_Fields.QUEEN));
                 while (rookOrQueen.IsEmpty() == false)
@@ -2313,7 +2313,7 @@ namespace tgreiner.amy.chess.engine
                 }
             }
             
-            if ((Geometry.BISHOP_EPM[oppKing] & BitBoard.SET_MASK[from]) != 0L)
+            if ((Geometry.BISHOP_EPM[oppKing].GetBit(from)) != 0L)
             {
                 BitBoard bishopOrQueen = Geometry.RAY[oppKing][from] & (getMask(whiteToMove, ChessConstants_Fields.BISHOP) | getMask(whiteToMove, ChessConstants_Fields.QUEEN));
                 while (bishopOrQueen.IsEmpty() == false)

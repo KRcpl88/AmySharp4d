@@ -63,10 +63,12 @@ namespace tgreiner.amy.chess.engine
 		/// </param>
 		/// <returns> the attacks
 		/// </returns>
-		private long swapReRay(ChessBoard board, long atks, int from, int to)
+		private BitBoard swapReRay(ChessBoard board, BitBoard atks, int from, int to)
 		{
-			long result = atks & BitBoard.CLEAR_MASK[from];
+			var result = new BitBoard();
+			result[from] = atks.GetBit(from);
 			
+			// |= will use the overloaded | operator for BitBoard
 			result |= (Geometry.RAY[to][from] & board.SlidingPieces & board.getAttackFrom(from));
 			
 			return result;
@@ -91,7 +93,7 @@ namespace tgreiner.amy.chess.engine
 			swapval = PIECE_VALUES[board.getPieceAt(from)];
 			swaplist[0] = PIECE_VALUES[board.getPieceAt(to)];
 			
-			long atks = board.getAttackFrom(to);
+			BitBoard atks = board.getAttackFrom(to);
 			
 			int swapcnt = 0;
 			bool swapwtm = !(board.getSideAt(from) == Player.black);
@@ -99,43 +101,43 @@ namespace tgreiner.amy.chess.engine
 			
 			atks = swapReRay(board, atks, from, to);
 			
-			while (atks != 0L)
+			while (atks.IsEmpty() == false)
 			{
-				long tmp;
+				BitBoard tmp;
 				int sq;
 				
 				tmp = atks & board.getMask(swapwtm, tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN);
-				if (tmp != 0L)
+				if (tmp.IsEmpty() == false)
 				{
-					sq = BitBoard.findFirstOne(tmp);
+					sq = tmp.findFirstOne();
 				}
 				else
 				{
 					tmp = atks & (board.getMask(swapwtm, tgreiner.amy.chess.engine.ChessConstants_Fields.KNIGHT) | board.getMask(swapwtm, tgreiner.amy.chess.engine.ChessConstants_Fields.BISHOP));
-					if (tmp != 0L)
+					if (tmp.IsEmpty() == false)
 					{
-						sq = BitBoard.findFirstOne(tmp);
+						sq = tmp.findFirstOne();
 					}
 					else
 					{
 						tmp = atks & board.getMask(swapwtm, tgreiner.amy.chess.engine.ChessConstants_Fields.ROOK);
-						if (tmp != 0L)
+						if (tmp.IsEmpty() == false)
 						{
-							sq = BitBoard.findFirstOne(tmp);
+							sq = tmp.findFirstOne();
 						}
 						else
 						{
 							tmp = atks & board.getMask(swapwtm, tgreiner.amy.chess.engine.ChessConstants_Fields.QUEEN);
-							if (tmp != 0L)
+							if (tmp.IsEmpty() == false)
 							{
-								sq = BitBoard.findFirstOne(tmp);
+								sq = tmp.findFirstOne();
 							}
 							else
 							{
 								tmp = atks & board.getMask(swapwtm, tgreiner.amy.chess.engine.ChessConstants_Fields.KING);
-								if (tmp != 0L)
+								if (tmp.IsEmpty() == false)
 								{
-									sq = BitBoard.findFirstOne(tmp);
+									sq = tmp.findFirstOne();
 								}
 								else
 								{

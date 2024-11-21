@@ -26,6 +26,7 @@
 * $Id: EvalMasks.java 2 2007-08-09 07:05:44Z tetchu $
 */
 using System;
+using tgreiner.amy.bitboard;
 using BitBoard = tgreiner.amy.bitboard.BitBoard;
 //using BoardConstants = tgreiner.amy.bitboard.BoardConstants;
 namespace tgreiner.amy.chess.engine
@@ -109,14 +110,14 @@ namespace tgreiner.amy.chess.engine
                 {
                     for (int j = i - 1; j >= 0; j -= 8)
                     {
-                        WHITE_BACKWARD[i] |= BitBoard.SET_MASK[j];
+                        WHITE_BACKWARD[i].SetBit(j);
                     }
                 }
                 if ((i & 7) < 7)
                 {
                     for (int j = i + 1; j >= 0; j -= 8)
                     {
-                        WHITE_BACKWARD[i] |= BitBoard.SET_MASK[j];
+                        WHITE_BACKWARD[i].SetBit(j);
                     }
                 }
             }
@@ -128,14 +129,14 @@ namespace tgreiner.amy.chess.engine
                 {
                     for (int j = i - 1; j < BitBoard.SIZE; j += 8)
                     {
-                        BLACK_BACKWARD[i] |= BitBoard.SET_MASK[j];
+                        BLACK_BACKWARD[i].SetBit(j);
                     }
                 }
                 if ((i & 7) < 7)
                 {
                     for (int j = i + 1; j < BitBoard.SIZE; j += 8)
                     {
-                        BLACK_BACKWARD[i] |= BitBoard.SET_MASK[j];
+                        BLACK_BACKWARD[i].SetBit(j);
                     }
                 }
             }
@@ -147,14 +148,14 @@ namespace tgreiner.amy.chess.engine
                 {
                     for (int j = (i & 7) - 1; j < BitBoard.SIZE; j += 8)
                     {
-                        ISOLATED[i] |= BitBoard.SET_MASK[j];
+                        ISOLATED[i].SetBit(j);
                     }
                 }
                 if ((i & 7) < 7)
                 {
                     for (int j = (i & 7) + 1; j < BitBoard.SIZE; j += 8)
                     {
-                        ISOLATED[i] |= BitBoard.SET_MASK[j];
+                        ISOLATED[i].SetBit(j);
                     }
                 }
             }
@@ -164,7 +165,7 @@ namespace tgreiner.amy.chess.engine
             {
                 for (int j = i - 8; j >= 0; j -= 8)
                 {
-                    WHITE_DOUBLED[i] |= BitBoard.SET_MASK[j];
+                    WHITE_DOUBLED[i].SetBit(j);
                 }
             }
             
@@ -173,7 +174,7 @@ namespace tgreiner.amy.chess.engine
             {
                 for (int j = i + 8; j < BitBoard.SIZE; j += 8)
                 {
-                    BLACK_DOUBLED[i] |= BitBoard.SET_MASK[j];
+                    BLACK_DOUBLED[i].SetBit(j);
                 }
             }
             
@@ -182,7 +183,7 @@ namespace tgreiner.amy.chess.engine
             {
                 for (int j = i; j < BitBoard.SIZE; j += 8)
                 {
-                    FILE_MASK[i] |= BitBoard.SET_MASK[j];
+                    FILE_MASK[i].SetBit(j);
                 }
             }
             
@@ -191,7 +192,7 @@ namespace tgreiner.amy.chess.engine
             {
                 for (int j = 0; j < 8; j++)
                 {
-                    RANK_MASK[i] |= BitBoard.SET_MASK[8 * i + j];
+                    RANK_MASK[i].SetBit(8 * i + j);
                 }
             }
             
@@ -200,14 +201,14 @@ namespace tgreiner.amy.chess.engine
             {
                 for (int j = i + 8; j < BitBoard.SIZE; j += 8)
                 {
-                    WHITE_PASSED[i] |= BitBoard.SET_MASK[j];
+                    WHITE_PASSED[i].SetBit(j);
                     if ((j & 7) > 0)
                     {
-                        WHITE_PASSED[i] |= BitBoard.SET_MASK[j - 1];
+                        WHITE_PASSED[i].SetBit(j - 1);
                     }
                     if ((j & 7) < 7)
                     {
-                        WHITE_PASSED[i] |= BitBoard.SET_MASK[j + 1];
+                        WHITE_PASSED[i].SetBit(j + 1);
                     }
                 }
             }
@@ -217,29 +218,44 @@ namespace tgreiner.amy.chess.engine
             {
                 for (int j = i - 8; j >= 0; j -= 8)
                 {
-                    BLACK_PASSED[i] |= BitBoard.SET_MASK[j];
+                    BLACK_PASSED[i].SetBit(j);
                     if ((j & 7) > 0)
                     {
-                        BLACK_PASSED[i] |= BitBoard.SET_MASK[j - 1];
+                        BLACK_PASSED[i].SetBit(j - 1);
                     }
                     if ((j & 7) < 7)
                     {
-                        BLACK_PASSED[i] |= BitBoard.SET_MASK[j + 1];
+                        BLACK_PASSED[i].SetBit(j + 1);
                     }
                 }
             }
         }
         static EvalMasks()
         {
-            WHITE_BACKWARD = new long[BitBoard.SIZE];
-            BLACK_BACKWARD = new long[BitBoard.SIZE];
-            ISOLATED = new long[BitBoard.SIZE];
-            WHITE_DOUBLED = new long[BitBoard.SIZE];
-            BLACK_DOUBLED = new long[BitBoard.SIZE];
-            WHITE_PASSED = new long[BitBoard.SIZE];
-            BLACK_PASSED = new long[BitBoard.SIZE];
-            WHITE_KING_IN_CENTER = BitBoard.SET_MASK[tgreiner.amy.bitboard.BoardConstants_Fields.HE1] | BitBoard.SET_MASK[tgreiner.amy.bitboard.BoardConstants_Fields.HE2] | BitBoard.SET_MASK[tgreiner.amy.bitboard.BoardConstants_Fields.HD1] | BitBoard.SET_MASK[tgreiner.amy.bitboard.BoardConstants_Fields.HD2];
-            BLACK_KING_IN_CENTER = BitBoard.SET_MASK[tgreiner.amy.bitboard.BoardConstants_Fields.HE8] | BitBoard.SET_MASK[tgreiner.amy.bitboard.BoardConstants_Fields.HE7] | BitBoard.SET_MASK[tgreiner.amy.bitboard.BoardConstants_Fields.HD8] | BitBoard.SET_MASK[tgreiner.amy.bitboard.BoardConstants_Fields.HD7];
+            // BUGBUG do we need to initialize the members of thre array tto?
+            WHITE_BACKWARD = new BitBoard[BitBoard.SIZE];
+            BLACK_BACKWARD = new BitBoard[BitBoard.SIZE];
+            ISOLATED = new BitBoard[BitBoard.SIZE];
+            WHITE_DOUBLED = new BitBoard[BitBoard.SIZE];
+            BLACK_DOUBLED = new BitBoard[BitBoard.SIZE];
+            WHITE_PASSED = new BitBoard[BitBoard.SIZE];
+            BLACK_PASSED = new BitBoard[BitBoard.SIZE];
+            WHITE_KING_IN_CENTER = new BitBoard( new int [] 
+            { 
+                BoardConstants_Fields.HE1, 
+                BoardConstants_Fields.HE2,
+                BoardConstants_Fields.HD1,
+                BoardConstants_Fields.HD2
+            });
+            
+            BLACK_KING_IN_CENTER = new BitBoard( new int [] 
+            { 
+                BoardConstants_Fields.HE8, 
+                BoardConstants_Fields.HE7,
+                BoardConstants_Fields.HD8,
+                BoardConstants_Fields.HD7
+            });
+
             {
                 initMasks();
             }

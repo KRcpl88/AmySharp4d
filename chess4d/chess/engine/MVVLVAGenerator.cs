@@ -51,10 +51,10 @@ namespace tgreiner.amy.chess.engine
 		private int victimSq;
 		
 		/// <summary>Bitboard of all victims. </summary>
-		private long victims;
+		private BitBoard victims;
 		
 		/// <summary>Bitboard of all attackers. </summary>
-		private long attackers;
+		private BitBoard attackers;
 		
 		/// <summary>Indicates the side to move. </summary>
 		private bool wtm;

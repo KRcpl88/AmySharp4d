@@ -98,6 +98,12 @@ namespace tgreiner.amy.bitboard
             data = new ulong[SIZE_LONG];
         }
 
+        public BitBoard(int [] offsets)
+        {
+            data = new ulong[SIZE_LONG];
+            SetBits(offsets);
+        }
+
         public static BitBoard operator &(BitBoard a, BitBoard b)
         {
             var result = new BitBoard();
@@ -258,6 +264,14 @@ namespace tgreiner.amy.bitboard
         public void SetBit(int level, int rank, int file)
         {
             SetBit(BitOffset(level, rank, file));
+        }
+
+        public void SetBits(int[] offsets)
+        {
+            foreach(int i in offsets)
+            {
+                SetBit(i);
+            }
         }
 
         public void ClearBit(int offset)
