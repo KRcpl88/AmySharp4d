@@ -77,12 +77,12 @@ namespace tgreiner.amy.bitboard
         /// <summary>Used to set a bit in a BitBoard. </summary>
         //UPGRADE_NOTE: Final was removed from the declaration of 'SET_MASK '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
         // BUGBUG replace this with SetBit
-        public static readonly long[] SET_MASK = new long[SIZE];
+        //public static readonly long[] SET_MASK = new long[SIZE];
 
         /// <summary>Used to clear a bit in a BitBoard. </summary>
         //UPGRADE_NOTE: Final was removed from the declaration of 'CLEAR_MASK '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
         // BUGBUG replace this with ClearBit
-        public static readonly long[] CLEAR_MASK = new long[SIZE];
+        //public static readonly long[] CLEAR_MASK = new long[SIZE];
 
         /// <summary>Used to find the first bit set in a BitBoard. </summary>
         //UPGRADE_NOTE: Final was removed from the declaration of 'FIRST_ONES '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
@@ -381,5 +381,12 @@ namespace tgreiner.amy.bitboard
             }
         }
 
+        public void Clear()
+        {
+            for (int i = 0; data.Length > i; ++i)
+            {
+                data[i] = 0UL;
+            }
+        }
     }
 }

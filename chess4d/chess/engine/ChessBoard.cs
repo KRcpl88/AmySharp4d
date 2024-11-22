@@ -46,11 +46,11 @@ namespace tgreiner.amy.chess.engine
     {
         private void  InitBlock()
         {
-            attackTo = new long[BitBoard.SIZE];
-            attackFrom = new long[BitBoard.SIZE];
+            attackTo = new BitBoard[BitBoard.SIZE];
+            attackFrom = new BitBoard[BitBoard.SIZE];
             for (int i = 0; i < 2; i++)
             {
-                pieceMask[i] = new long[ChessConstants_Fields.KING + 1];
+                pieceMask[i] = new BitBoard[ChessConstants_Fields.KING + 1];
             }
             board = new int[BitBoard.SIZE];
         }

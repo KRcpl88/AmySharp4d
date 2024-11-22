@@ -290,7 +290,7 @@ namespace tgreiner.amy.chess.engine
 							{
 								continue;
 							}
-							if ((validToSquares.SetBit(to)) != 0L)
+							if (validToSquares.GetBit(to) != 0)
 							{
 								if (to >= tgreiner.amy.bitboard.BoardConstants_Fields.HA8)
 								{

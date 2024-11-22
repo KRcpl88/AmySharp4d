@@ -60,10 +60,10 @@ namespace tgreiner.amy.chess.engine
 		/// </param>
 		internal virtual void  generateBRQChecks(IMoveList moves)
 		{
-			long allPieces = board.getMask(true) | board.getMask(false);
+			BitBoard allPieces = board.getMask(true) | board.getMask(false);
 			int oppKing = board.getKingPos(!board.Wtm);
-			long toSquaresB = Geometry.BISHOP_EPM[oppKing] & ~ allPieces;
-			long toSquaresR = Geometry.ROOK_EPM[oppKing] & ~ allPieces;
+			BitBoard toSquaresB = Geometry.BISHOP_EPM[oppKing] & ~ allPieces;
+			BitBoard toSquaresR = Geometry.ROOK_EPM[oppKing] & ~ allPieces;
 			
 			generateChecks(moves, board.getMask(board.Wtm, tgreiner.amy.chess.engine.ChessConstants_Fields.BISHOP) | board.getMask(board.Wtm, tgreiner.amy.chess.engine.ChessConstants_Fields.QUEEN), allPieces, toSquaresB, oppKing, false);
 			
@@ -77,9 +77,9 @@ namespace tgreiner.amy.chess.engine
 		/// </param>
 		internal virtual void  generateNChecks(IMoveList moves)
 		{
-			long allPieces = board.getMask(true) | board.getMask(false);
+			BitBoard allPieces = board.getMask(true) | board.getMask(false);
 			int oppKing = board.getKingPos(!board.Wtm);
-			long toSquares = Geometry.KNIGHT_EPM[oppKing] & ~ allPieces;
+			BitBoard toSquares = Geometry.KNIGHT_EPM[oppKing] & ~ allPieces;
 			
 			generateChecks(moves, board.getMask(board.Wtm, tgreiner.amy.chess.engine.ChessConstants_Fields.KNIGHT), allPieces, toSquares, oppKing, true);
 		}
@@ -100,24 +100,24 @@ namespace tgreiner.amy.chess.engine
 		/// <param name="ignoreInterPath">indicates wether the path between the 'to' square
 		/// and the king needs to be empty
 		/// </param>
-		private void  generateChecks(IMoveList moves, long pcs, long allPieces, long toSquares, int oppKing, bool ignoreInterPath)
+		private void  generateChecks(IMoveList moves, BitBoard pcs, BitBoard allPieces, BitBoard toSquares, int oppKing, bool ignoreInterPath)
 		{
 			
-			long tmp = pcs;
+			BitBoard tmp = pcs;
 			
-			while (tmp != 0L)
+			while (tmp.IsEmpty() == false)
 			{
-				int from = BitBoard.findFirstOne(tmp);
+				int from = tmp.findFirstOne();
 				tmp.ClearBit(from);
 				
-				long targets = board.getAttackTo(from) & toSquares;
+				BitBoard targets = board.getAttackTo(from) & toSquares;
 				
-				while (targets != 0L)
+				while (targets.IsEmpty() == false)
 				{
-					int to = BitBoard.findFirstOne(targets);
+					int to = targets.findFirstOne();
 					targets.ClearBit(to);
 					
-					if (ignoreInterPath || (allPieces & Geometry.INTER_PATH[to][oppKing]) == 0L)
+					if (ignoreInterPath || (allPieces & Geometry.INTER_PATH[to][oppKing]).IsEmpty())
 					{
 						moves.add(Move.makeMove(from, to));
 					}

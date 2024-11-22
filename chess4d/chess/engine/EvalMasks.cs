@@ -69,21 +69,21 @@ namespace tgreiner.amy.chess.engine
         
         /// <summary>Masks for file. </summary>
         //UPGRADE_NOTE: Final was removed from the declaration of 'FILE_MASK '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
-        public static readonly long[] FILE_MASK = new long[8];
+        public static readonly BitBoard[] FILE_MASK = new BitBoard[8];
         
         /// <summary>Masks for rank. </summary>
         //UPGRADE_NOTE: Final was removed from the declaration of 'RANK_MASK '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
-        public static readonly long[] RANK_MASK = new long[8];
+        public static readonly BitBoard[] RANK_MASK = new BitBoard[8];
 
         /// <summary>BitBoard containing all black squares. </summary>
         //UPGRADE_TODO: Literal detected as an unsigned long can generate compilation errors. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1175'"
         // BUGBUG initialize with other BitBoards
-        public static readonly BitBoard BLACK_SQUARES; //= -6172840429334713771; // 0xaa55aa55aa55aa55L;
+        public static readonly BitBoard BLACK_SQUARES = new BitBoard(); //= -6172840429334713771; // 0xaa55aa55aa55aa55L;
 
         /// <summary>BitBoard containing all black squares. </summary>
         //UPGRADE_NOTE: Final was removed from the declaration of 'WHITE_SQUARES '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
         // BUGBUG initialize with other BitBoards
-        public static readonly BitBoard WHITE_SQUARES; //= ~ BLACK_SQUARES;
+        public static readonly BitBoard WHITE_SQUARES= new BitBoard(); //= ~ BLACK_SQUARES;
         
         /// <summary>Mask for white king in center. </summary>
         //UPGRADE_NOTE: Final was removed from the declaration of 'WHITE_KING_IN_CENTER '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
@@ -181,6 +181,7 @@ namespace tgreiner.amy.chess.engine
             /* Initialize file mask. */
             for (int i = 0; i < 8; i++)
             {
+                // BUGBUG the mth is wrong for j += 8, that only works for 8x8 board
                 for (int j = i; j < BitBoard.SIZE; j += 8)
                 {
                     FILE_MASK[i].SetBit(j);
@@ -188,6 +189,7 @@ namespace tgreiner.amy.chess.engine
             }
             
             /* Initialize rank mask. */
+            // BUGBUG the math is wrong, that only works for 8x8 board
             for (int i = 0; i < 8; i++)
             {
                 for (int j = 0; j < 8; j++)

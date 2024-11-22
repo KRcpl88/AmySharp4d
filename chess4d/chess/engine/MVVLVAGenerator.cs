@@ -51,13 +51,13 @@ namespace tgreiner.amy.chess.engine
 		private int victimSq;
 		
 		/// <summary>Bitboard of all victims. </summary>
-		private BitBoard victims;
+		private BitBoard victims = new BitBoard();
 		
 		/// <summary>Bitboard of all attackers. </summary>
-		private BitBoard attackers;
+		private BitBoard attackers = new BitBoard();
 		
 		/// <summary>Indicates the side to move. </summary>
-		private bool wtm;
+		private bool whiteToMove;
 		
 		/// <summary> Create a MVVLVAGenerator.
 		/// 
@@ -81,7 +81,7 @@ namespace tgreiner.amy.chess.engine
 				{
 					nextVictim();
 					attacker = 0;
-					attackers = 0;
+					attackers.Clear();
 					continue;
 				}
 				if (board.getPieceAt(attSq) == tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN)
@@ -105,14 +105,14 @@ namespace tgreiner.amy.chess.engine
 		{
 			while (victim >= tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN)
 			{
-				if (victims == 0L)
+				if (victims.IsEmpty())
 				{
 					victim--;
-					victims = board.getMask(!wtm, victim);
+					victims = board.getMask(!whiteToMove, victim);
 					continue;
 				}
-				victimSq = BitBoard.findFirstOne(victims);
-				victims &= BitBoard.CLEAR_MASK[victimSq];
+				victimSq = victims.findFirstOne();
+				victims.ClearBit(victimSq);
 				return ;
 			}
 			victimSq = - 1;
@@ -127,20 +127,20 @@ namespace tgreiner.amy.chess.engine
 		{
 			while (attacker <= tgreiner.amy.chess.engine.ChessConstants_Fields.KING)
 			{
-				if (attackers == 0L)
+				if (attackers.IsEmpty())
 				{
 					attacker++;
 					if (attacker > tgreiner.amy.chess.engine.ChessConstants_Fields.KING)
 					{
 						break;
 					}
-					attackers = board.getMask(wtm, attacker);
+					attackers = board.getMask(whiteToMove, attacker);
 					attackers &= board.getAttackFrom(victimSq);
 					continue;
 				}
-				int attSq = BitBoard.findFirstOne(attackers);
-				attackers &= BitBoard.CLEAR_MASK[attSq];
-				return attSq;
+				int attackSquare = attackers.findFirstOne();
+				attackers.ClearBit(attackSquare);
+				return attackSquare;
 			}
 			return - 1;
 		}
@@ -149,13 +149,13 @@ namespace tgreiner.amy.chess.engine
 		/// </seealso>
 		public virtual void  reset()
 		{
-			this.wtm = board.Wtm;
+			this.whiteToMove = board.Wtm;
 			
 			victim = tgreiner.amy.chess.engine.ChessConstants_Fields.QUEEN;
 			attacker = 0;
 			
-			victims = board.getMask(!wtm, victim);
-			attackers = 0;
+			victims = board.getMask(!whiteToMove, victim);
+			attackers.Clear();
 			
 			nextVictim();
 		}
