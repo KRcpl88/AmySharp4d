@@ -3,6 +3,39 @@
     [TestClass()]
     public class BitBoardTests
     {
+ 
+        [TestMethod()]
+        public void countBits()
+        {
+            BitBoard test;
+            
+            test = new BitBoard(new int[]{});
+            Assert.IsTrue(test.countBits() == 0);
+
+            test = new BitBoard(new int[]{BitBoard.SIZE-1});
+            Assert.IsTrue(test.countBits() == 1);
+
+            test = new BitBoard(new int[]{1,2,3});
+            Assert.IsTrue(test.countBits() == 3);
+
+            test = new BitBoard(new int[]{1,2,3,4,5,6,7,8});
+            Assert.IsTrue(test.countBits() == 8);
+
+            test = new BitBoard(new int[]{10,20,30,40,50,60,70,80});
+            Assert.IsTrue(test.countBits() == 8);
+
+            test = new BitBoard(new int[]{100,200,300});
+            Assert.IsTrue(test.countBits() == 3);
+
+            test = new BitBoard(new int[]{110,120,130,140,150,160,170,180,210,220,230,240,250,260,270,280,10,20,30,40,50,60,70,80});
+            Assert.IsTrue(test.countBits() == 24);
+
+            test = new BitBoard(new int[]{1,2,3,4,5,6,7,8,10,20,30,40,50,60,70,80,110,120,130,140,150,160,170,180,210,220,230,240,250,260,270,280,10,20,30,40,50,60,70,80});
+            Assert.IsTrue(test.countBits() == 40);
+
+        }
+
+
         [TestMethod()]
         public void findFirstOneTest()
         {

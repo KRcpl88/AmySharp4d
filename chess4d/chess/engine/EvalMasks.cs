@@ -69,11 +69,11 @@ namespace tgreiner.amy.chess.engine
         
         /// <summary>Masks for file. </summary>
         //UPGRADE_NOTE: Final was removed from the declaration of 'FILE_MASK '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
-        public static readonly BitBoard[] FILE_MASK = new BitBoard[8];
+        public static readonly BitBoard[] FILE_MASK = Enumerable.Repeat(new BitBoard(), 8).ToArray();
         
         /// <summary>Masks for rank. </summary>
         //UPGRADE_NOTE: Final was removed from the declaration of 'RANK_MASK '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
-        public static readonly BitBoard[] RANK_MASK = new BitBoard[8];
+        public static readonly BitBoard[] RANK_MASK = Enumerable.Repeat(new BitBoard(), 8).ToArray();
 
         /// <summary>BitBoard containing all black squares. </summary>
         //UPGRADE_TODO: Literal detected as an unsigned long can generate compilation errors. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1175'"
@@ -235,13 +235,13 @@ namespace tgreiner.amy.chess.engine
         static EvalMasks()
         {
             // BUGBUG do we need to initialize the members of thre array tto?
-            WHITE_BACKWARD = new BitBoard[BitBoard.SIZE];
-            BLACK_BACKWARD = new BitBoard[BitBoard.SIZE];
-            ISOLATED = new BitBoard[BitBoard.SIZE];
-            WHITE_DOUBLED = new BitBoard[BitBoard.SIZE];
-            BLACK_DOUBLED = new BitBoard[BitBoard.SIZE];
-            WHITE_PASSED = new BitBoard[BitBoard.SIZE];
-            BLACK_PASSED = new BitBoard[BitBoard.SIZE];
+            WHITE_BACKWARD = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
+            BLACK_BACKWARD = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
+            ISOLATED = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
+            WHITE_DOUBLED = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
+            BLACK_DOUBLED = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
+            WHITE_PASSED = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
+            BLACK_PASSED = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
             WHITE_KING_IN_CENTER = new BitBoard( new int [] 
             { 
                 BoardConstants_Fields.HE1, 

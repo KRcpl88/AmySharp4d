@@ -46,11 +46,11 @@ namespace tgreiner.amy.chess.engine
     {
         private void  InitBlock()
         {
-            attackTo = new BitBoard[BitBoard.SIZE];
-            attackFrom = new BitBoard[BitBoard.SIZE];
+            attackTo = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
+            attackFrom = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
             for (int i = 0; i < 2; i++)
             {
-                pieceMask[i] = new BitBoard[ChessConstants_Fields.KING + 1];
+                pieceMask[i] = Enumerable.Repeat(new BitBoard(), ChessConstants_Fields.LAST_PIECE).ToArray();
             }
             board = new int[BitBoard.SIZE];
         }
@@ -78,11 +78,11 @@ namespace tgreiner.amy.chess.engine
             {
                 if (whiteToMove)
                 {
-                    return (attackFrom[kingPos[0]] & pieceMask[1][0]) != 0L;
+                    return (attackFrom[kingPos[0]] & pieceMask[1][0]).IsEmpty() == false;
                 }
                 else
                 {
-                    return (attackFrom[kingPos[1]] & pieceMask[0][0]) != 0L;
+                    return (attackFrom[kingPos[1]] & pieceMask[0][0]).IsEmpty() == false;
                 }
             }
             
@@ -100,11 +100,11 @@ namespace tgreiner.amy.chess.engine
             {
                 if (!whiteToMove)
                 {
-                    return (attackFrom[kingPos[0]] & pieceMask[1][0]) != 0L;
+                    return (attackFrom[kingPos[0]] & pieceMask[1][0]).IsEmpty() == false;
                 }
                 else
                 {
-                    return (attackFrom[kingPos[1]] & pieceMask[0][0]) != 0L;
+                    return (attackFrom[kingPos[1]] & pieceMask[0][0]).IsEmpty() == false;
                 }
             }
             
@@ -127,7 +127,7 @@ namespace tgreiner.amy.chess.engine
         /// </summary>
         /// <returns> the bitboard of non-pawn pieces.
         /// </returns>
-        virtual internal long MaskNonPawn
+        virtual internal BitBoard MaskNonPawn
         {
             get
             {
@@ -239,9 +239,9 @@ namespace tgreiner.amy.chess.engine
                     return false;
                 }
                 
-                long minors = pieceMask[0][ChessConstants_Fields.BISHOP] | pieceMask[1][ChessConstants_Fields.BISHOP] | pieceMask[0][ChessConstants_Fields.KNIGHT] | pieceMask[1][ChessConstants_Fields.KNIGHT];
+                BitBoard minors = pieceMask[0][ChessConstants_Fields.BISHOP] | pieceMask[1][ChessConstants_Fields.BISHOP] | pieceMask[0][ChessConstants_Fields.KNIGHT] | pieceMask[1][ChessConstants_Fields.KNIGHT];
                 
-                return BitBoard.countBits(minors) < 2;
+                return minors.countBits() < 2;
             }
             
         }
@@ -590,7 +590,7 @@ namespace tgreiner.amy.chess.engine
             sbyte[] np, nd;
             int nsq;
             
-            attackTo[square] = 0;
+            attackTo[square].IsEmpty();
             
             if (type == ChessConstants_Fields.PAWN)
             {
@@ -1040,7 +1040,7 @@ namespace tgreiner.amy.chess.engine
                     evaluator.capture(to, captured, !whiteToMove);
                 }
                 
-                if (pieceMask[1 ^ side][captured] == 0L)
+                if (pieceMask[1 ^ side][captured].IsEmpty())
                 {
                     materialSignature[1 ^ side] &= ~ MATERIAL_SIGNATURE_BITS[captured];
                 }
@@ -1069,7 +1069,7 @@ namespace tgreiner.amy.chess.engine
                     evaluator.capture(epto, ChessConstants_Fields.PAWN, !whiteToMove);
                 }
                 
-                if (pieceMask[1 ^ side][ChessConstants_Fields.PAWN] == 0L)
+                if (pieceMask[1 ^ side][ChessConstants_Fields.PAWN].IsEmpty())
                 {
                     materialSignature[1 ^ side] &= ~ MATERIAL_SIGNATURE_BITS[ChessConstants_Fields.PAWN];
                 }
