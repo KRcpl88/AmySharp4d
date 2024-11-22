@@ -80,31 +80,31 @@ namespace tgreiner.amy.chess.engine
 		/// </param>
 		/// <param name="type">the piece type
 		/// </param>
-		/// <param name="wtm">indicates wether white or black made the move
+		/// <param name="whiteToMove">indicates wether white or black made the move
 		/// </param>
-		void  move(int from, int to, int type, bool wtm);
+		void  move(int from, int to, int type, bool whiteToMove);
 		
 		/// <summary> A piece was captured.
 		/// 
 		/// </summary>
-		/// <param name="sq">the capture square
+		/// <param name="square">the capture square
 		/// </param>
 		/// <param name="type">the piece type
 		/// </param>
-		/// <param name="wtm">indicates wether white or black made the move
+		/// <param name="whiteToMove">indicates wether white or black made the move
 		/// </param>
-		void  capture(int sq, int type, bool wtm);
+		void  capture(int square, int type, bool whiteToMove);
 		
 		/// <summary> A piece was added.
 		/// 
 		/// </summary>
-		/// <param name="sq">the capture square
+		/// <param name="square">the capture square
 		/// </param>
 		/// <param name="type">the piece type
 		/// </param>
-		/// <param name="wtm">indicates wether white or black made the move
+		/// <param name="whiteToMove">indicates wether white or black made the move
 		/// </param>
-		void  add(int sq, int type, bool wtm);
+		void  add(int square, int type, bool whiteToMove);
 		
 		/// <summary> Get the material value of a chess piece.
 		/// 

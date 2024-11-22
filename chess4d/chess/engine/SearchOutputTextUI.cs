@@ -73,11 +73,11 @@ namespace tgreiner.amy.chess.engine
 		
 		/// <seealso cref="ISearchOutput.move">
 		/// </seealso>
-		public virtual void  move(int iteration, int time, System.String move, int cnt, int total)
+		public virtual void  move(int iteration, int time, System.String move, int count, int total)
 		{
 			if (false && time >= threshold)
 			{
-				System.String line = formatIteration(iteration) + formatTime(time) + formatCnt(cnt, total) + "  " + move;
+				System.String line = formatIteration(iteration) + formatTime(time) + formatCnt(count, total) + "  " + move;
 				System.Console.Out.Write(line + "     \r");
 			}
 		}
@@ -164,15 +164,15 @@ namespace tgreiner.amy.chess.engine
 		/// <summary> Format the move count.
 		/// 
 		/// </summary>
-		/// <param name="cnt">the current move count
+		/// <param name="count">the current move count
 		/// </param>
 		/// <param name="total">the total move count
 		/// </param>
 		/// <returns> the move count formatted
 		/// </returns>
-		private System.String formatCnt(int cnt, int total)
+		private System.String formatCnt(int count, int total)
 		{
-			System.String result = (cnt + 1) + "/" + total;
+			System.String result = (count + 1) + "/" + total;
 			return "        ".Substring(result.Length) + result;
 		}
 		

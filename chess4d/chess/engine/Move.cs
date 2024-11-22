@@ -176,16 +176,16 @@ namespace tgreiner.amy.chess.engine
 			{
 				
 				case PROMO_KNIGHT: 
-					return tgreiner.amy.chess.engine.ChessConstants_Fields.KNIGHT;
+					return ChessConstants_Fields.KNIGHT;
 				
 				case PROMO_BISHOP: 
-					return tgreiner.amy.chess.engine.ChessConstants_Fields.BISHOP;
+					return ChessConstants_Fields.BISHOP;
 				
 				case PROMO_ROOK: 
-					return tgreiner.amy.chess.engine.ChessConstants_Fields.ROOK;
+					return ChessConstants_Fields.ROOK;
 				
 				case PROMO_QUEEN: 
-					return tgreiner.amy.chess.engine.ChessConstants_Fields.QUEEN;
+					return ChessConstants_Fields.QUEEN;
 				
 				default: 
 					throw new System.SystemException();
@@ -253,7 +253,7 @@ namespace tgreiner.amy.chess.engine
 			int to = getTo(move);
 			int type = board.getPieceAt(from);
 			
-			if (type == tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN)
+			if (type == ChessConstants_Fields.PAWN)
 			{
 				if ((move & (CAPTURE | ENPASSANT)) != 0)
 				{
@@ -409,23 +409,23 @@ namespace tgreiner.amy.chess.engine
 						break;
 					
 					case 'N': 
-						type = tgreiner.amy.chess.engine.ChessConstants_Fields.KNIGHT;
+						type = ChessConstants_Fields.KNIGHT;
 						break;
 					
 					case 'B': 
-						type = tgreiner.amy.chess.engine.ChessConstants_Fields.BISHOP;
+						type = ChessConstants_Fields.BISHOP;
 						break;
 					
 					case 'R': 
-						type = tgreiner.amy.chess.engine.ChessConstants_Fields.ROOK;
+						type = ChessConstants_Fields.ROOK;
 						break;
 					
 					case 'Q': 
-						type = tgreiner.amy.chess.engine.ChessConstants_Fields.QUEEN;
+						type = ChessConstants_Fields.QUEEN;
 						break;
 					
 					case 'K': 
-						type = tgreiner.amy.chess.engine.ChessConstants_Fields.KING;
+						type = ChessConstants_Fields.KING;
 						break;
 					
 					case '=': 
@@ -486,11 +486,11 @@ namespace tgreiner.amy.chess.engine
 				{
 					throw new IllegalSANException("Illegal castle");
 				}
-				type = tgreiner.amy.chess.engine.ChessConstants_Fields.KING;
+				type = ChessConstants_Fields.KING;
 			}
 			if (type == 0)
 			{
-				type = tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN;
+				type = ChessConstants_Fields.PAWN;
 			}
 			
 			IntVector mvs = new IntVector();
@@ -604,25 +604,25 @@ namespace tgreiner.amy.chess.engine
 		/// <summary> Given a square, return its file as character.
 		/// 
 		/// </summary>
-		/// <param name="sq">the square
+		/// <param name="square">the square
 		/// </param>
 		/// <returns> the file ('a'...'h')
 		/// </returns>
-		public static char file(int sq)
+		public static char file(int square)
 		{
-			return (char) ('a' + (sq & 7));
+			return (char) ('a' + (square & 7));
 		}
 		
 		/// <summary> Given a square, return its rank as character.
 		/// 
 		/// </summary>
-		/// <param name="sq">the square
+		/// <param name="square">the square
 		/// </param>
 		/// <returns> the file ('a'...'h')
 		/// </returns>
-		public static char rank(int sq)
+		public static char rank(int square)
 		{
-			return (char) ('1' + (sq >> 3));
+			return (char) ('1' + (square >> 3));
 		}
 	}
 }

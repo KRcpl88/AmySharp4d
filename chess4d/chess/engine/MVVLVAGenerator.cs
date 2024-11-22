@@ -84,7 +84,7 @@ namespace tgreiner.amy.chess.engine
 					attackers.Clear();
 					continue;
 				}
-				if (board.getPieceAt(attSq) == tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN)
+				if (board.getPieceAt(attSq) == ChessConstants_Fields.PAWN)
 				{
 					if (board.Wtm && victimSq >= tgreiner.amy.bitboard.BoardConstants_Fields.HA8)
 					{
@@ -103,7 +103,7 @@ namespace tgreiner.amy.chess.engine
 		/// <summary> Find the next victim.</summary>
 		private void  nextVictim()
 		{
-			while (victim >= tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN)
+			while (victim >= ChessConstants_Fields.PAWN)
 			{
 				if (victims.IsEmpty())
 				{
@@ -125,12 +125,12 @@ namespace tgreiner.amy.chess.engine
 		/// </returns>
 		private int nextAttacker()
 		{
-			while (attacker <= tgreiner.amy.chess.engine.ChessConstants_Fields.KING)
+			while (attacker <= ChessConstants_Fields.KING)
 			{
 				if (attackers.IsEmpty())
 				{
 					attacker++;
-					if (attacker > tgreiner.amy.chess.engine.ChessConstants_Fields.KING)
+					if (attacker > ChessConstants_Fields.KING)
 					{
 						break;
 					}
@@ -151,7 +151,7 @@ namespace tgreiner.amy.chess.engine
 		{
 			this.whiteToMove = board.Wtm;
 			
-			victim = tgreiner.amy.chess.engine.ChessConstants_Fields.QUEEN;
+			victim = ChessConstants_Fields.QUEEN;
 			attacker = 0;
 			
 			victims = board.getMask(!whiteToMove, victim);

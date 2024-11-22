@@ -171,7 +171,7 @@ namespace tgreiner.amy.chess.engine
 			}
 			
 			// Try a null move...
-			if (!board.InCheck && (board.MaskNonPawn != 0L))
+			if (!board.InCheck && (board.MaskNonPawn.IsEmpty() == false))
 			{
 				board.doNull();
 				int tmp = - search(- beta, - beta + 1, depth - 3, ply + 1);

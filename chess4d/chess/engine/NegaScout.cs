@@ -334,7 +334,7 @@ namespace tgreiner.amy.chess.engine
 			
 			
 			// Try a null move...
-			if (tryNullMove && (board.LastMove != 0) && !inCheck && (BitBoard.countBits(board.MaskNonPawn) > 1))
+			if (tryNullMove && (board.LastMove != 0) && !inCheck && (board.MaskNonPawn.countBits() > 1))
 			{
 				nullTried++;
 				board.doNull();

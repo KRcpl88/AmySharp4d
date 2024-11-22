@@ -63,11 +63,11 @@ namespace tgreiner.amy.chess.engine
 		/// </param>
 		/// <param name="move">the current move
 		/// </param>
-		/// <param name="cnt">the number of the move
+		/// <param name="count">the number of the move
 		/// </param>
 		/// <param name="total">the total number of moves
 		/// </param>
-		void  move(int iteration, int time, System.String move, int cnt, int total);
+		void  move(int iteration, int time, System.String move, int count, int total);
 		
 		/// <summary> Output a fail high.
 		/// 

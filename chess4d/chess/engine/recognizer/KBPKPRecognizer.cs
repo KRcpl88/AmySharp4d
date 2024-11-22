@@ -46,8 +46,8 @@ namespace tgreiner.amy.chess.engine.recognizer
 		{
 			if (board.getMaterialSignature(false) == 1)
 			{
-				long bpawns = board.getMask(false, tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN);
-				if ((blackKingDefendsH8(board) && (bpawns & EvalMasks.FILE_MASK[6]) == 0L) || (blackKingDefendsA8(board) && (bpawns & EvalMasks.FILE_MASK[1]) == 0L))
+				long blackPawns = board.getMask(false, ChessConstants_Fields.PAWN);
+				if ((blackKingDefendsH8(board) && (blackPawns & EvalMasks.FILE_MASK[6]) == 0L) || (blackKingDefendsA8(board) && (blackPawns & EvalMasks.FILE_MASK[1]) == 0L))
 				{
 					if (board.Wtm)
 					{
@@ -61,8 +61,8 @@ namespace tgreiner.amy.chess.engine.recognizer
 			}
 			if (board.getMaterialSignature(true) == 1)
 			{
-				long wpawns = board.getMask(true, tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN);
-				if ((whiteKingDefendsH1(board) && (wpawns & EvalMasks.FILE_MASK[6]) == 0L) || (whiteKingDefendsA1(board) && (wpawns & EvalMasks.FILE_MASK[1]) == 0L))
+				long whitePawns = board.getMask(true, ChessConstants_Fields.PAWN);
+				if ((whiteKingDefendsH1(board) && (whitePawns & EvalMasks.FILE_MASK[6]) == 0L) || (whiteKingDefendsA1(board) && (whitePawns & EvalMasks.FILE_MASK[1]) == 0L))
 				{
 					if (board.Wtm)
 					{

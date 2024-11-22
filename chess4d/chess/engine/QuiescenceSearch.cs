@@ -141,7 +141,7 @@ namespace tgreiner.amy.chess.engine
 			
 			while ((move = gen.nextMove()) != - 1)
 			{
-				if ((staticEval + ((move & Move.PROMO_QUEEN) != 0?(evaluator.getMaterialValue(tgreiner.amy.chess.engine.ChessConstants_Fields.QUEEN) - evaluator.getMaterialValue(tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN)):0) + evaluator.getMaterialValue(board.getPieceAt(Move.getTo(move))) + evaluator.getMaterialValue(tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN)) < alpha)
+				if ((staticEval + ((move & Move.PROMO_QUEEN) != 0?(evaluator.getMaterialValue(ChessConstants_Fields.QUEEN) - evaluator.getMaterialValue(ChessConstants_Fields.PAWN)):0) + evaluator.getMaterialValue(board.getPieceAt(Move.getTo(move))) + evaluator.getMaterialValue(ChessConstants_Fields.PAWN)) < alpha)
 				{
 					continue;
 				}

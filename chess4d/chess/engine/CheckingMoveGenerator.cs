@@ -65,9 +65,9 @@ namespace tgreiner.amy.chess.engine
 			BitBoard toSquaresB = Geometry.BISHOP_EPM[oppKing] & ~ allPieces;
 			BitBoard toSquaresR = Geometry.ROOK_EPM[oppKing] & ~ allPieces;
 			
-			generateChecks(moves, board.getMask(board.Wtm, tgreiner.amy.chess.engine.ChessConstants_Fields.BISHOP) | board.getMask(board.Wtm, tgreiner.amy.chess.engine.ChessConstants_Fields.QUEEN), allPieces, toSquaresB, oppKing, false);
+			generateChecks(moves, board.getMask(board.Wtm, ChessConstants_Fields.BISHOP) | board.getMask(board.Wtm, ChessConstants_Fields.QUEEN), allPieces, toSquaresB, oppKing, false);
 			
-			generateChecks(moves, board.getMask(board.Wtm, tgreiner.amy.chess.engine.ChessConstants_Fields.ROOK) | board.getMask(board.Wtm, tgreiner.amy.chess.engine.ChessConstants_Fields.QUEEN), allPieces, toSquaresR, oppKing, false);
+			generateChecks(moves, board.getMask(board.Wtm, ChessConstants_Fields.ROOK) | board.getMask(board.Wtm, ChessConstants_Fields.QUEEN), allPieces, toSquaresR, oppKing, false);
 		}
 		
 		/// <summary> Generate checking moves for knights.
@@ -81,7 +81,7 @@ namespace tgreiner.amy.chess.engine
 			int oppKing = board.getKingPos(!board.Wtm);
 			BitBoard toSquares = Geometry.KNIGHT_EPM[oppKing] & ~ allPieces;
 			
-			generateChecks(moves, board.getMask(board.Wtm, tgreiner.amy.chess.engine.ChessConstants_Fields.KNIGHT), allPieces, toSquares, oppKing, true);
+			generateChecks(moves, board.getMask(board.Wtm, ChessConstants_Fields.KNIGHT), allPieces, toSquares, oppKing, true);
 		}
 		
 		/// <summary> Generate checking moves.

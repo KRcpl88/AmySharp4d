@@ -63,7 +63,7 @@ namespace tgreiner.amy.chess.engine
 			
 			if ((move & Move.ENPASSANT) != 0)
 			{
-				matBalance += eval.getMaterialValue(tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN);
+				matBalance += eval.getMaterialValue(ChessConstants_Fields.PAWN);
 			}
 			else if ((move & Move.CAPTURE) != 0)
 			{
@@ -93,7 +93,7 @@ namespace tgreiner.amy.chess.engine
 			IEvaluator eval = board.Evaluator;
 			int matBalance = estimateMove(board, move);
 			
-			if ((matBalance + 2 * eval.getMaterialValue(tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN)) >= alpha)
+			if ((matBalance + 2 * eval.getMaterialValue(ChessConstants_Fields.PAWN)) >= alpha)
 			{
 				return false;
 			}
@@ -123,7 +123,7 @@ namespace tgreiner.amy.chess.engine
 			IEvaluator eval = board.Evaluator;
 			int matBalance = estimateMove(board, move);
 			
-			if ((matBalance + eval.getMaterialValue(tgreiner.amy.chess.engine.ChessConstants_Fields.BISHOP)) >= alpha)
+			if ((matBalance + eval.getMaterialValue(ChessConstants_Fields.BISHOP)) >= alpha)
 			{
 				return false;
 			}

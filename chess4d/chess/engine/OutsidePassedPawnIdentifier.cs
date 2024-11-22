@@ -26,6 +26,7 @@
 * $Id: OutsidePassedPawnIdentifier.java 2 2007-08-09 07:05:44Z tetchu $
 */
 using System;
+using tgreiner.amy.bitboard;
 namespace tgreiner.amy.chess.engine
 {
 	
@@ -41,7 +42,7 @@ namespace tgreiner.amy.chess.engine
 		/// </summary>
 		/// <returns> white's outside passed pawns
 		/// </returns>
-		virtual public long WhiteOutsidePassedPawns
+		virtual public BitBoard WhiteOutsidePassedPawns
 		{
 			get
 			{
@@ -54,7 +55,7 @@ namespace tgreiner.amy.chess.engine
 		/// </summary>
 		/// <returns> black's outside passed pawns
 		/// </returns>
-		virtual public long BlackOutsidePassedPawns
+		virtual public BitBoard BlackOutsidePassedPawns
 		{
 			get
 			{
@@ -64,22 +65,22 @@ namespace tgreiner.amy.chess.engine
 		}
 		
 		
-		private static long[] FILES_LEFT_QS;
+		private static BitBoard[] FILES_LEFT_QS;
 		
 		
-		private static long[] FILES_RIGHT_QS;
+		private static BitBoard[] FILES_RIGHT_QS;
 		
 		
-		private static long[] FILES_LEFT_KS;
+		private static BitBoard[] FILES_LEFT_KS;
 		
 		
-		private static long[] FILES_RIGHT_KS;
+		private static BitBoard[] FILES_RIGHT_KS;
 		
 		/// <summary>White's outside passed pawns. </summary>
-		private long whiteOutsidePassedPawns;
+		private BitBoard whiteOutsidePassedPawns;
 		
 		/// <summary>Black's outside passed pawns. </summary>
-		private long blackOutsidePassedPawns;
+		private BitBoard blackOutsidePassedPawns;
 		
 		/// <summary> Probe for outside passed pawns.
 		/// 
@@ -88,25 +89,25 @@ namespace tgreiner.amy.chess.engine
 		/// </param>
 		/// <param name="blackPawns">bitboard of black's pawns
 		/// </param>
-		public virtual void  probe(long whitePawns, long blackPawns)
+		public virtual void  probe(BitBoard whitePawns, BitBoard blackPawns)
 		{
-			whiteOutsidePassedPawns = 0L;
-			blackOutsidePassedPawns = 0L;
+			whiteOutsidePassedPawns = new BitBoard();
+			blackOutsidePassedPawns = new BitBoard();
 			
 			for (int file = 0; file < 4; file++)
 			{
-				if ((whitePawns & EvalMasks.FILE_MASK[file]) == 0L)
+				if ((whitePawns & EvalMasks.FILE_MASK[file]).IsEmpty())
 				{
 					continue;
 				}
 				
-				if ((blackPawns & FILES_LEFT_QS[file]) != 0L)
+				if ((blackPawns & FILES_LEFT_QS[file]).IsEmpty())
 				{
 					//UPGRADE_NOTE: Labeled break statement was changed to a goto statement. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1012'"
 					goto outer_brk;
 				}
 				
-				if ((whitePawns & FILES_RIGHT_QS[file]) != 0L && (blackPawns & FILES_RIGHT_QS[file]) != 0L)
+				if (((whitePawns & FILES_RIGHT_QS[file]).IsEmpty() == false) && ((blackPawns & FILES_RIGHT_QS[file]).IsEmpty() == false))
 				{
 					whiteOutsidePassedPawns |= (whitePawns & EvalMasks.FILE_MASK[file]);
 				}
@@ -114,24 +115,25 @@ namespace tgreiner.amy.chess.engine
 				break;
 			}
 			//UPGRADE_NOTE: Label 'outer_brk' was added. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1011'"
-
+// BUGBUG WTF is outer_brk?
 outer_brk: ;
 			
 			
 			for (int file = 0; file < 4; file++)
 			{
-				if ((blackPawns & EvalMasks.FILE_MASK[file]) == 0L)
+				if ((blackPawns & EvalMasks.FILE_MASK[file]).IsEmpty())
 				{
 					continue;
 				}
 				
-				if ((whitePawns & FILES_LEFT_QS[file]) != 0L)
+				if ((whitePawns & FILES_LEFT_QS[file]).IsEmpty() == false)
 				{
 					//UPGRADE_NOTE: Labeled break statement was changed to a goto statement. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1012'"
 					goto outer2_brk;
 				}
 				
-				if ((whitePawns & FILES_RIGHT_QS[file]) != 0L && (blackPawns & FILES_RIGHT_QS[file]) != 0L)
+				if (((whitePawns & FILES_RIGHT_QS[file]).IsEmpty() == false) 
+					&& ((blackPawns & FILES_RIGHT_QS[file]).IsEmpty() == false))
 				{
 					blackOutsidePassedPawns |= (blackPawns & EvalMasks.FILE_MASK[file]);
 				}
@@ -196,10 +198,10 @@ outer4_brk: ;
 		static OutsidePassedPawnIdentifier()
 		{
 			{
-				FILES_LEFT_QS = new long[8];
-				FILES_RIGHT_QS = new long[8];
-				FILES_LEFT_KS = new long[8];
-				FILES_RIGHT_KS = new long[8];
+				FILES_LEFT_QS = Enumerable.Repeat(new BitBoard(), 8).ToArray();
+				FILES_RIGHT_QS = Enumerable.Repeat(new BitBoard(), 8).ToArray();
+				FILES_LEFT_KS = Enumerable.Repeat(new BitBoard(), 8).ToArray();
+				FILES_RIGHT_KS = Enumerable.Repeat(new BitBoard(), 8).ToArray();
 				
 				for (int file = 0; file < 8; file++)
 				{

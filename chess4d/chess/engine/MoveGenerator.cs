@@ -155,12 +155,12 @@ namespace tgreiner.amy.chess.engine
 				
 				case GENERATE: 
 					moves.Size = 0;
-					long all = board.getMask(board.Wtm);
-					while (all != 0L)
+					BitBoard all = board.getMask(board.Wtm);
+					while (all.IsEmpty() == false)
 					{
-						int sq = BitBoard.findFirstOne(all);
-						all.ClearBit(sq);
-						board.generateFrom(sq, moves);
+						int square = all.findFirstOne();
+						all.ClearBit(square);
+						board.generateFrom(square, moves);
 					}
 					idx = moves.size();
 					phase = REST;

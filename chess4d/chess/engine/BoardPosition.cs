@@ -7,14 +7,14 @@ namespace tgreiner.amy.chess.engine
 {
     public class BoardPosition : IPosition
     {
-        public BoardPosition(int[] board, bool wtm, int enPassant, bool canWhiteCastleKingSide, bool canWhiteCastleQueenSide, bool canBlackCastleKingSide, bool canBlackCastleQueenSide, EpdParser enclosingInstance)
+        public BoardPosition(int[] board, bool whiteToMove, int enPassant, bool canWhiteCastleKingSide, bool canWhiteCastleQueenSide, bool canBlackCastleKingSide, bool canBlackCastleQueenSide, EpdParser enclosingInstance)
         {
-            InitBlock(board, wtm, enPassant, canWhiteCastleKingSide, canWhiteCastleQueenSide, canBlackCastleKingSide, canBlackCastleQueenSide, enclosingInstance);
+            InitBlock(board, whiteToMove, enPassant, canWhiteCastleKingSide, canWhiteCastleQueenSide, canBlackCastleKingSide, canBlackCastleQueenSide, enclosingInstance);
         }
-        private void InitBlock(int[] board, bool wtm, int enPassant, bool canWhiteCastleKingSide, bool canWhiteCastleQueenSide, bool canBlackCastleKingSide, bool canBlackCastleQueenSide, EpdParser enclosingInstance)
+        private void InitBlock(int[] board, bool whiteToMove, int enPassant, bool canWhiteCastleKingSide, bool canWhiteCastleQueenSide, bool canBlackCastleKingSide, bool canBlackCastleQueenSide, EpdParser enclosingInstance)
         {
             this.board = board;
-            this.wtm = wtm;
+            this.whiteToMove = whiteToMove;
             this.enPassant = enPassant;
             this.canWhiteCastleKingSide = canWhiteCastleKingSide;
             this.canWhiteCastleQueenSide = canWhiteCastleQueenSide;
@@ -24,8 +24,8 @@ namespace tgreiner.amy.chess.engine
         }
         //UPGRADE_NOTE: Final variable board was copied into class AnonymousClassPosition. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1023'"
         private int[] board;
-        //UPGRADE_NOTE: Final variable wtm was copied into class AnonymousClassPosition. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1023'"
-        private bool wtm;
+        //UPGRADE_NOTE: Final variable whiteToMove was copied into class AnonymousClassPosition. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1023'"
+        private bool whiteToMove;
         //UPGRADE_NOTE: Final variable enPassant was copied into class AnonymousClassPosition. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1023'"
         private int enPassant;
         //UPGRADE_NOTE: Final variable canWhiteCastleKingSide was copied into class AnonymousClassPosition. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1023'"
@@ -49,7 +49,7 @@ namespace tgreiner.amy.chess.engine
         {
             get
             {
-                return wtm;
+                return whiteToMove;
             }
 
         }

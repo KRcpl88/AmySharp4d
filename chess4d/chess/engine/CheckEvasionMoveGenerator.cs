@@ -156,9 +156,9 @@ namespace tgreiner.amy.chess.engine
 
                     while (victims.IsEmpty() == false)
                     {
-                        int sq = victims.findFirstOne();
-                        victims.ClearBit(sq);
-                        board.generateTo(sq, captures);
+                        int square = victims.findFirstOne();
+                        victims.ClearBit(square);
+                        board.generateTo(square, captures);
                     }
 
                     // Add en passant captures
@@ -253,14 +253,14 @@ namespace tgreiner.amy.chess.engine
 			
 			if (attackers.countBits() == 1)
 			{
-				BitBoard rayAttackers = attackers & (board.getMask(!board.Wtm, tgreiner.amy.chess.engine.ChessConstants_Fields.BISHOP) | board.getMask(!board.Wtm, tgreiner.amy.chess.engine.ChessConstants_Fields.ROOK) | board.getMask(!board.Wtm, tgreiner.amy.chess.engine.ChessConstants_Fields.QUEEN));
+				BitBoard rayAttackers = attackers & (board.getMask(!board.Wtm, ChessConstants_Fields.BISHOP) | board.getMask(!board.Wtm, ChessConstants_Fields.ROOK) | board.getMask(!board.Wtm, ChessConstants_Fields.QUEEN));
 				if (rayAttackers.IsEmpty() == false)
 				{
 					int attackerPos = rayAttackers.findFirstOne();
 					//UPGRADE_NOTE: Final was removed from the declaration of 'validToSquares '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
 					BitBoard validToSquares = Geometry.INTER_PATH[attackerPos][kingPos];
 					
-					BitBoard defenders = board.getMask(board.Wtm, tgreiner.amy.chess.engine.ChessConstants_Fields.KNIGHT) | board.getMask(board.Wtm, tgreiner.amy.chess.engine.ChessConstants_Fields.BISHOP) | board.getMask(board.Wtm, tgreiner.amy.chess.engine.ChessConstants_Fields.ROOK) | board.getMask(board.Wtm, tgreiner.amy.chess.engine.ChessConstants_Fields.QUEEN);
+					BitBoard defenders = board.getMask(board.Wtm, ChessConstants_Fields.KNIGHT) | board.getMask(board.Wtm, ChessConstants_Fields.BISHOP) | board.getMask(board.Wtm, ChessConstants_Fields.ROOK) | board.getMask(board.Wtm, ChessConstants_Fields.QUEEN);
 					
 					BitBoard tmp = validToSquares;
 					while (tmp.IsEmpty() == false)
@@ -277,7 +277,7 @@ namespace tgreiner.amy.chess.engine
 						}
 					}
 
-					BitBoard pawns = board.getMask(board.Wtm, tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN);
+					BitBoard pawns = board.getMask(board.Wtm, ChessConstants_Fields.PAWN);
 					while (pawns.IsEmpty() == false)
 					{
 						int from = pawns.findFirstOne();

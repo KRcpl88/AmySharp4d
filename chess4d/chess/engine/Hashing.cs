@@ -66,24 +66,24 @@ namespace tgreiner.amy.chess.engine
 				HASH_KEYS = new long[2][][];
 				for (int i = 0; i < 2; i++)
 				{
-					HASH_KEYS[i] = new long[tgreiner.amy.chess.engine.ChessConstants_Fields.KING + 1][];
-					for (int i2 = 0; i2 < tgreiner.amy.chess.engine.ChessConstants_Fields.KING + 1; i2++)
+					HASH_KEYS[i] = new long[ChessConstants_Fields.KING + 1][];
+					for (int i2 = 0; i2 < ChessConstants_Fields.KING + 1; i2++)
 					{
 						HASH_KEYS[i][i2] = new long[BitBoard.SIZE];
 					}
 				}
 				EN_PASSANT_HASH_KEYS = new long[BitBoard.SIZE];
 				
-				for (int pc = 0; pc <= tgreiner.amy.chess.engine.ChessConstants_Fields.KING; pc++)
+				for (int pc = 0; pc <= ChessConstants_Fields.KING; pc++)
 				{
-					for (int sq = 0; sq < BitBoard.SIZE; sq++)
+					for (int square = 0; square < BitBoard.SIZE; square++)
 					{
 						//UPGRADE_TODO: Method 'java.util.Random.nextlong' was converted to 'SupportClass.Nextlong' which has a different behavior. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1073_javautilRandomnextlong'"
-						HASH_KEYS[0][pc][sq] = SupportClass.NextLong(random);
+						HASH_KEYS[0][pc][square] = SupportClass.NextLong(random);
 						//UPGRADE_TODO: Method 'java.util.Random.nextlong' was converted to 'SupportClass.Nextlong' which has a different behavior. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1073_javautilRandomnextlong'"
-						HASH_KEYS[1][pc][sq] = SupportClass.NextLong(random);
+						HASH_KEYS[1][pc][square] = SupportClass.NextLong(random);
 						//UPGRADE_TODO: Method 'java.util.Random.nextlong' was converted to 'SupportClass.Nextlong' which has a different behavior. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1073_javautilRandomnextlong'"
-						EN_PASSANT_HASH_KEYS[sq] = SupportClass.NextLong(random);
+						EN_PASSANT_HASH_KEYS[square] = SupportClass.NextLong(random);
 					}
 				}
 				

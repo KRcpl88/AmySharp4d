@@ -82,18 +82,18 @@ namespace tgreiner.amy.chess.engine.recognizer
 		internal virtual bool blackKingDefendsH8(ChessBoard board)
 		{
 			
-			if ((board.getMask(true, tgreiner.amy.chess.engine.ChessConstants_Fields.BISHOP) & EvalMasks.BLACK_SQUARES) != 0L)
+			if ((board.getMask(true, ChessConstants_Fields.BISHOP) & EvalMasks.BLACK_SQUARES) != 0L)
 			{
 				return false;
 			}
 			
-			if ((board.getMask(true, tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN) & ~ EvalMasks.FILE_MASK[7]) != 0L)
+			if ((board.getMask(true, ChessConstants_Fields.PAWN) & ~ EvalMasks.FILE_MASK[7]) != 0L)
 			{
 				return false;
 			}
 			
-			int sq = board.getKingPos(false);
-			return (sq >> 3) >= 6 && (sq & 7) >= 6;
+			int square = board.getKingPos(false);
+			return (square >> 3) >= 6 && (square & 7) >= 6;
 		}
 		
 		/// <summary> Check wether the black king defends a8.
@@ -106,18 +106,18 @@ namespace tgreiner.amy.chess.engine.recognizer
 		internal virtual bool blackKingDefendsA8(ChessBoard board)
 		{
 			
-			if ((board.getMask(true, tgreiner.amy.chess.engine.ChessConstants_Fields.BISHOP) & EvalMasks.WHITE_SQUARES) != 0L)
+			if ((board.getMask(true, ChessConstants_Fields.BISHOP) & EvalMasks.WHITE_SQUARES) != 0L)
 			{
 				return false;
 			}
 			
-			if ((board.getMask(true, tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN) & ~ EvalMasks.FILE_MASK[0]) != 0L)
+			if ((board.getMask(true, ChessConstants_Fields.PAWN) & ~ EvalMasks.FILE_MASK[0]) != 0L)
 			{
 				return false;
 			}
 			
-			int sq = board.getKingPos(false);
-			return (sq >> 3) >= 6 && (sq & 7) <= 1;
+			int square = board.getKingPos(false);
+			return (square >> 3) >= 6 && (square & 7) <= 1;
 		}
 		
 		/// <summary> Check wether the white king defends h1.
@@ -130,18 +130,18 @@ namespace tgreiner.amy.chess.engine.recognizer
 		internal virtual bool whiteKingDefendsH1(ChessBoard board)
 		{
 			
-			if ((board.getMask(false, tgreiner.amy.chess.engine.ChessConstants_Fields.BISHOP) & EvalMasks.WHITE_SQUARES) != 0L)
+			if ((board.getMask(false, ChessConstants_Fields.BISHOP) & EvalMasks.WHITE_SQUARES) != 0L)
 			{
 				return false;
 			}
 			
-			if ((board.getMask(false, tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN) & ~ EvalMasks.FILE_MASK[7]) != 0L)
+			if ((board.getMask(false, ChessConstants_Fields.PAWN) & ~ EvalMasks.FILE_MASK[7]) != 0L)
 			{
 				return false;
 			}
 			
-			int sq = board.getKingPos(true);
-			return (sq >> 3) <= 1 && (sq & 7) >= 6;
+			int square = board.getKingPos(true);
+			return (square >> 3) <= 1 && (square & 7) >= 6;
 		}
 		
 		/// <summary> Check wether the white king defends a1.
@@ -154,18 +154,18 @@ namespace tgreiner.amy.chess.engine.recognizer
 		internal virtual bool whiteKingDefendsA1(ChessBoard board)
 		{
 			
-			if ((board.getMask(false, tgreiner.amy.chess.engine.ChessConstants_Fields.BISHOP) & EvalMasks.BLACK_SQUARES) != 0L)
+			if ((board.getMask(false, ChessConstants_Fields.BISHOP) & EvalMasks.BLACK_SQUARES) != 0L)
 			{
 				return false;
 			}
 			
-			if ((board.getMask(false, tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN) & ~ EvalMasks.FILE_MASK[0]) != 0L)
+			if ((board.getMask(false, ChessConstants_Fields.PAWN) & ~ EvalMasks.FILE_MASK[0]) != 0L)
 			{
 				return false;
 			}
 			
-			int sq = board.getKingPos(true);
-			return (sq >> 3) <= 1 && (sq & 7) <= 1;
+			int square = board.getKingPos(true);
+			return (square >> 3) <= 1 && (square & 7) <= 1;
 		}
 	}
 }

@@ -104,40 +104,40 @@ namespace tgreiner.amy.chess.engine
 			while (atks.IsEmpty() == false)
 			{
 				BitBoard tmp;
-				int sq;
+				int square;
 				
-				tmp = atks & board.getMask(swapwtm, tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN);
+				tmp = atks & board.getMask(swapwtm, ChessConstants_Fields.PAWN);
 				if (tmp.IsEmpty() == false)
 				{
-					sq = tmp.findFirstOne();
+					square = tmp.findFirstOne();
 				}
 				else
 				{
-					tmp = atks & (board.getMask(swapwtm, tgreiner.amy.chess.engine.ChessConstants_Fields.KNIGHT) | board.getMask(swapwtm, tgreiner.amy.chess.engine.ChessConstants_Fields.BISHOP));
+					tmp = atks & (board.getMask(swapwtm, ChessConstants_Fields.KNIGHT) | board.getMask(swapwtm, ChessConstants_Fields.BISHOP));
 					if (tmp.IsEmpty() == false)
 					{
-						sq = tmp.findFirstOne();
+						square = tmp.findFirstOne();
 					}
 					else
 					{
-						tmp = atks & board.getMask(swapwtm, tgreiner.amy.chess.engine.ChessConstants_Fields.ROOK);
+						tmp = atks & board.getMask(swapwtm, ChessConstants_Fields.ROOK);
 						if (tmp.IsEmpty() == false)
 						{
-							sq = tmp.findFirstOne();
+							square = tmp.findFirstOne();
 						}
 						else
 						{
-							tmp = atks & board.getMask(swapwtm, tgreiner.amy.chess.engine.ChessConstants_Fields.QUEEN);
+							tmp = atks & board.getMask(swapwtm, ChessConstants_Fields.QUEEN);
 							if (tmp.IsEmpty() == false)
 							{
-								sq = tmp.findFirstOne();
+								square = tmp.findFirstOne();
 							}
 							else
 							{
-								tmp = atks & board.getMask(swapwtm, tgreiner.amy.chess.engine.ChessConstants_Fields.KING);
+								tmp = atks & board.getMask(swapwtm, ChessConstants_Fields.KING);
 								if (tmp.IsEmpty() == false)
 								{
-									sq = tmp.findFirstOne();
+									square = tmp.findFirstOne();
 								}
 								else
 								{
@@ -150,11 +150,11 @@ namespace tgreiner.amy.chess.engine
 				
 				swapcnt++;
 				swaplist[swapcnt] = swaplist[swapcnt - 1] + swapsign * swapval;
-				swapval = PIECE_VALUES[board.getPieceAt(sq)];
+				swapval = PIECE_VALUES[board.getPieceAt(square)];
 				swapsign = - swapsign;
 				swapwtm = !swapwtm;
 				
-				atks = swapReRay(board, atks, sq, to);
+				atks = swapReRay(board, atks, square, to);
 			}
 			
 			if ((swapcnt & 1) != 0)

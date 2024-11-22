@@ -65,7 +65,7 @@ namespace tgreiner.amy.chess.engine
 
             foreach (char ch in fenParts[0])
             {
-                int sq = 8 * rank + file;
+                int square = 8 * rank + file;
                 switch (ch)
                 {
 
@@ -81,62 +81,62 @@ namespace tgreiner.amy.chess.engine
                         break;
 
                     case 'P':
-                        board[sq] = ChessConstants_Fields.PAWN;
+                        board[square] = ChessConstants_Fields.PAWN;
                         file++;
                         break;
 
                     case 'N':
-                        board[sq] = ChessConstants_Fields.KNIGHT;
+                        board[square] = ChessConstants_Fields.KNIGHT;
                         file++;
                         break;
 
                     case 'B':
-                        board[sq] = ChessConstants_Fields.BISHOP;
+                        board[square] = ChessConstants_Fields.BISHOP;
                         file++;
                         break;
 
                     case 'R':
-                        board[sq] = ChessConstants_Fields.ROOK;
+                        board[square] = ChessConstants_Fields.ROOK;
                         file++;
                         break;
 
                     case 'Q':
-                        board[sq] = ChessConstants_Fields.QUEEN;
+                        board[square] = ChessConstants_Fields.QUEEN;
                         file++;
                         break;
 
                     case 'K':
-                        board[sq] = ChessConstants_Fields.KING;
+                        board[square] = ChessConstants_Fields.KING;
                         file++;
                         break;
 
                     case 'p':
-                        board[sq] = -ChessConstants_Fields.PAWN;
+                        board[square] = -ChessConstants_Fields.PAWN;
                         file++;
                         break;
 
                     case 'n':
-                        board[sq] = -ChessConstants_Fields.KNIGHT;
+                        board[square] = -ChessConstants_Fields.KNIGHT;
                         file++;
                         break;
 
                     case 'b':
-                        board[sq] = -ChessConstants_Fields.BISHOP;
+                        board[square] = -ChessConstants_Fields.BISHOP;
                         file++;
                         break;
 
                     case 'r':
-                        board[sq] = -ChessConstants_Fields.ROOK;
+                        board[square] = -ChessConstants_Fields.ROOK;
                         file++;
                         break;
 
                     case 'q':
-                        board[sq] = -ChessConstants_Fields.QUEEN;
+                        board[square] = -ChessConstants_Fields.QUEEN;
                         file++;
                         break;
 
                     case 'k':
-                        board[sq] = -ChessConstants_Fields.KING;
+                        board[square] = -ChessConstants_Fields.KING;
                         file++;
                         break;
 
@@ -156,7 +156,7 @@ namespace tgreiner.amy.chess.engine
                 }
             }          
 
-            bool wtm = (fenParts[1].ToUpper().Equals("W")) ? true : false;
+            bool whiteToMove = (fenParts[1].ToUpper().Equals("W")) ? true : false;
 
             // Scan castling status
             bool wCastleK = false;
@@ -198,7 +198,7 @@ namespace tgreiner.amy.chess.engine
                 enPassant = epRank * 8 + epFile;
             }
 
-            return new BoardPosition(board, wtm, enPassant, wCastleK, wCastleQ, bCastleK, bCastleQ, this);
+            return new BoardPosition(board, whiteToMove, enPassant, wCastleK, wCastleQ, bCastleK, bCastleQ, this);
         }
 
         // Genrates FEN except the the last part(no of moves)

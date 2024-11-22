@@ -217,8 +217,16 @@ namespace tgreiner.amy.chess.engine
 		/// <summary> Initialize this evaluator.</summary>
 		public virtual void  init()
 		{
-			whiteMaterial = pawnValue * BitBoard.countBits(board.getMask(true, tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN)) + knightValue * BitBoard.countBits(board.getMask(true, tgreiner.amy.chess.engine.ChessConstants_Fields.KNIGHT)) + bishopValue * BitBoard.countBits(board.getMask(true, tgreiner.amy.chess.engine.ChessConstants_Fields.BISHOP)) + rookValue * BitBoard.countBits(board.getMask(true, tgreiner.amy.chess.engine.ChessConstants_Fields.ROOK)) + queenValue * BitBoard.countBits(board.getMask(true, tgreiner.amy.chess.engine.ChessConstants_Fields.QUEEN));
-			blackMaterial = pawnValue * BitBoard.countBits(board.getMask(false, tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN)) + knightValue * BitBoard.countBits(board.getMask(false, tgreiner.amy.chess.engine.ChessConstants_Fields.KNIGHT)) + bishopValue * BitBoard.countBits(board.getMask(false, tgreiner.amy.chess.engine.ChessConstants_Fields.BISHOP)) + rookValue * BitBoard.countBits(board.getMask(false, tgreiner.amy.chess.engine.ChessConstants_Fields.ROOK)) + queenValue * BitBoard.countBits(board.getMask(false, tgreiner.amy.chess.engine.ChessConstants_Fields.QUEEN));
+			whiteMaterial = pawnValue * board.getMask(true, ChessConstants_Fields.PAWN).countBits() 
+				+ knightValue * board.getMask(true, ChessConstants_Fields.KNIGHT).countBits() 
+				+ bishopValue * board.getMask(true, ChessConstants_Fields.BISHOP).countBits() 
+				+ rookValue * board.getMask(true, ChessConstants_Fields.ROOK).countBits() 
+				+ queenValue * board.getMask(true, ChessConstants_Fields.QUEEN).countBits();
+			blackMaterial = pawnValue * board.getMask(false, ChessConstants_Fields.PAWN).countBits() 
+				+ knightValue * board.getMask(false, ChessConstants_Fields.KNIGHT).countBits() 
+				+ bishopValue * board.getMask(false, ChessConstants_Fields.BISHOP).countBits() 
+				+ rookValue * board.getMask(false, ChessConstants_Fields.ROOK).countBits() 
+				+ queenValue * board.getMask(false, ChessConstants_Fields.QUEEN).countBits();
 			
 			posScore = 0;
 			
@@ -231,39 +239,39 @@ namespace tgreiner.amy.chess.engine
 			
 			if (gamePhase == GamePhase.OPENING || gamePhase == GamePhase.MIDDLEGAME)
 			{
-				pieceSquare[tgreiner.amy.chess.engine.ChessConstants_Fields.KING] = kingPosOpening;
+				pieceSquare[ChessConstants_Fields.KING] = kingPosOpening;
 			}
 			else
 			{
-				pieceSquare[tgreiner.amy.chess.engine.ChessConstants_Fields.KING] = kingPosEndgame;
+				pieceSquare[ChessConstants_Fields.KING] = kingPosEndgame;
 			}
 			
-			for (int type = tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN; type <= tgreiner.amy.chess.engine.ChessConstants_Fields.KING; type++)
+			for (int type = ChessConstants_Fields.PAWN; type <= ChessConstants_Fields.KING; type++)
 			{
-				long all = board.getMask(true, type);
-				while (all != 0L)
+				BitBoard all = board.getMask(true, type);
+				while (all.IsEmpty() == false)
 				{
-					int sq = BitBoard.findFirstOne(all);
-					all.ClearBit(sq);
-					posScore += pieceSquare[type][sq];
+					int square = all.findFirstOne();
+					all.ClearBit(square);
+					posScore += pieceSquare[type][square];
 				}
 				all = board.getMask(false, type);
-				while (all != 0L)
+				while (all.IsEmpty() == false)
 				{
-					int sq = BitBoard.findFirstOne(all);
-					all.ClearBit(sq);
-					posScore -= pieceSquare[type][Geometry.flipX(sq)];
+					int square = all.findFirstOne();
+					all.ClearBit(square);
+					posScore -= pieceSquare[type][Geometry.flipX(square)];
 				}
 			}
 		}
 		
 		/// <seealso cref="IEvaluator.move">
 		/// </seealso>
-		public virtual void  move(int from, int to, int type, bool wtm)
+		public virtual void  move(int from, int to, int type, bool whiteToMove)
 		{
 			int[] pq = pieceSquare[type];
 			
-			if (wtm)
+			if (whiteToMove)
 			{
 				posScore += pq[to] - pq[from];
 			}
@@ -275,33 +283,33 @@ namespace tgreiner.amy.chess.engine
 		
 		/// <seealso cref="IEvaluator.capture">
 		/// </seealso>
-		public virtual void  capture(int sq, int type, bool wtm)
+		public virtual void  capture(int square, int type, bool whiteToMove)
 		{
-			if (wtm)
+			if (whiteToMove)
 			{
 				whiteMaterial -= pieceValues[type];
-				posScore -= pieceSquare[type][sq];
+				posScore -= pieceSquare[type][square];
 			}
 			else
 			{
 				blackMaterial -= pieceValues[type];
-				posScore += pieceSquare[type][Geometry.flipX(sq)];
+				posScore += pieceSquare[type][Geometry.flipX(square)];
 			}
 		}
 		
 		/// <seealso cref="IEvaluator.add">
 		/// </seealso>
-		public virtual void  add(int sq, int type, bool wtm)
+		public virtual void  add(int square, int type, bool whiteToMove)
 		{
-			if (wtm)
+			if (whiteToMove)
 			{
 				whiteMaterial += pieceValues[type];
-				posScore += pieceSquare[type][sq];
+				posScore += pieceSquare[type][square];
 			}
 			else
 			{
 				blackMaterial += pieceValues[type];
-				posScore -= pieceSquare[type][Geometry.flipX(sq)];
+				posScore -= pieceSquare[type][Geometry.flipX(square)];
 			}
 		}
 		
@@ -420,62 +428,62 @@ namespace tgreiner.amy.chess.engine
 			
 			int score = 0;
 			
-			BitBoard wpawns = board.getMask(true, tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN);
-			BitBoard bpawns = board.getMask(false, tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN);
+			BitBoard whitePawns = board.getMask(true, ChessConstants_Fields.PAWN);
+			BitBoard blackPawns = board.getMask(false, ChessConstants_Fields.PAWN);
 			BitBoard mask;
 			
 			whitePassedPawns = new BitBoard();
 			blackPassedPawns = new BitBoard();
 			
-			mask = wpawns;
+			mask = whitePawns;
 			while (mask.IsEmpty() == false)
 			{
-				int sq = mask.findFirstOne();
-				mask.ClearBit(sq);
+				int square = mask.findFirstOne();
+				mask.ClearBit(square);
 				
-				if ((wpawns & EvalMasks.ISOLATED[sq]).IsEmpty())
+				if ((whitePawns & EvalMasks.ISOLATED[square]).IsEmpty())
 				{
-					score += isolatedPawn[sq & 7];
+					score += isolatedPawn[square & 7];
 				}
-				else if ((wpawns & EvalMasks.WHITE_BACKWARD[sq]).IsEmpty())
+				else if ((whitePawns & EvalMasks.WHITE_BACKWARD[square]).IsEmpty())
 				{
 					score += backwardPawn;
 				}
 				
-				if ((wpawns & EvalMasks.WHITE_DOUBLED[sq]).IsEmpty() == false)
+				if ((whitePawns & EvalMasks.WHITE_DOUBLED[square]).IsEmpty() == false)
 				{
 					score += doubledPawn;
 				}
 				
-				if ((bpawns & EvalMasks.WHITE_PASSED[sq]).IsEmpty())
+				if ((blackPawns & EvalMasks.WHITE_PASSED[square]).IsEmpty())
 				{
-					whitePassedPawns.SetBit(sq);
+					whitePassedPawns.SetBit(square);
 				}
 			}
 			
-			mask = bpawns;
+			mask = blackPawns;
 			while (mask.IsEmpty() == false)
 			{
-				int sq = mask.findFirstOne();
-				mask.ClearBit(sq);
+				int square = mask.findFirstOne();
+				mask.ClearBit(square);
 				
-				if ((bpawns & EvalMasks.ISOLATED[sq]).IsEmpty())
+				if ((blackPawns & EvalMasks.ISOLATED[square]).IsEmpty())
 				{
-					score -= isolatedPawn[sq & 7];
+					score -= isolatedPawn[square & 7];
 				}
-				else if ((bpawns & EvalMasks.BLACK_BACKWARD[sq]).IsEmpty() == true)
+				else if ((blackPawns & EvalMasks.BLACK_BACKWARD[square]).IsEmpty() == true)
 				{
 					score -= backwardPawn;
 				}
 				
-				if ((bpawns & EvalMasks.BLACK_DOUBLED[sq]).IsEmpty() == true)
+				if ((blackPawns & EvalMasks.BLACK_DOUBLED[square]).IsEmpty() == true)
 				{
 					score -= doubledPawn;
 				}
 				
-				if ((wpawns & EvalMasks.BLACK_PASSED[sq]).IsEmpty())
+				if ((whitePawns & EvalMasks.BLACK_PASSED[square]).IsEmpty())
 				{
-					blackPassedPawns.SetBit(sq);
+					blackPassedPawns.SetBit(square);
 				}
 			}
 			
@@ -490,13 +498,15 @@ namespace tgreiner.amy.chess.engine
 		/// <summary> Determine the scale factor for passed pawn evaluation.
 		/// 
 		/// </summary>
-		/// <param name="wtm">the side
+		/// <param name="whiteToMove">the side
 		/// </param>
 		/// <returns> the scale factor in the range 0..MAX_SCALE_PASSED_PAWN
 		/// </returns>
-		private int getScale(bool wtm)
+		private int getScale(bool whiteToMove)
 		{
-			int scale = BitBoard.countBits(board.getMask(wtm, tgreiner.amy.chess.engine.ChessConstants_Fields.KNIGHT) | board.getMask(wtm, tgreiner.amy.chess.engine.ChessConstants_Fields.BISHOP)) + 2 * BitBoard.countBits(board.getMask(wtm, tgreiner.amy.chess.engine.ChessConstants_Fields.ROOK)) + 4 * BitBoard.countBits(board.getMask(wtm, tgreiner.amy.chess.engine.ChessConstants_Fields.QUEEN));
+			int scale = board.getMask(whiteToMove, ChessConstants_Fields.KNIGHT) | board.getMask(whiteToMove, ChessConstants_Fields.BISHOP).countBits() 
+			+ 2 * board.getMask(whiteToMove, ChessConstants_Fields.ROOK).countBits() 
+			+ 4 * board.getMask(whiteToMove, ChessConstants_Fields.QUEEN).countBits();
 			
 			return MAX_SCALE_PASSED_PAWN - System.Math.Min(MAX_SCALE_PASSED_PAWN, scale);
 		}
@@ -513,41 +523,43 @@ namespace tgreiner.amy.chess.engine
 			
 			int score = 0;
 			
-			long mask;
+			BitBoard mask;
 			
 			mask = whitePassedPawns;
-			while (mask != 0L)
+			while (mask.IsEmpty() == false)
 			{
-				int sq = BitBoard.findFirstOne(mask);
-				mask.ClearBit(sq);
+				int square = mask.findFirstOne();
+				mask.ClearBit(square);
 				
-				int rank = (sq >> 3) - 1;
+				int rank = (square >> 3) - 1;
 				
 				score += rank * wscale;
 			}
 			
 			mask = blackPassedPawns;
-			while (mask != 0L)
+			while (mask.IsEmpty() == false)
 			{
-				int sq = BitBoard.findFirstOne(mask);
-				mask.ClearBit(sq);
+				int square = mask.findFirstOne();
+				mask.ClearBit(square);
 				
-				int rank = 6 - (sq >> 3);
+				int rank = 6 - (square >> 3);
 				
 				score -= rank * bscale;
 			}
 			
-			if (board.MaskNonPawn == 0L)
+			if (board.MaskNonPawn.IsEmpty())
 			{
-				outsidePassedPawnId.probe(board.getMask(true, tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN), board.getMask(false, tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN));
+				outsidePassedPawnId.probe(board.getMask(true, ChessConstants_Fields.PAWN), board.getMask(false, ChessConstants_Fields.PAWN));
 				
-				if (outsidePassedPawnId.WhiteOutsidePassedPawns != 0L && outsidePassedPawnId.BlackOutsidePassedPawns == 0L)
+				if ((outsidePassedPawnId.WhiteOutsidePassedPawns.IsEmpty() == false) 
+					&& outsidePassedPawnId.BlackOutsidePassedPawns.IsEmpty())
 				{
 					
 					score += outsidePassedPawn;
 				}
 				
-				if (outsidePassedPawnId.WhiteOutsidePassedPawns == 0L && outsidePassedPawnId.BlackOutsidePassedPawns != 0L)
+				if (outsidePassedPawnId.WhiteOutsidePassedPawns.IsEmpty() 
+					&& (outsidePassedPawnId.BlackOutsidePassedPawns.IsEmpty() == false))
 				{
 					score -= outsidePassedPawn;
 				}
@@ -575,36 +587,36 @@ namespace tgreiner.amy.chess.engine
 		{
 			int score = 0;
 			
-			long wbishops = board.getMask(true, tgreiner.amy.chess.engine.ChessConstants_Fields.BISHOP);
-			long bbishops = board.getMask(false, tgreiner.amy.chess.engine.ChessConstants_Fields.BISHOP);
+			BitBoard whiteBishops = board.getMask(true, ChessConstants_Fields.BISHOP);
+			BitBoard blackBishops = board.getMask(false, ChessConstants_Fields.BISHOP);
 			
-			int cnt = 0;
+			int count = 0;
 			
-			while (wbishops != 0)
+			while (whiteBishops.IsEmpty() == false)
 			{
-				int sq = BitBoard.findFirstOne(wbishops);
-				wbishops.ClearBit(sq);
+				int square = whiteBishops.findFirstOne();
+				whiteBishops.ClearBit(square);
 				
-				score += bishopMobility * (BitBoard.countBits(board.getAttackTo(sq)) - 6);
-				cnt++;
+				score += bishopMobility * (board.getAttackTo(square).countBits() - 6);
+				count++;
 			}
 			
-			if (cnt > 1)
+			if (count > 1)
 			{
 				score += bishopPair;
 			}
 			
-			cnt = 0;
-			while (bbishops != 0)
+			count = 0;
+			while (blackBishops.IsEmpty() == false)
 			{
-				int sq = BitBoard.findFirstOne(bbishops);
-				bbishops.ClearBit(sq);
+				int square = blackBishops.findFirstOne();
+				blackBishops.ClearBit(square);
 				
-				score -= bishopMobility * (BitBoard.countBits(board.getAttackTo(sq)) - 6);
-				cnt++;
+				score -= bishopMobility * (board.getAttackTo(square).countBits() - 6);
+				count++;
 			}
 			
-			if (cnt > 1)
+			if (count > 1)
 			{
 				score -= bishopPair;
 			}
@@ -621,24 +633,24 @@ namespace tgreiner.amy.chess.engine
 		{
 			int score = 0;
 			
-			long wrooks = board.getMask(true, tgreiner.amy.chess.engine.ChessConstants_Fields.ROOK);
-			long brooks = board.getMask(false, tgreiner.amy.chess.engine.ChessConstants_Fields.ROOK);
+			BitBoard whiteRooks = board.getMask(true, ChessConstants_Fields.ROOK);
+			BitBoard blackRooks = board.getMask(false, ChessConstants_Fields.ROOK);
 			
-			long wpawns = board.getMask(true, tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN);
-			long bpawns = board.getMask(false, tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN);
+			BitBoard whitePawns = board.getMask(true, ChessConstants_Fields.PAWN);
+			BitBoard blackPawns = board.getMask(false, ChessConstants_Fields.PAWN);
 			
-			while (wrooks != 0)
+			while (whiteRooks.IsEmpty() == false)
 			{
-				int sq = BitBoard.findFirstOne(wrooks);
-				wrooks.ClearBit(sq);
+				int square = whiteRooks.findFirstOne();
+				whiteRooks.ClearBit(square);
 				
-				score += rookMobility * (BitBoard.countBits(board.getAttackTo(sq)) - 7);
+				score += rookMobility * (board.getAttackTo(square).countBits() - 7);
 				
-				long fileMask = EvalMasks.FILE_MASK[sq & 7];
+				BitBoard fileMask = EvalMasks.FILE_MASK[square & 7];
 				
-				if ((wpawns & fileMask) == 0)
+				if ((whitePawns & fileMask).IsEmpty())
 				{
-					if ((bpawns & fileMask) == 0)
+					if ((blackPawns & fileMask).IsEmpty())
 					{
 						score += rookOnOpenFile;
 					}
@@ -649,18 +661,18 @@ namespace tgreiner.amy.chess.engine
 				}
 			}
 			
-			while (brooks != 0)
+			while (blackRooks.IsEmpty() == false)
 			{
-				int sq = BitBoard.findFirstOne(brooks);
-				brooks.ClearBit(sq);
+				int square = blackRooks.findFirstOne();
+				blackRooks.ClearBit(square);
 				
-				score -= rookMobility * (BitBoard.countBits(board.getAttackTo(sq)) - 7);
+				score -= rookMobility * (board.getAttackTo(square).countBits() - 7);
 				
-				long fileMask = EvalMasks.FILE_MASK[sq & 7];
+				BitBoard fileMask = EvalMasks.FILE_MASK[square & 7];
 				
-				if ((bpawns & fileMask) == 0)
+				if ((blackPawns & fileMask).IsEmpty())
 				{
-					if ((wpawns & fileMask) == 0)
+					if ((whitePawns & fileMask).IsEmpty())
 					{
 						score -= rookOnOpenFile;
 					}
@@ -691,14 +703,14 @@ namespace tgreiner.amy.chess.engine
 		/// </returns>
 		protected internal virtual int evalMaterialImbalance()
 		{
-			int wrookCnt = BitBoard.countBits(board.getMask(true, tgreiner.amy.chess.engine.ChessConstants_Fields.ROOK));
-			int brookCnt = BitBoard.countBits(board.getMask(false, tgreiner.amy.chess.engine.ChessConstants_Fields.ROOK));
+			int wrookCnt = board.getMask(true, ChessConstants_Fields.ROOK).countBits();
+			int brookCnt = board.getMask(false, ChessConstants_Fields.ROOK).countBits();
 			
-			int wknightCnt = BitBoard.countBits(board.getMask(true, tgreiner.amy.chess.engine.ChessConstants_Fields.KNIGHT));
-			int bknightCnt = BitBoard.countBits(board.getMask(false, tgreiner.amy.chess.engine.ChessConstants_Fields.KNIGHT));
+			int wknightCnt = board.getMask(true, ChessConstants_Fields.KNIGHT).countBits();
+			int bknightCnt = board.getMask(false, ChessConstants_Fields.KNIGHT).countBits();
 			
-			int wpawnCnt = BitBoard.countBits(board.getMask(true, tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN));
-			int bpawnCnt = BitBoard.countBits(board.getMask(false, tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN));
+			int wpawnCnt = board.getMask(true, ChessConstants_Fields.PAWN).countBits();
+			int bpawnCnt = board.getMask(false, ChessConstants_Fields.PAWN).countBits();
 			
 			return ((wknightCnt * (wpawnCnt - 5) * pawnValue) >> 4) - ((bknightCnt * (bpawnCnt - 5) * pawnValue) >> 4) + ((wrookCnt * (5 - wpawnCnt) * pawnValue) >> 3) - ((brookCnt * (5 - bpawnCnt) * pawnValue) >> 3);
 			/*
@@ -724,14 +736,14 @@ namespace tgreiner.amy.chess.engine
 			
 			if (((matSigWhite | matSigBlack) == 0x05) && ((matSigWhite & 0x04) != 0) && ((matSigBlack & 0x04) != 0))
 			{
-				long whiteBishops = board.getMask(true, tgreiner.amy.chess.engine.ChessConstants_Fields.BISHOP);
-				long blackBishops = board.getMask(false, tgreiner.amy.chess.engine.ChessConstants_Fields.BISHOP);
+				BitBoard whiteBishops = board.getMask(true, ChessConstants_Fields.BISHOP);
+				BitBoard blackBishops = board.getMask(false, ChessConstants_Fields.BISHOP);
 				
-				int wwb = BitBoard.countBits(whiteBishops & EvalMasks.WHITE_SQUARES);
-				int wbb = BitBoard.countBits(whiteBishops & EvalMasks.BLACK_SQUARES);
+				int wwb = (whiteBishops & EvalMasks.WHITE_SQUARES).countBits();
+				int wbb = (whiteBishops & EvalMasks.BLACK_SQUARES).countBits();
 				
-				int bwb = BitBoard.countBits(blackBishops & EvalMasks.WHITE_SQUARES);
-				int bbb = BitBoard.countBits(blackBishops & EvalMasks.BLACK_SQUARES);
+				int bwb = (blackBishops & EvalMasks.WHITE_SQUARES).countBits();
+				int bbb = (blackBishops & EvalMasks.BLACK_SQUARES).countBits();
 				
 				return (wwb == 0 && bbb == 0) || (wbb == 0 && bwb == 0);
 			}
@@ -763,12 +775,12 @@ namespace tgreiner.amy.chess.engine
 			}
 			else
 			{
-				bool wkingCenter = (board.getMask(true, tgreiner.amy.chess.engine.ChessConstants_Fields.KING) & EvalMasks.WHITE_KING_IN_CENTER) != 0;
-				bool bkingCenter = (board.getMask(false, tgreiner.amy.chess.engine.ChessConstants_Fields.KING) & EvalMasks.BLACK_KING_IN_CENTER) != 0;
+				bool wkingCenter = ((board.getMask(true, ChessConstants_Fields.KING) & EvalMasks.WHITE_KING_IN_CENTER).IsEmpty() == false);
+				bool bkingCenter = ((board.getMask(false, ChessConstants_Fields.KING) & EvalMasks.BLACK_KING_IN_CENTER).IsEmpty() == false);
 				
-				bool wDeveloped = BitBoard.countBits((board.getMask(true, tgreiner.amy.chess.engine.ChessConstants_Fields.KNIGHT) | board.getMask(true, tgreiner.amy.chess.engine.ChessConstants_Fields.BISHOP)) & EvalMasks.RANK_MASK[0]) == 0;
+				bool wDeveloped = ((board.getMask(true, ChessConstants_Fields.KNIGHT) | board.getMask(true, ChessConstants_Fields.BISHOP)) & EvalMasks.RANK_MASK[0]).countBits() == 0;
 				
-				bool bDeveloped = BitBoard.countBits((board.getMask(false, tgreiner.amy.chess.engine.ChessConstants_Fields.KNIGHT) | board.getMask(false, tgreiner.amy.chess.engine.ChessConstants_Fields.BISHOP)) & EvalMasks.RANK_MASK[7]) == 0;
+				bool bDeveloped = ((board.getMask(false, ChessConstants_Fields.KNIGHT) | board.getMask(false, ChessConstants_Fields.BISHOP)) & EvalMasks.RANK_MASK[7]).countBits() == 0;
 				
 				if (wkingCenter || bkingCenter || !wDeveloped || !bDeveloped)
 				{
@@ -784,14 +796,15 @@ namespace tgreiner.amy.chess.engine
 		/// <summary> Determine the game phase for a single side.
 		/// 
 		/// </summary>
-		/// <param name="wtm">the side to move.
+		/// <param name="whiteToMove">the side to move.
 		/// </param>
-		/// <returns> the game phase as seen by wtm.
+		/// <returns> the game phase as seen by whiteToMove.
 		/// </returns>
-		private GamePhase determineGamePhase(bool wtm)
+		private GamePhase determineGamePhase(bool whiteToMove)
 		{
-			int minors = BitBoard.countBits(board.getMask(wtm, tgreiner.amy.chess.engine.ChessConstants_Fields.KNIGHT) | board.getMask(wtm, tgreiner.amy.chess.engine.ChessConstants_Fields.BISHOP));
-			int majors = BitBoard.countBits(board.getMask(wtm, tgreiner.amy.chess.engine.ChessConstants_Fields.ROOK)) + 2 * BitBoard.countBits(board.getMask(wtm, tgreiner.amy.chess.engine.ChessConstants_Fields.QUEEN));
+			int minors = (board.getMask(whiteToMove, ChessConstants_Fields.KNIGHT) | board.getMask(whiteToMove, ChessConstants_Fields.BISHOP)).countBits();
+			int majors = board.getMask(whiteToMove, ChessConstants_Fields.ROOK).countBits() 
+			+ 2 * board.getMask(whiteToMove, ChessConstants_Fields.QUEEN).countBits();
 			
 			if (minors >= 2 && majors >= 2)
 			{

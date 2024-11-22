@@ -89,28 +89,28 @@ namespace tgreiner.amy.chess.engine
                 case GENERATE_CAPTURES:
                     moves.Size = 0;
                     swapOffs.Size = 0;
-                    long victims = board.getMask(!board.Wtm);
-                    while (victims != 0L)
+                    BitBoard victims = board.getMask(!board.Wtm);
+                    while (victims.IsEmpty() == false)
                     {
-                        int sq = BitBoard.findFirstOne(victims);
-                        victims.ClearBit(sq);
-                        board.generateTo(sq, moves);
+                        int square = victims.findFirstOne();
+                        victims.ClearBit(square);
+                        board.generateTo(square, moves);
                     }
 
-                    long pawnOn7th = board.getMask(board.Wtm, tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN) & EvalMasks.RANK_MASK[board.Wtm ? 6 : 1];
+                    BitBoard pawnOn7th = board.getMask(board.Wtm, ChessConstants_Fields.PAWN) & EvalMasks.RANK_MASK[board.Wtm ? 6 : 1];
 
-                    while (pawnOn7th != 0L)
+                    while (pawnOn7th.IsEmpty() == false)
                     {
-                        int sq = BitBoard.findFirstOne(pawnOn7th);
-                        pawnOn7th.ClearBit(sq);
+                        int square = pawnOn7th.findFirstOne();
+                        pawnOn7th.ClearBit(square);
 
-                        int to = board.Wtm ? sq + 8 : sq - 8;
+                        int to = board.Wtm ? square + 8 : square - 8;
                         if (board.getPieceAt(to) != 0)
                         {
                             continue;
                         }
 
-                        moves.add(Move.makeMove(sq, to) | Move.PROMO_QUEEN);
+                        moves.add(Move.makeMove(square, to) | Move.PROMO_QUEEN);
                     }
 
                     nMoves = moves.size();

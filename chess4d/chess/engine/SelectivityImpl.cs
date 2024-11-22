@@ -97,30 +97,30 @@ namespace tgreiner.amy.chess.engine
 					switch (board.LastCaptured)
 					{
 						
-						case tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN: 
-							if (captured == tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN)
+						case ChessConstants_Fields.PAWN: 
+							if (captured == ChessConstants_Fields.PAWN)
 							{
 								return EXTEND_RECAPTURE_PAWN;
 							}
 							break;
 						
-						case tgreiner.amy.chess.engine.ChessConstants_Fields.KNIGHT: 
-						case tgreiner.amy.chess.engine.ChessConstants_Fields.BISHOP: 
-							if ((captured == tgreiner.amy.chess.engine.ChessConstants_Fields.KNIGHT) || (captured == tgreiner.amy.chess.engine.ChessConstants_Fields.BISHOP))
+						case ChessConstants_Fields.KNIGHT: 
+						case ChessConstants_Fields.BISHOP: 
+							if ((captured == ChessConstants_Fields.KNIGHT) || (captured == ChessConstants_Fields.BISHOP))
 							{
 								return EXTEND_RECAPTURE_MINOR;
 							}
 							break;
 						
-						case tgreiner.amy.chess.engine.ChessConstants_Fields.ROOK: 
-							if (captured == tgreiner.amy.chess.engine.ChessConstants_Fields.ROOK)
+						case ChessConstants_Fields.ROOK: 
+							if (captured == ChessConstants_Fields.ROOK)
 							{
 								return EXTEND_RECAPTURE_ROOK;
 							}
 							break;
 						
-						case tgreiner.amy.chess.engine.ChessConstants_Fields.QUEEN: 
-							if (captured == tgreiner.amy.chess.engine.ChessConstants_Fields.QUEEN)
+						case ChessConstants_Fields.QUEEN: 
+							if (captured == ChessConstants_Fields.QUEEN)
 							{
 								return EXTEND_RECAPTURE_QUEEN;
 							}
@@ -142,7 +142,7 @@ namespace tgreiner.amy.chess.engine
 		/// </returns>
 		internal virtual int extendPassedPawnPush(ChessBoard board, int move)
 		{
-			if (board.getPieceAt(Move.getFrom(move)) == tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN)
+			if (board.getPieceAt(Move.getFrom(move)) == ChessConstants_Fields.PAWN)
 			{
 				int to = Move.getTo(move);
 				if ((board.Wtm && to >= tgreiner.amy.bitboard.BoardConstants_Fields.HA7 && to <= tgreiner.amy.bitboard.BoardConstants_Fields.HH7) || (!board.Wtm && to >= tgreiner.amy.bitboard.BoardConstants_Fields.HA2 && to <= tgreiner.amy.bitboard.BoardConstants_Fields.HH2))

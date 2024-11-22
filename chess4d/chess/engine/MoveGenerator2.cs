@@ -214,7 +214,7 @@ namespace tgreiner.amy.chess.engine
                 case GENERATE_CAPTURES:
                     captures.Size = 0;
                     swapOffs.Size = 0;
-                    long victims = board.getMask(!board.Wtm);
+                    BitBoard victims = board.getMask(!board.Wtm);
 
                     if (inCheck)
                     {
@@ -222,11 +222,11 @@ namespace tgreiner.amy.chess.engine
                         victims &= (board.getAttackFrom(kingPos) | board.getAttackTo(kingPos));
                     }
 
-                    while (victims != 0L)
+                    while (victims.IsEmpty() == false)
                     {
-                        int sq = BitBoard.findFirstOne(victims);
-                        victims.ClearBit(sq);
-                        board.generateTo(sq, captures);
+                        int square = victims.findFirstOne();
+                        victims.ClearBit(square);
+                        board.generateTo(square, captures);
                     }
                     nCaptures = captures.size();
                     for (int i = 0; i < nCaptures; i++)
@@ -352,12 +352,12 @@ namespace tgreiner.amy.chess.engine
 
                 case GENERATE:
                     moves.Size = 0;
-                    long all = board.getMask(board.Wtm);
-                    while (all != 0L)
+                    BitBoard all = board.getMask(board.Wtm);
+                    while (all.IsEmpty() == false)
                     {
-                        int sq = BitBoard.findFirstOne(all);
-                        all.ClearBit(sq);
-                        board.generateFrom(sq, moves);
+                        int square = all.findFirstOne();
+                        all.ClearBit(square);
+                        board.generateFrom(square, moves);
                     }
                     idx = moves.size();
                     phase = REST;

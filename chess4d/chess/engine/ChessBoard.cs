@@ -741,19 +741,19 @@ namespace tgreiner.amy.chess.engine
         private void  gainAttack(int from, int to)
         {
             sbyte[] nsq = Geometry.NEXT_SQ[from];
-            int sq = to;
+            int square = to;
             
             for (; ; )
             {
-                sq = nsq[sq];
-                if (sq < 0)
+                square = nsq[square];
+                if (square < 0)
                 {
                     break;
                 }
 
-                SetReciprocalAttacks(from, sq);
+                SetReciprocalAttacks(from, square);
                 
-                if (board[sq] != 0)
+                if (board[square] != 0)
                 {
                     break;
                 }
@@ -771,20 +771,20 @@ namespace tgreiner.amy.chess.engine
         private void  looseAttack(int from, int to)
         {
             sbyte[] nsq = Geometry.NEXT_SQ[from];
-            int sq = to;
+            int square = to;
             
             for (; ; )
             {
-                sq = nsq[sq];
-                if (sq < 0)
+                square = nsq[square];
+                if (square < 0)
                 {
                     break;
                 }
                 
-                attackTo[from].ClearBit(sq);
-                attackFrom[sq].ClearBit(from);
+                attackTo[from].ClearBit(square);
+                attackFrom[square].ClearBit(from);
                 
-                if (board[sq] != 0)
+                if (board[square] != 0)
                 {
                     break;
                 }
@@ -855,50 +855,50 @@ namespace tgreiner.amy.chess.engine
             materialSignature[0] = 0;
             materialSignature[1] = 0;
             
-            for (int sq = 0; sq < BitBoard.SIZE; sq++)
+            for (int square = 0; square < BitBoard.SIZE; square++)
             {
-                int pc = board[sq];
+                int pc = board[square];
                 
                 if (pc > 0)
                 {
-                    pieceMask[0][0].SetBit(sq);
-                    pieceMask[0][pc].SetBit(sq);
+                    pieceMask[0][0].SetBit(square);
+                    pieceMask[0][pc].SetBit(square);
                     materialSignature[0] |= (ushort)MATERIAL_SIGNATURE_BITS[pc];
                     
                     if (IS_SLIDING[pc])
                     {
-                        slidingPieces[sq] = 1;
+                        slidingPieces[square] = 1;
                     }
                     
-                    positionHash ^= Hashing.HASH_KEYS[0][pc][sq];
+                    positionHash ^= Hashing.HASH_KEYS[0][pc][square];
                     if (pc == ChessConstants_Fields.PAWN)
                     {
-                        pawnHash ^= Hashing.HASH_KEYS[0][ChessConstants_Fields.PAWN][sq];
+                        pawnHash ^= Hashing.HASH_KEYS[0][ChessConstants_Fields.PAWN][square];
                     }
                     if (pc == ChessConstants_Fields.KING)
                     {
-                        kingPos[0] = sq;
+                        kingPos[0] = square;
                     }
                 }
                 else if (pc < 0)
                 {
-                    pieceMask[1][0].SetBit(sq);
-                    pieceMask[1][- pc].SetBit(sq);
+                    pieceMask[1][0].SetBit(square);
+                    pieceMask[1][- pc].SetBit(square);
                     materialSignature[1] |= (ushort)MATERIAL_SIGNATURE_BITS[-pc];
                     
                     if (IS_SLIDING[- pc])
                     {
-                        slidingPieces[sq] = 1;
+                        slidingPieces[square] = 1;
                     }
                     
-                    positionHash ^= Hashing.HASH_KEYS[1][- pc][sq];
+                    positionHash ^= Hashing.HASH_KEYS[1][- pc][square];
                     if (- pc == ChessConstants_Fields.PAWN)
                     {
-                        pawnHash ^= Hashing.HASH_KEYS[1][ChessConstants_Fields.PAWN][sq];
+                        pawnHash ^= Hashing.HASH_KEYS[1][ChessConstants_Fields.PAWN][square];
                     }
                     if (- pc == ChessConstants_Fields.KING)
                     {
-                        kingPos[1] = sq;
+                        kingPos[1] = square;
                     }
                 }
             }
@@ -906,17 +906,17 @@ namespace tgreiner.amy.chess.engine
             tmp = pieceMask[0][0];
             while (tmp.IsEmpty() == false)
             {
-                int sq = tmp.findFirstOne();
-                tmp[sq] = 0;
-                attackSet(board[sq], true, sq);
+                int square = tmp.findFirstOne();
+                tmp[square] = 0;
+                attackSet(board[square], true, square);
             }
             
             tmp = pieceMask[1][0];
             while (tmp.IsEmpty() == false)
             {
-                int sq = tmp.findFirstOne();
-                tmp[sq] = 0;
-                attackSet(- board[sq], false, sq);
+                int square = tmp.findFirstOne();
+                tmp[square] = 0;
+                attackSet(- board[square], false, square);
             }
             
             // Clear en passant square if it is set but no pawn attacks it
@@ -1572,9 +1572,9 @@ namespace tgreiner.amy.chess.engine
             generateEnPassant(mvs);
         }
 
-        private void generatePlmOneSide(IMoveList mvs, bool wtm)
+        private void generatePlmOneSide(IMoveList mvs, bool whiteToMove)
         {
-            BitBoard tmp = getMask(wtm);
+            BitBoard tmp = getMask(whiteToMove);
 
             while (tmp.IsEmpty() == false)
             {
@@ -2139,38 +2139,38 @@ namespace tgreiner.amy.chess.engine
         /// <summary> Get the atkFr mask for a square.
         /// 
         /// </summary>
-        /// <param name="sq">the square
+        /// <param name="square">the square
         /// </param>
         /// <returns> the atkFr mask
         /// </returns>
-        internal BitBoard getAttackFrom(int sq)
+        internal BitBoard getAttackFrom(int square)
         {
-            return attackFrom[sq];
+            return attackFrom[square];
         }
         
         /// <summary> Get the atkTo mask for a square.
         /// 
         /// </summary>
-        /// <param name="sq">the square
+        /// <param name="square">the square
         /// </param>
         /// <returns> the atkTo mask
         /// </returns>
-        internal BitBoard getAttackTo(int sq)
+        internal BitBoard getAttackTo(int square)
         {
-            return attackTo[sq];
+            return attackTo[square];
         }
         
         /// <summary> Check for a draw by detecting repeated positions.
         /// 
         /// </summary>
-        /// <param name="cnt">number of occurences of the current position
+        /// <param name="count">number of occurences of the current position
         /// </param>
-        /// <returns> <code>true</code> if at least <code>cnt</code> occurences
+        /// <returns> <code>true</code> if at least <code>count</code> occurences
         /// of the current position where detected
         /// </returns>
-        private bool checkDraw(int cnt)
+        private bool checkDraw(int count)
         {
-            int reps = cnt;
+            int reps = count;
             for (int p = player - 1; p >= 0; p--)
             {
                 History h = (History) history[p];
@@ -2422,7 +2422,7 @@ namespace tgreiner.amy.chess.engine
             Position = pos;
         }
         
-        /// <summary> Given a wtm flag, return the appropriate index.
+        /// <summary> Given a whiteToMove flag, return the appropriate index.
         /// 
         /// </summary>
         /// <param name="theWtm">the flag

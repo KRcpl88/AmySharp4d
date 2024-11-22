@@ -112,7 +112,7 @@ namespace tgreiner.amy.chess.engine
 		
 		/// <seealso cref="ISearchOutput.move">
 		/// </seealso>
-		public virtual void  move(int iteration, int time, System.String move, int cnt, int total)
+		public virtual void  move(int iteration, int time, System.String move, int count, int total)
 		{
 		}
 		

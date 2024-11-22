@@ -142,13 +142,13 @@ namespace tgreiner.amy.chess.engine
 		/// a8, e4 becomes e5.
 		/// 
 		/// </summary>
-		/// <param name="sq">the square.
+		/// <param name="square">the square.
 		/// </param>
 		/// <returns> the square flipped along the X-axis.
 		/// </returns>
-		public static int flipX(int sq)
+		public static int flipX(int square)
 		{
-			return sq ^ 0x38;
+			return square ^ 0x38;
 		}
 		
 		/// <summary> Initialize nextPos/nextDir arrays.
@@ -165,13 +165,13 @@ namespace tgreiner.amy.chess.engine
 		private static void  initNextPos(int[] dirs, sbyte[][] nextPos, sbyte[][] nextDir, sbyte[] conv)
 		{
 			
-			for (int sq = 0; sq < 128; sq++)
+			for (int square = 0; square < 128; square++)
 			{
 				int dir, nextdir;
 				int next;
 				bool start = true;
 				
-				if ((sq & OX88) != 0)
+				if ((square & OX88) != 0)
 				{
 					continue;
 				}
@@ -182,7 +182,7 @@ namespace tgreiner.amy.chess.engine
 				{
 					int next2 = - 1;
 					
-					next = sq + dirs[dir];
+					next = square + dirs[dir];
 					if ((next & OX88) != 0)
 					{
 						dir++;
@@ -192,7 +192,7 @@ namespace tgreiner.amy.chess.engine
 					nextdir = dir + 1;
 					while (nextdir < dirs.Length)
 					{
-						next2 = sq + dirs[nextdir];
+						next2 = square + dirs[nextdir];
 						if (0 == (next2 & OX88))
 						{
 							break;
@@ -202,7 +202,7 @@ namespace tgreiner.amy.chess.engine
 					
 					if (start)
 					{
-						nextPos[conv[sq]][conv[sq]] = conv[next];
+						nextPos[conv[square]][conv[square]] = conv[next];
 						start = false;
 					}
 					
@@ -214,17 +214,17 @@ namespace tgreiner.amy.chess.engine
 						{
 							if (nextdir < dirs.Length)
 							{
-								nextPos[conv[sq]][conv[next]] = conv[next2];
-								nextDir[conv[sq]][conv[next]] = conv[next2];
+								nextPos[conv[square]][conv[next]] = conv[next2];
+								nextDir[conv[square]][conv[next]] = conv[next2];
 							}
 							break;
 						}
 						else
 						{
-							nextPos[conv[sq]][conv[next]] = conv[next3];
+							nextPos[conv[square]][conv[next]] = conv[next3];
 							if (nextdir < dirs.Length)
 							{
-								nextDir[conv[sq]][conv[next]] = conv[next2];
+								nextDir[conv[square]][conv[next]] = conv[next2];
 							}
 						}
 						next = next3;
@@ -239,32 +239,32 @@ namespace tgreiner.amy.chess.engine
 		{
 			sbyte[] conv = new sbyte[128];
 			
-			int sq, sq2;
+			int square, sq2;
 			int pc;
 			
-			for (sq = 0; sq < 128; sq++)
+			for (square = 0; square < 128; square++)
 			{
-				conv[sq] = 127;
+				conv[square] = 127;
 			}
-			for (sq = 0; sq < 128; sq++)
+			for (square = 0; square < 128; square++)
 			{
-				if (0 == (sq & OX88))
+				if (0 == (square & OX88))
 				{
-					sq2 = (sq & 7) | (sq & 0x70) >> 1;
-					conv[sq] = (sbyte) sq2;
+					sq2 = (square & 7) | (square & 0x70) >> 1;
+					conv[square] = (sbyte) sq2;
 				}
 			}
 			
-			for (sq = 0; sq < BitBoard.SIZE; sq++)
+			for (square = 0; square < BitBoard.SIZE; square++)
 			{
 				for (sq2 = 0; sq2 < BitBoard.SIZE; sq2++)
 				{
 					for (pc = ChessConstants_Fields.PAWN; pc <= ChessConstants_Fields.LAST_PIECE; pc++)
 					{
-						NEXT_POS[pc][sq][sq2] = - 1;
-						NEXT_DIR[pc][sq][sq2] = - 1;
+						NEXT_POS[pc][square][sq2] = - 1;
+						NEXT_DIR[pc][square][sq2] = - 1;
 					}
-					NEXT_SQ[sq][sq2] = - 1;
+					NEXT_SQ[square][sq2] = - 1;
 				}
 			}
 			
@@ -272,61 +272,61 @@ namespace tgreiner.amy.chess.engine
 			* Pawns
 			*/
 			
-			for (sq = 0; sq < 128; sq++)
+			for (square = 0; square < 128; square++)
 			{
 				int next;
 				int next2;
 				
-				if ((sq & OX88) != 0)
+				if ((square & OX88) != 0)
 				{
 					continue;
 				}
 				
-				next = sq + 0x11;
+				next = square + 0x11;
 				if (0 == (next & OX88))
 				{
-					NEXT_POS[tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN][conv[sq]][conv[sq]] = conv[next];
-					NEXT_DIR[tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN][conv[sq]][conv[sq]] = conv[next];
+					NEXT_POS[ChessConstants_Fields.PAWN][conv[square]][conv[square]] = conv[next];
+					NEXT_DIR[ChessConstants_Fields.PAWN][conv[square]][conv[square]] = conv[next];
 				}
 				else
 				{
-					next = sq;
+					next = square;
 				}
 				
-				next2 = sq + 0x0f;
+				next2 = square + 0x0f;
 				if (0 == (next2 & OX88))
 				{
-					NEXT_POS[tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN][conv[sq]][conv[next]] = conv[next2];
-					NEXT_DIR[tgreiner.amy.chess.engine.ChessConstants_Fields.PAWN][conv[sq]][conv[next]] = conv[next2];
+					NEXT_POS[ChessConstants_Fields.PAWN][conv[square]][conv[next]] = conv[next2];
+					NEXT_DIR[ChessConstants_Fields.PAWN][conv[square]][conv[next]] = conv[next2];
 				}
 			}
 			
-			for (sq = 0; sq < 128; sq++)
+			for (square = 0; square < 128; square++)
 			{
 				int next;
 				int next2;
 				
-				if ((sq & OX88) != 0)
+				if ((square & OX88) != 0)
 				{
 					continue;
 				}
 				
-				next = sq - 0x11;
+				next = square - 0x11;
 				if (0 == (next & OX88))
 				{
-					NEXT_POS[ChessConstants_Fields.LAST_PIECE][conv[sq]][conv[sq]] = conv[next];
-					NEXT_DIR[ChessConstants_Fields.LAST_PIECE][conv[sq]][conv[sq]] = conv[next];
+					NEXT_POS[ChessConstants_Fields.LAST_PIECE][conv[square]][conv[square]] = conv[next];
+					NEXT_DIR[ChessConstants_Fields.LAST_PIECE][conv[square]][conv[square]] = conv[next];
 				}
 				else
 				{
-					next = sq;
+					next = square;
 				}
 				
-				next2 = sq - 0x0f;
+				next2 = square - 0x0f;
 				if (0 == (next2 & OX88))
 				{
-					NEXT_POS[ChessConstants_Fields.LAST_PIECE][conv[sq]][conv[next]] = conv[next2];
-					NEXT_DIR[ChessConstants_Fields.LAST_PIECE][conv[sq]][conv[next]] = conv[next2];
+					NEXT_POS[ChessConstants_Fields.LAST_PIECE][conv[square]][conv[next]] = conv[next2];
+					NEXT_DIR[ChessConstants_Fields.LAST_PIECE][conv[square]][conv[next]] = conv[next2];
 				}
 			}
 			
@@ -334,27 +334,27 @@ namespace tgreiner.amy.chess.engine
 			* Knight
 			*/
 			
-			for (sq = 0; sq < 128; sq++)
+			for (square = 0; square < 128; square++)
 			{
 				int next;
 				int i;
-				if ((sq & OX88) != 0)
+				if ((square & OX88) != 0)
 				{
 					continue;
 				}
 				
-				next = sq;
+				next = square;
 				
 				for (i = 0; i < OFFSETS_KNIGHT_16.Length; i++)
 				{
-					int next2 = sq + OFFSETS_KNIGHT_16[i];
+					int next2 = square + OFFSETS_KNIGHT_16[i];
 					if ((next2 & OX88) != 0)
 					{
 						continue;
 					}
 					
-					NEXT_POS[tgreiner.amy.chess.engine.ChessConstants_Fields.KNIGHT][conv[sq]][conv[next]] = conv[next2];
-					NEXT_DIR[tgreiner.amy.chess.engine.ChessConstants_Fields.KNIGHT][conv[sq]][conv[next]] = conv[next2];
+					NEXT_POS[ChessConstants_Fields.KNIGHT][conv[square]][conv[next]] = conv[next2];
+					NEXT_DIR[ChessConstants_Fields.KNIGHT][conv[square]][conv[next]] = conv[next2];
 					
 					next = next2;
 				}
@@ -364,45 +364,45 @@ namespace tgreiner.amy.chess.engine
 			* King
 			*/
 			
-			for (sq = 0; sq < 128; sq++)
+			for (square = 0; square < 128; square++)
 			{
 				int next;
 				int i;
-				if ((sq & OX88) != 0)
+				if ((square & OX88) != 0)
 				{
 					continue;
 				}
 				
-				next = sq;
+				next = square;
 				
 				for (i = 0; i < OFFSETS_KING_16.Length; i++)
 				{
-					int next2 = sq + OFFSETS_KING_16[i];
+					int next2 = square + OFFSETS_KING_16[i];
 					if ((next2 & OX88) != 0)
 					{
 						continue;
 					}
 					
-					NEXT_POS[tgreiner.amy.chess.engine.ChessConstants_Fields.KING][conv[sq]][conv[next]] = conv[next2];
-					NEXT_DIR[tgreiner.amy.chess.engine.ChessConstants_Fields.KING][conv[sq]][conv[next]] = conv[next2];
+					NEXT_POS[ChessConstants_Fields.KING][conv[square]][conv[next]] = conv[next2];
+					NEXT_DIR[ChessConstants_Fields.KING][conv[square]][conv[next]] = conv[next2];
 					
 					next = next2;
 				}
 			}
 			
-			initNextPos(DIRS_BISHOP_16, NEXT_POS[tgreiner.amy.chess.engine.ChessConstants_Fields.BISHOP], NEXT_DIR[tgreiner.amy.chess.engine.ChessConstants_Fields.BISHOP], conv);
-			initNextPos(DIRS_ROOK_16, NEXT_POS[tgreiner.amy.chess.engine.ChessConstants_Fields.ROOK], NEXT_DIR[tgreiner.amy.chess.engine.ChessConstants_Fields.ROOK], conv);
-			initNextPos(DIRS_QUEEN_16, NEXT_POS[tgreiner.amy.chess.engine.ChessConstants_Fields.QUEEN], NEXT_DIR[tgreiner.amy.chess.engine.ChessConstants_Fields.QUEEN], conv);
+			initNextPos(DIRS_BISHOP_16, NEXT_POS[ChessConstants_Fields.BISHOP], NEXT_DIR[ChessConstants_Fields.BISHOP], conv);
+			initNextPos(DIRS_ROOK_16, NEXT_POS[ChessConstants_Fields.ROOK], NEXT_DIR[ChessConstants_Fields.ROOK], conv);
+			initNextPos(DIRS_QUEEN_16, NEXT_POS[ChessConstants_Fields.QUEEN], NEXT_DIR[ChessConstants_Fields.QUEEN], conv);
 			
 			/*
 			* Inititialize NEXT_SQ
 			*/
 			
-			for (sq = 0; sq < 128; sq++)
+			for (square = 0; square < 128; square++)
 			{
 				int dir;
 				
-				if ((sq & OX88) != 0)
+				if ((square & OX88) != 0)
 				{
 					continue;
 				}
@@ -411,7 +411,7 @@ namespace tgreiner.amy.chess.engine
 				{
 					int next, next2;
 					
-					next = sq + DIRS_QUEEN_16[dir];
+					next = square + DIRS_QUEEN_16[dir];
 					if ((next & OX88) != 0)
 					{
 						continue;
@@ -424,7 +424,7 @@ namespace tgreiner.amy.chess.engine
 						{
 							break;
 						}
-						NEXT_SQ[conv[sq]][conv[next]] = conv[next2];
+						NEXT_SQ[conv[square]][conv[next]] = conv[next2];
 						next = next2;
 					}
 				}
