@@ -8,12 +8,12 @@
         public void levelRankFileTest()
         {
             int transSquare = 0;
-            Tuple<int, int, int> lrf;
+            LRF lrf;
             
             for(int square = 0; BitBoard.SIZE > square; ++square)
             {
                 lrf = BitBoard.LevelRankFile(square);
-                transSquare = BitBoard.BitOffset(lrf.Item1, lrf.Item2, lrf.Item3);
+                transSquare = BitBoard.BitOffset(lrf.Level, lrf.Rank, lrf.File);
                 Assert.IsTrue(transSquare == square);
             }
         }

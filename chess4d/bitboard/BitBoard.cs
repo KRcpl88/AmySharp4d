@@ -28,6 +28,13 @@
 using System;
 namespace tgreiner.amy.bitboard
 {
+    public struct LRF 
+    {
+        public LRF() {}
+        public int Level=0; 
+        public int Rank=1; 
+        public int File=2;
+    };
 
     /// <summary> Some useful methods for using bitboards.
     /// 
@@ -61,6 +68,7 @@ namespace tgreiner.amy.bitboard
         public const int SIZE = 344;
         public const int ULONG_SIZE_BITS = 8 * sizeof(ulong);
         public const int SIZE_LONG = (344 / ULONG_SIZE_BITS) + 1;
+
 
 
         /// <summary>Masks invalid bits off of the end of the bit array, the last 24 bits. </summary>
@@ -102,6 +110,11 @@ namespace tgreiner.amy.bitboard
         {
             data = new ulong[SIZE_LONG];
             SetBits(offsets);
+        }
+
+        public static BitBoard[] CreateArray(int size)
+        {
+            return Enumerable.Repeat(new BitBoard(), size).ToArray();
         }
 
         public static BitBoard operator &(BitBoard a, BitBoard b)
@@ -297,20 +310,20 @@ namespace tgreiner.amy.bitboard
             return LEVEL_OFFSET[level] + rank * LEVEL_WIDTH[level] + file;
         }
 
-        public static Tuple<int, int, int> LevelRankFile(int offset)
+        public static LRF LevelRankFile(int offset)
         {
-            int level=0, rank=0, file=0;
+            LRF value =new LRF();
             
             ValidateOffset(offset);
 
-            while (offset > BitBoard.LEVEL_OFFSET[level+1])
+            while (offset > BitBoard.LEVEL_OFFSET[value.Level+1])
             {
-                ++ level;
+                ++ value.Level;
             }
 
-            rank = (offset - BitBoard.LEVEL_OFFSET[level]) / BitBoard.LEVEL_WIDTH[level];
-            file = (offset - BitBoard.LEVEL_OFFSET[level]) % BitBoard.LEVEL_WIDTH[level];
-            return new Tuple<int, int, int>(level, rank, file);
+            value.Rank = (offset - BitBoard.LEVEL_OFFSET[value.Level]) / BitBoard.LEVEL_WIDTH[value.Level];
+            value.File = (offset - BitBoard.LEVEL_OFFSET[value.Level]) % BitBoard.LEVEL_WIDTH[value.Level];
+            return value;
         }
         /// <summary> Count the number of bits set in a bitboard.
         /// 

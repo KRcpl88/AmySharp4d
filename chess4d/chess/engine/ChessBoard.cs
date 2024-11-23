@@ -46,14 +46,16 @@ namespace tgreiner.amy.chess.engine
     {
         private void  InitBlock()
         {
-            attackTo = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
-            attackFrom = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
+            attackTo = BitBoard.CreateArray(BitBoard.SIZE);
+            attackFrom = BitBoard.CreateArray(BitBoard.SIZE);
             for (int i = 0; i < 2; i++)
             {
-                pieceMask[i] = Enumerable.Repeat(new BitBoard(), ChessConstants_Fields.LAST_PIECE).ToArray();
+                pieceMask[i] = BitBoard.CreateArray(ChessConstants_Fields.LAST_PIECE);
             }
             board = new int[BitBoard.SIZE];
         }
+
+
         /// <summary> Is white to move?
         /// 
         /// </summary>

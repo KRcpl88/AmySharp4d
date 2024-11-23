@@ -588,20 +588,20 @@ namespace tgreiner.amy.chess.engine
 			RAY = new BitBoard[BitBoard.SIZE][];
 			for (int i6 = 0; i6 < BitBoard.SIZE; i6++)
 			{
-				RAY[i6] = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
+				RAY[i6] = BitBoard.CreateArray(BitBoard.SIZE);
 			}
 			INTER_PATH = new BitBoard[BitBoard.SIZE][];
 			for (int i7 = 0; i7 < BitBoard.SIZE; i7++)
 			{
-				INTER_PATH[i7] = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
+				INTER_PATH[i7] = BitBoard.CreateArray(BitBoard.SIZE);
 			}
-			WHITE_PAWN_EPM = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
-			BLACK_PAWN_EPM = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
-			KNIGHT_EPM = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
-			BISHOP_EPM = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
-			ROOK_EPM = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
-			QUEEN_EPM = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
-			KING_EPM = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
+			WHITE_PAWN_EPM = BitBoard.CreateArray(BitBoard.SIZE);
+			BLACK_PAWN_EPM = BitBoard.CreateArray(BitBoard.SIZE);
+			KNIGHT_EPM = BitBoard.CreateArray(BitBoard.SIZE);
+			BISHOP_EPM = BitBoard.CreateArray(BitBoard.SIZE);
+			ROOK_EPM = BitBoard.CreateArray(BitBoard.SIZE);
+			QUEEN_EPM = BitBoard.CreateArray(BitBoard.SIZE);
+			KING_EPM = BitBoard.CreateArray(BitBoard.SIZE);
 			{
 				initMoves();
 				initGeometry();

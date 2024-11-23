@@ -199,10 +199,10 @@ outer4_brk: ;
 		static OutsidePassedPawnIdentifier()
 		{
 			{
-				FILES_LEFT_QS = Enumerable.Repeat(new BitBoard(), 8).ToArray();
-				FILES_RIGHT_QS = Enumerable.Repeat(new BitBoard(), 8).ToArray();
-				FILES_LEFT_KS = Enumerable.Repeat(new BitBoard(), 8).ToArray();
-				FILES_RIGHT_KS = Enumerable.Repeat(new BitBoard(), 8).ToArray();
+				FILES_LEFT_QS = BitBoard.CreateArray(8);
+				FILES_RIGHT_QS = BitBoard.CreateArray(8);
+				FILES_LEFT_KS = BitBoard.CreateArray(8);
+				FILES_RIGHT_KS = BitBoard.CreateArray(8);
 				
 				for (int file = 0; file < 8; file++)
 				{
