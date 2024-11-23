@@ -46,10 +46,11 @@ namespace tgreiner.amy.chess.engine.recognizer
 		{
 			if (board.getMaterialSignature(false) == 1)
 			{
-				long blackPawns = board.getMask(false, ChessConstants_Fields.PAWN);
-				if ((blackKingDefendsH8(board) && (blackPawns & EvalMasks.FILE_MASK[6]) == 0L) || (blackKingDefendsA8(board) && (blackPawns & EvalMasks.FILE_MASK[1]) == 0L))
+				BitBoard blackPawns = board.getMask(false, ChessConstants_Fields.PAWN);
+				if ((blackKingDefendsH8(board) && ((blackPawns & EvalMasks.FILE_MASK[6])).IsEmpty()) 
+					|| ((blackKingDefendsA8(board) && (blackPawns & EvalMasks.FILE_MASK[1])).IsEmpty()))
 				{
-					if (board.Wtm)
+					if (board.WhiteToMove)
 					{
 						return tgreiner.amy.chess.engine.recognizer.Recognizer_Fields.UPPER_BOUND;
 					}
@@ -61,10 +62,11 @@ namespace tgreiner.amy.chess.engine.recognizer
 			}
 			if (board.getMaterialSignature(true) == 1)
 			{
-				long whitePawns = board.getMask(true, ChessConstants_Fields.PAWN);
-				if ((whiteKingDefendsH1(board) && (whitePawns & EvalMasks.FILE_MASK[6]) == 0L) || (whiteKingDefendsA1(board) && (whitePawns & EvalMasks.FILE_MASK[1]) == 0L))
+				BitBoard whitePawns = board.getMask(true, ChessConstants_Fields.PAWN);
+				if ((whiteKingDefendsH1(board) && (whitePawns & EvalMasks.FILE_MASK[6]).IsEmpty()) 
+					|| (whiteKingDefendsA1(board) && (whitePawns & EvalMasks.FILE_MASK[1]).IsEmpty()))
 				{
-					if (board.Wtm)
+					if (board.WhiteToMove)
 					{
 						return tgreiner.amy.chess.engine.recognizer.Recognizer_Fields.LOWER_BOUND;
 					}

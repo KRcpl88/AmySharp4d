@@ -61,13 +61,13 @@ namespace tgreiner.amy.chess.engine
 		internal virtual void  generateBRQChecks(IMoveList moves)
 		{
 			BitBoard allPieces = board.getMask(true) | board.getMask(false);
-			int oppKing = board.getKingPos(!board.Wtm);
+			int oppKing = board.getKingPos(!board.WhiteToMove);
 			BitBoard toSquaresB = Geometry.BISHOP_EPM[oppKing] & ~ allPieces;
 			BitBoard toSquaresR = Geometry.ROOK_EPM[oppKing] & ~ allPieces;
 			
-			generateChecks(moves, board.getMask(board.Wtm, ChessConstants_Fields.BISHOP) | board.getMask(board.Wtm, ChessConstants_Fields.QUEEN), allPieces, toSquaresB, oppKing, false);
+			generateChecks(moves, board.getMask(board.WhiteToMove, ChessConstants_Fields.BISHOP) | board.getMask(board.WhiteToMove, ChessConstants_Fields.QUEEN), allPieces, toSquaresB, oppKing, false);
 			
-			generateChecks(moves, board.getMask(board.Wtm, ChessConstants_Fields.ROOK) | board.getMask(board.Wtm, ChessConstants_Fields.QUEEN), allPieces, toSquaresR, oppKing, false);
+			generateChecks(moves, board.getMask(board.WhiteToMove, ChessConstants_Fields.ROOK) | board.getMask(board.WhiteToMove, ChessConstants_Fields.QUEEN), allPieces, toSquaresR, oppKing, false);
 		}
 		
 		/// <summary> Generate checking moves for knights.
@@ -78,10 +78,10 @@ namespace tgreiner.amy.chess.engine
 		internal virtual void  generateNChecks(IMoveList moves)
 		{
 			BitBoard allPieces = board.getMask(true) | board.getMask(false);
-			int oppKing = board.getKingPos(!board.Wtm);
+			int oppKing = board.getKingPos(!board.WhiteToMove);
 			BitBoard toSquares = Geometry.KNIGHT_EPM[oppKing] & ~ allPieces;
 			
-			generateChecks(moves, board.getMask(board.Wtm, ChessConstants_Fields.KNIGHT), allPieces, toSquares, oppKing, true);
+			generateChecks(moves, board.getMask(board.WhiteToMove, ChessConstants_Fields.KNIGHT), allPieces, toSquares, oppKing, true);
 		}
 		
 		/// <summary> Generate checking moves.

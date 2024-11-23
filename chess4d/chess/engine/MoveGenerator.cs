@@ -155,7 +155,7 @@ namespace tgreiner.amy.chess.engine
 				
 				case GENERATE: 
 					moves.Size = 0;
-					BitBoard all = board.getMask(board.Wtm);
+					BitBoard all = board.getMask(board.WhiteToMove);
 					while (all.IsEmpty() == false)
 					{
 						int square = all.findFirstOne();

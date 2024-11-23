@@ -324,7 +324,7 @@ namespace tgreiner.amy.chess.engine
 		/// </returns>
 		public virtual int evaluate(int alpha, int beta)
 		{
-			if (board.Wtm)
+			if (board.WhiteToMove)
 			{
 				return evaluateInternal(alpha, beta);
 			}
@@ -504,7 +504,7 @@ namespace tgreiner.amy.chess.engine
 		/// </returns>
 		private int getScale(bool whiteToMove)
 		{
-			int scale = board.getMask(whiteToMove, ChessConstants_Fields.KNIGHT) | board.getMask(whiteToMove, ChessConstants_Fields.BISHOP).countBits() 
+			int scale = (board.getMask(whiteToMove, ChessConstants_Fields.KNIGHT) | board.getMask(whiteToMove, ChessConstants_Fields.BISHOP)).countBits() 
 			+ 2 * board.getMask(whiteToMove, ChessConstants_Fields.ROOK).countBits() 
 			+ 4 * board.getMask(whiteToMove, ChessConstants_Fields.QUEEN).countBits();
 			

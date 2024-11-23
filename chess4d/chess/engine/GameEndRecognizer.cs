@@ -103,7 +103,7 @@ namespace tgreiner.amy.chess.engine
 			{
 				if (board.InCheck)
 				{
-					if (board.Wtm)
+					if (board.WhiteToMove)
 					{
 						result = BLACK_WINS;
 						comment = "Black mates";

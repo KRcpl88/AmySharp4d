@@ -147,18 +147,18 @@ outer2_brk: ;
 			
 			for (int file = 7; file >= 4; file--)
 			{
-				if ((whitePawns & EvalMasks.FILE_MASK[file]) == 0L)
+				if ((whitePawns & EvalMasks.FILE_MASK[file]).IsEmpty())
 				{
 					continue;
 				}
 				
-				if ((blackPawns & FILES_RIGHT_KS[file]) != 0L)
+				if ((blackPawns & FILES_RIGHT_KS[file]).IsEmpty() == false)
 				{
 					//UPGRADE_NOTE: Labeled break statement was changed to a goto statement. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1012'"
 					goto outer3_brk;
 				}
 				
-				if ((whitePawns & FILES_LEFT_KS[file]) != 0L && (blackPawns & FILES_LEFT_KS[file]) != 0L)
+				if (((whitePawns & FILES_LEFT_KS[file]).IsEmpty() == false) && ((blackPawns & FILES_LEFT_KS[file]).IsEmpty() == false))
 				{
 					whiteOutsidePassedPawns |= (whitePawns & EvalMasks.FILE_MASK[file]);
 				}
@@ -172,18 +172,19 @@ outer3_brk: ;
 			
 			for (int file = 7; file >= 4; file--)
 			{
-				if ((blackPawns & EvalMasks.FILE_MASK[file]) == 0L)
+				if ((blackPawns & EvalMasks.FILE_MASK[file]).IsEmpty())
 				{
 					continue;
 				}
 				
-				if ((whitePawns & FILES_RIGHT_KS[file]) != 0L)
+				if ((whitePawns & FILES_RIGHT_KS[file]).IsEmpty() == false)
 				{
 					//UPGRADE_NOTE: Labeled break statement was changed to a goto statement. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1012'"
 					goto outer4_brk;
 				}
 				
-				if ((whitePawns & FILES_LEFT_KS[file]) != 0L && (blackPawns & FILES_LEFT_KS[file]) != 0L)
+				if (((whitePawns & FILES_LEFT_KS[file]).IsEmpty() == false) 
+					&& ((blackPawns & FILES_LEFT_KS[file]).IsEmpty() == false))
 				{
 					blackOutsidePassedPawns |= (blackPawns & EvalMasks.FILE_MASK[file]);
 				}

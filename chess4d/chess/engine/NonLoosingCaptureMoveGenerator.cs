@@ -89,7 +89,7 @@ namespace tgreiner.amy.chess.engine
                 case GENERATE_CAPTURES:
                     moves.Size = 0;
                     swapOffs.Size = 0;
-                    BitBoard victims = board.getMask(!board.Wtm);
+                    BitBoard victims = board.getMask(!board.WhiteToMove);
                     while (victims.IsEmpty() == false)
                     {
                         int square = victims.findFirstOne();
@@ -97,14 +97,14 @@ namespace tgreiner.amy.chess.engine
                         board.generateTo(square, moves);
                     }
 
-                    BitBoard pawnOn7th = board.getMask(board.Wtm, ChessConstants_Fields.PAWN) & EvalMasks.RANK_MASK[board.Wtm ? 6 : 1];
+                    BitBoard pawnOn7th = board.getMask(board.WhiteToMove, ChessConstants_Fields.PAWN) & EvalMasks.RANK_MASK[board.WhiteToMove ? 6 : 1];
 
                     while (pawnOn7th.IsEmpty() == false)
                     {
                         int square = pawnOn7th.findFirstOne();
                         pawnOn7th.ClearBit(square);
 
-                        int to = board.Wtm ? square + 8 : square - 8;
+                        int to = board.WhiteToMove ? square + 8 : square - 8;
                         if (board.getPieceAt(to) != 0)
                         {
                             continue;

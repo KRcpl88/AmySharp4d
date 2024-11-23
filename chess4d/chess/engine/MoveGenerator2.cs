@@ -214,11 +214,11 @@ namespace tgreiner.amy.chess.engine
                 case GENERATE_CAPTURES:
                     captures.Size = 0;
                     swapOffs.Size = 0;
-                    BitBoard victims = board.getMask(!board.Wtm);
+                    BitBoard victims = board.getMask(!board.WhiteToMove);
 
                     if (inCheck)
                     {
-                        int kingPos = board.getKingPos(board.Wtm);
+                        int kingPos = board.getKingPos(board.WhiteToMove);
                         victims &= (board.getAttackFrom(kingPos) | board.getAttackTo(kingPos));
                     }
 
@@ -352,7 +352,7 @@ namespace tgreiner.amy.chess.engine
 
                 case GENERATE:
                     moves.Size = 0;
-                    BitBoard all = board.getMask(board.Wtm);
+                    BitBoard all = board.getMask(board.WhiteToMove);
                     while (all.IsEmpty() == false)
                     {
                         int square = all.findFirstOne();

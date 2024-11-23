@@ -82,12 +82,12 @@ namespace tgreiner.amy.chess.engine.recognizer
 		internal virtual bool blackKingDefendsH8(ChessBoard board)
 		{
 			
-			if ((board.getMask(true, ChessConstants_Fields.BISHOP) & EvalMasks.BLACK_SQUARES) != 0L)
+			if ((board.getMask(true, ChessConstants_Fields.BISHOP) & EvalMasks.BLACK_SQUARES).IsEmpty() == false)
 			{
 				return false;
 			}
 			
-			if ((board.getMask(true, ChessConstants_Fields.PAWN) & ~ EvalMasks.FILE_MASK[7]) != 0L)
+			if ((board.getMask(true, ChessConstants_Fields.PAWN) & ~ EvalMasks.FILE_MASK[7]).IsEmpty() == false)
 			{
 				return false;
 			}
@@ -106,12 +106,12 @@ namespace tgreiner.amy.chess.engine.recognizer
 		internal virtual bool blackKingDefendsA8(ChessBoard board)
 		{
 			
-			if ((board.getMask(true, ChessConstants_Fields.BISHOP) & EvalMasks.WHITE_SQUARES) != 0L)
+			if ((board.getMask(true, ChessConstants_Fields.BISHOP) & EvalMasks.WHITE_SQUARES).IsEmpty() == false)
 			{
 				return false;
 			}
 			
-			if ((board.getMask(true, ChessConstants_Fields.PAWN) & ~ EvalMasks.FILE_MASK[0]) != 0L)
+			if ((board.getMask(true, ChessConstants_Fields.PAWN) & ~ EvalMasks.FILE_MASK[0]).IsEmpty() == false)
 			{
 				return false;
 			}
@@ -130,17 +130,20 @@ namespace tgreiner.amy.chess.engine.recognizer
 		internal virtual bool whiteKingDefendsH1(ChessBoard board)
 		{
 			
-			if ((board.getMask(false, ChessConstants_Fields.BISHOP) & EvalMasks.WHITE_SQUARES) != 0L)
+			if ((board.getMask(false, ChessConstants_Fields.BISHOP) & EvalMasks.WHITE_SQUARES).IsEmpty() == false)
 			{
 				return false;
 			}
 			
-			if ((board.getMask(false, ChessConstants_Fields.PAWN) & ~ EvalMasks.FILE_MASK[7]) != 0L)
+			if ((board.getMask(false, ChessConstants_Fields.PAWN) & ~ EvalMasks.FILE_MASK[7]).IsEmpty() == false)
 			{
 				return false;
 			}
 			
 			int square = board.getKingPos(true);
+			// BUGBUG everywhere it says xxx >> 3 we are converting square to file
+			// BUGBUG everywhere it says xxx & 7 we are converting square to rank
+			// BUGBUG this logic only works on a 2D board
 			return (square >> 3) <= 1 && (square & 7) >= 6;
 		}
 		
@@ -154,12 +157,12 @@ namespace tgreiner.amy.chess.engine.recognizer
 		internal virtual bool whiteKingDefendsA1(ChessBoard board)
 		{
 			
-			if ((board.getMask(false, ChessConstants_Fields.BISHOP) & EvalMasks.BLACK_SQUARES) != 0L)
+			if ((board.getMask(false, ChessConstants_Fields.BISHOP) & EvalMasks.BLACK_SQUARES).IsEmpty() == false)
 			{
 				return false;
 			}
 			
-			if ((board.getMask(false, ChessConstants_Fields.PAWN) & ~ EvalMasks.FILE_MASK[0]) != 0L)
+			if ((board.getMask(false, ChessConstants_Fields.PAWN) & ~ EvalMasks.FILE_MASK[0]).IsEmpty() == false)
 			{
 				return false;
 			}

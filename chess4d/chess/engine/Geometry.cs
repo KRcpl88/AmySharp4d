@@ -473,16 +473,16 @@ namespace tgreiner.amy.chess.engine
 			{
 				for (j = 0; j < BitBoard.SIZE; j++)
 				{
-					INTER_PATH[i][j] = 0;
-					RAY[i][j] = 0;
+					INTER_PATH[i][j] = new BitBoard();
+					RAY[i][j] = new BitBoard();
 				}
-				WHITE_PAWN_EPM[i] = 0L;
-				BLACK_PAWN_EPM[i] = 0L;
-				KNIGHT_EPM[i] = 0L;
-				BISHOP_EPM[i] = 0L;
-				ROOK_EPM[i] = 0L;
-				QUEEN_EPM[i] = 0L;
-				KING_EPM[i] = 0;
+				WHITE_PAWN_EPM[i] = new BitBoard();
+				BLACK_PAWN_EPM[i] = new BitBoard();
+				KNIGHT_EPM[i] = new BitBoard();
+				BISHOP_EPM[i] = new BitBoard();
+				ROOK_EPM[i] = new BitBoard();
+				QUEEN_EPM[i] = new BitBoard();
+				KING_EPM[i] = new BitBoard();
 			}
 			
 			for (j = 0; j < 100; j++)
@@ -585,23 +585,23 @@ namespace tgreiner.amy.chess.engine
 			{
 				NEXT_SQ[i5] = new sbyte[BitBoard.SIZE];
 			}
-			RAY = new long[BitBoard.SIZE][];
+			RAY = new BitBoard[BitBoard.SIZE][];
 			for (int i6 = 0; i6 < BitBoard.SIZE; i6++)
 			{
-				RAY[i6] = new long[BitBoard.SIZE];
+				RAY[i6] = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
 			}
-			INTER_PATH = new long[BitBoard.SIZE][];
+			INTER_PATH = new BitBoard[BitBoard.SIZE][];
 			for (int i7 = 0; i7 < BitBoard.SIZE; i7++)
 			{
-				INTER_PATH[i7] = new long[BitBoard.SIZE];
+				INTER_PATH[i7] = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
 			}
-			WHITE_PAWN_EPM = new long[BitBoard.SIZE];
-			BLACK_PAWN_EPM = new long[BitBoard.SIZE];
-			KNIGHT_EPM = new long[BitBoard.SIZE];
-			BISHOP_EPM = new long[BitBoard.SIZE];
-			ROOK_EPM = new long[BitBoard.SIZE];
-			QUEEN_EPM = new long[BitBoard.SIZE];
-			KING_EPM = new long[BitBoard.SIZE];
+			WHITE_PAWN_EPM = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
+			BLACK_PAWN_EPM = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
+			KNIGHT_EPM = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
+			BISHOP_EPM = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
+			ROOK_EPM = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
+			QUEEN_EPM = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
+			KING_EPM = Enumerable.Repeat(new BitBoard(), BitBoard.SIZE).ToArray();
 			{
 				initMoves();
 				initGeometry();

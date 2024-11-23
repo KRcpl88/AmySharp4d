@@ -56,7 +56,7 @@ namespace tgreiner.amy.chess.engine
 		{
 			IEvaluator eval = board.Evaluator;
 			int matBalance = eval.WhiteMaterial - eval.BlackMaterial;
-			if (!board.Wtm)
+			if (!board.WhiteToMove)
 			{
 				matBalance = - matBalance;
 			}

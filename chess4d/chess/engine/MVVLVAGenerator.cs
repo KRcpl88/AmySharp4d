@@ -86,11 +86,11 @@ namespace tgreiner.amy.chess.engine
 				}
 				if (board.getPieceAt(attSq) == ChessConstants_Fields.PAWN)
 				{
-					if (board.Wtm && victimSq >= tgreiner.amy.bitboard.BoardConstants_Fields.HA8)
+					if (board.WhiteToMove && victimSq >= tgreiner.amy.bitboard.BoardConstants_Fields.HA8)
 					{
 						return attSq | (victimSq << 6) | Move.CAPTURE | Move.PROMO_QUEEN;
 					}
-					if (!board.Wtm && victimSq <= tgreiner.amy.bitboard.BoardConstants_Fields.HH1)
+					if (!board.WhiteToMove && victimSq <= tgreiner.amy.bitboard.BoardConstants_Fields.HH1)
 					{
 						return attSq | (victimSq << 6) | Move.CAPTURE | Move.PROMO_QUEEN;
 					}
@@ -149,7 +149,7 @@ namespace tgreiner.amy.chess.engine
 		/// </seealso>
 		public virtual void  reset()
 		{
-			this.whiteToMove = board.Wtm;
+			this.whiteToMove = board.WhiteToMove;
 			
 			victim = ChessConstants_Fields.QUEEN;
 			attacker = 0;

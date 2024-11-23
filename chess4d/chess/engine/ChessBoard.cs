@@ -59,7 +59,7 @@ namespace tgreiner.amy.chess.engine
         /// </summary>
         /// <returns> <code>true</code> if white is on the move.
         /// </returns>
-        virtual public bool Wtm
+        virtual public bool WhiteToMove
         {
             get
             {

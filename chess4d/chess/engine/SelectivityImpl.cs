@@ -145,7 +145,7 @@ namespace tgreiner.amy.chess.engine
 			if (board.getPieceAt(Move.getFrom(move)) == ChessConstants_Fields.PAWN)
 			{
 				int to = Move.getTo(move);
-				if ((board.Wtm && to >= tgreiner.amy.bitboard.BoardConstants_Fields.HA7 && to <= tgreiner.amy.bitboard.BoardConstants_Fields.HH7) || (!board.Wtm && to >= tgreiner.amy.bitboard.BoardConstants_Fields.HA2 && to <= tgreiner.amy.bitboard.BoardConstants_Fields.HH2))
+				if ((board.WhiteToMove && to >= tgreiner.amy.bitboard.BoardConstants_Fields.HA7 && to <= tgreiner.amy.bitboard.BoardConstants_Fields.HH7) || (!board.WhiteToMove && to >= tgreiner.amy.bitboard.BoardConstants_Fields.HA2 && to <= tgreiner.amy.bitboard.BoardConstants_Fields.HH2))
 				{
 					if (swapper.swap(board, move) >= 0)
 					{

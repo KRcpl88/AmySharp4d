@@ -151,8 +151,8 @@ namespace tgreiner.amy.chess.engine
                 case GENERATE_CAPTURES:
                     captures.Size = 0;
 
-                    int kingPos = board.getKingPos(board.Wtm);
-                    BitBoard victims = board.getMask(!board.Wtm) & (board.getAttackFrom(kingPos) | board.getAttackTo(kingPos));
+                    int kingPos = board.getKingPos(board.WhiteToMove);
+                    BitBoard victims = board.getMask(!board.WhiteToMove) & (board.getAttackFrom(kingPos) | board.getAttackTo(kingPos));
 
                     while (victims.IsEmpty() == false)
                     {
@@ -234,8 +234,8 @@ namespace tgreiner.amy.chess.engine
 		/// </param>
 		internal virtual void  generateEvasions(IMoveList theMoves)
 		{
-			int kingPos = board.getKingPos(board.Wtm);
-			BitBoard oppPieces = board.getMask(!board.Wtm);
+			int kingPos = board.getKingPos(board.WhiteToMove);
+			BitBoard oppPieces = board.getMask(!board.WhiteToMove);
 			BitBoard kingSqs = board.getAttackTo(kingPos) & ~ (board.getMask(true) | board.getMask(false));
 			
 			while (kingSqs.IsEmpty() == false)
@@ -253,14 +253,14 @@ namespace tgreiner.amy.chess.engine
 			
 			if (attackers.countBits() == 1)
 			{
-				BitBoard rayAttackers = attackers & (board.getMask(!board.Wtm, ChessConstants_Fields.BISHOP) | board.getMask(!board.Wtm, ChessConstants_Fields.ROOK) | board.getMask(!board.Wtm, ChessConstants_Fields.QUEEN));
+				BitBoard rayAttackers = attackers & (board.getMask(!board.WhiteToMove, ChessConstants_Fields.BISHOP) | board.getMask(!board.WhiteToMove, ChessConstants_Fields.ROOK) | board.getMask(!board.WhiteToMove, ChessConstants_Fields.QUEEN));
 				if (rayAttackers.IsEmpty() == false)
 				{
 					int attackerPos = rayAttackers.findFirstOne();
 					//UPGRADE_NOTE: Final was removed from the declaration of 'validToSquares '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
 					BitBoard validToSquares = Geometry.INTER_PATH[attackerPos][kingPos];
 					
-					BitBoard defenders = board.getMask(board.Wtm, ChessConstants_Fields.KNIGHT) | board.getMask(board.Wtm, ChessConstants_Fields.BISHOP) | board.getMask(board.Wtm, ChessConstants_Fields.ROOK) | board.getMask(board.Wtm, ChessConstants_Fields.QUEEN);
+					BitBoard defenders = board.getMask(board.WhiteToMove, ChessConstants_Fields.KNIGHT) | board.getMask(board.WhiteToMove, ChessConstants_Fields.BISHOP) | board.getMask(board.WhiteToMove, ChessConstants_Fields.ROOK) | board.getMask(board.WhiteToMove, ChessConstants_Fields.QUEEN);
 					
 					BitBoard tmp = validToSquares;
 					while (tmp.IsEmpty() == false)
@@ -277,13 +277,13 @@ namespace tgreiner.amy.chess.engine
 						}
 					}
 
-					BitBoard pawns = board.getMask(board.Wtm, ChessConstants_Fields.PAWN);
+					BitBoard pawns = board.getMask(board.WhiteToMove, ChessConstants_Fields.PAWN);
 					while (pawns.IsEmpty() == false)
 					{
 						int from = pawns.findFirstOne();
 						pawns.ClearBit(from);
 						
-						if (board.Wtm)
+						if (board.WhiteToMove)
 						{
 							int to = from + 8;
 							if (board.getPieceAt(to) != 0)

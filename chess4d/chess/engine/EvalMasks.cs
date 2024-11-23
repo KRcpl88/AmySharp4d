@@ -181,7 +181,7 @@ namespace tgreiner.amy.chess.engine
             /* Initialize file mask. */
             for (int i = 0; i < 8; i++)
             {
-                // BUGBUG the mth is wrong for j += 8, that only works for 8x8 board
+                // BUGBUG the math is wrong for j += 8, that only works for 8x8 board
                 for (int j = i; j < BitBoard.SIZE; j += 8)
                 {
                     FILE_MASK[i].SetBit(j);
