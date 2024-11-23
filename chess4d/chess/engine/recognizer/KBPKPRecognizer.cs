@@ -26,6 +26,7 @@
 * $Id: KBPKPRecognizer.java 2 2007-08-09 07:05:44Z tetchu $
 */
 using System;
+using tgreiner.amy.bitboard;
 using ChessBoard = tgreiner.amy.chess.engine.ChessBoard;
 //using ChessConstants = tgreiner.amy.chess.engine.ChessConstants;
 using EvalMasks = tgreiner.amy.chess.engine.EvalMasks;
@@ -47,8 +48,8 @@ namespace tgreiner.amy.chess.engine.recognizer
 			if (board.getMaterialSignature(false) == 1)
 			{
 				BitBoard blackPawns = board.getMask(false, ChessConstants_Fields.PAWN);
-				if ((blackKingDefendsH8(board) && ((blackPawns & EvalMasks.FILE_MASK[6])).IsEmpty()) 
-					|| ((blackKingDefendsA8(board) && (blackPawns & EvalMasks.FILE_MASK[1])).IsEmpty()))
+				if ((blackKingDefendsH8(board) && ((blackPawns & EvalMasks.FILE_MASK[6]).IsEmpty())) 
+					|| ((blackKingDefendsA8(board) && (blackPawns & EvalMasks.FILE_MASK[1]).IsEmpty())))
 				{
 					if (board.WhiteToMove)
 					{

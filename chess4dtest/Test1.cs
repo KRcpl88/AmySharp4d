@@ -5,7 +5,22 @@
     {
  
         [TestMethod()]
-        public void countBits()
+        public void levelRankFileTest()
+        {
+            int transSquare = 0;
+            Tuple<int, int, int> lrf;
+            
+            for(int square = 0; BitBoard.SIZE > square; ++square)
+            {
+                lrf = BitBoard.LevelRankFile(square);
+                transSquare = BitBoard.BitOffset(lrf.Item1, lrf.Item2, lrf.Item3);
+                Assert.IsTrue(transSquare == square);
+            }
+        }
+
+ 
+        [TestMethod()]
+        public void countBitsTest()
         {
             BitBoard test;
             
@@ -30,8 +45,8 @@
             test = new BitBoard(new int[]{110,120,130,140,150,160,170,180,210,220,230,240,250,260,270,280,10,20,30,40,50,60,70,80});
             Assert.IsTrue(test.countBits() == 24);
 
-            test = new BitBoard(new int[]{1,2,3,4,5,6,7,8,10,20,30,40,50,60,70,80,110,120,130,140,150,160,170,180,210,220,230,240,250,260,270,280,10,20,30,40,50,60,70,80});
-            Assert.IsTrue(test.countBits() == 40);
+            test = new BitBoard(new int[]{1,2,3,4,5,6,7,8,10,20,30,40,50,60,70,80,110,120,130,140,150,160,170,180,210,220,230,240,250,260,270,280});
+            Assert.IsTrue(test.countBits() == 32);
 
         }
 

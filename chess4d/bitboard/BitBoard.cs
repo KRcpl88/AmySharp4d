@@ -297,6 +297,21 @@ namespace tgreiner.amy.bitboard
             return LEVEL_OFFSET[level] + rank * LEVEL_WIDTH[level] + file;
         }
 
+        public static Tuple<int, int, int> LevelRankFile(int offset)
+        {
+            int level=0, rank=0, file=0;
+            
+            ValidateOffset(offset);
+
+            while (offset > BitBoard.LEVEL_OFFSET[level+1])
+            {
+                ++ level;
+            }
+
+            rank = (offset - BitBoard.LEVEL_OFFSET[level]) / BitBoard.LEVEL_WIDTH[level];
+            file = (offset - BitBoard.LEVEL_OFFSET[level]) % BitBoard.LEVEL_WIDTH[level];
+            return new Tuple<int, int, int>(level, rank, file);
+        }
         /// <summary> Count the number of bits set in a bitboard.
         /// 
         /// </summary>
