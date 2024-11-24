@@ -562,7 +562,7 @@ namespace tgreiner.amy.chess.engine
 		}
 		static Geometry()
 		{
-			NEXT_POS = new sbyte[8][][];
+			NEXT_POS = new sbyte[ChessConstants_Fields.LAST_PIECE+1][][];
 			for (int i = 0; i < 8; i++)
 			{
 				NEXT_POS[i] = new sbyte[BitBoard.SIZE][];
@@ -571,7 +571,7 @@ namespace tgreiner.amy.chess.engine
 					NEXT_POS[i][i2] = new sbyte[BitBoard.SIZE];
 				}
 			}
-			NEXT_DIR = new sbyte[8][][];
+			NEXT_DIR = new sbyte[ChessConstants_Fields.LAST_PIECE+1][][];
 			for (int i3 = 0; i3 < 8; i3++)
 			{
 				NEXT_DIR[i3] = new sbyte[BitBoard.SIZE][];

@@ -316,9 +316,11 @@ namespace tgreiner.amy.bitboard
             
             ValidateOffset(offset);
 
-            while (offset > BitBoard.LEVEL_OFFSET[value.Level+1])
+            value.Level = BitBoard.LEVEL_OFFSET.Length-1;
+
+            while (offset < BitBoard.LEVEL_OFFSET[value.Level])
             {
-                ++ value.Level;
+                -- value.Level;
             }
 
             value.Rank = (offset - BitBoard.LEVEL_OFFSET[value.Level]) / BitBoard.LEVEL_WIDTH[value.Level];

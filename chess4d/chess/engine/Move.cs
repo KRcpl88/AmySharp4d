@@ -27,7 +27,7 @@
 */
 using System;
 using System.Collections.Generic;
-using IntVector = tgreiner.amy.common.engine.IntVector;
+using tgreiner.amy.common.engine;
 namespace tgreiner.amy.chess.engine
 {
 	
@@ -372,6 +372,7 @@ namespace tgreiner.amy.chess.engine
 		{
 			int toRank = - 1, toFile = - 1;
 			int fromRank = - 1, fromFile = - 1;
+			int fromLevel = -1, toLevel = -1;
 			int type = 0;
 			int promotion = 0;
 			int castle = 0;
@@ -392,10 +393,40 @@ namespace tgreiner.amy.chess.engine
 					case 'f': 
 					case 'g': 
 					case 'h': 
-						fromFile = toFile;
-						toFile = c - 'a';
+						if (toLevel == -1)
+						{
+							toLevel = c - 'a';							
+						}
+						else if ((toFile >= 0) && (fromLevel == -1))
+						{
+							fromLevel = toLevel;
+							toLevel = c - 'a';
+						}
+						else
+						{
+							fromFile = toFile;
+							toFile = c - 'a';
+						}
 						break;
-					
+
+					case 'i': 
+					case 'j': 
+					case 'k': 
+					case 'l': 
+					case 'm': 
+					case 'n': 
+					case 'o': 
+						if (fromLevel == -1)
+						{
+							fromLevel = c - 'a';							
+						}
+						else if (toLevel == -1)
+						{
+							toLevel = c - 'a';
+						}
+						break;
+
+
 					case '1': 
 					case '2': 
 					case '3': 
@@ -456,7 +487,6 @@ namespace tgreiner.amy.chess.engine
 						break;
 					
 					case 'O': 
-					case 'o': 
 					case '0': 
 						castle++;
 						break;

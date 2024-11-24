@@ -292,7 +292,7 @@ namespace tgreiner.amy.chess.engine
 							}
 							if (validToSquares.GetBit(to) != 0)
 							{
-								if (to >= tgreiner.amy.bitboard.BoardConstants_Fields.HA8)
+								if (to >= BoardConstants_Fields.HA8)
 								{
 									theMoves.add(Move.makeMove(from, to) | Move.PROMO_QUEEN);
 									theMoves.add(Move.makeMove(from, to) | Move.PROMO_ROOK);
@@ -304,7 +304,7 @@ namespace tgreiner.amy.chess.engine
 									theMoves.add(Move.makeMove(from, to));
 								}
 							}
-							if (from <= tgreiner.amy.bitboard.BoardConstants_Fields.HH2)
+							if (from <= BoardConstants_Fields.HH2)
 							{
 								to = from + 16;
 								if (validToSquares[to] != 0)
