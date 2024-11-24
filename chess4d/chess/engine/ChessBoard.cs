@@ -527,15 +527,15 @@ namespace tgreiner.amy.chess.engine
             sbyte[] np, nd;
             int nextSquare;
             
-            if (type == ChessConstants_Fields.PAWN)
+            if (type == ChessConstants_Fields.WHITE_PAWN)
             {
                 if (theWtm)
                 {
-                    nd = Geometry.NEXT_DIR[ChessConstants_Fields.PAWN][square];
+                    nd = Geometry.NEXT_DIR[Geometry.WHITE_PAWN][square];
                 }
                 else
                 {
-                    nd = Geometry.NEXT_DIR[ChessConstants_Fields.LAST_PIECE][square];
+                    nd = Geometry.NEXT_DIR[Geometry.BLACK_PAWN][square];
                 }
 
                 nextSquare = nd[square];
@@ -598,11 +598,11 @@ namespace tgreiner.amy.chess.engine
             {
                 if (theWtm)
                 {
-                    nd = Geometry.NEXT_DIR[ChessConstants_Fields.PAWN][square];
+                    nd = Geometry.NEXT_DIR[Geometry.WHITE_PAWN][square];
                 }
                 else
                 {
-                    nd = Geometry.NEXT_DIR[ChessConstants_Fields.LAST_PIECE][square];
+                    nd = Geometry.NEXT_DIR[Geometry.BLACK_PAWN][square];
                 }
                 
                 nsq = nd[square];

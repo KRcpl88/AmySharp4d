@@ -47,7 +47,7 @@ namespace tgreiner.amy.chess.engine
 		public const int QUEEN = 5;
 		/// <summary>Constant for a king. </summary>
 		public const int KING = 6;
-		/// <summary>Constant for a black pawn. </summary>
+		/// <summary>Marks end of pieces. </summary>
 		public const int LAST_PIECE = 7;
 
 		public const int WHITE_PAWN = PAWN;

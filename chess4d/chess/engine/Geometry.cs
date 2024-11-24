@@ -37,6 +37,25 @@ namespace tgreiner.amy.chess.engine
 	/// </author>
 	public sealed class Geometry //: ChessConstants
 	{
+		/// <summary>Constant for a pawn. </summary>
+		public const int WHITE_PAWN = ChessConstants_Fields.WHITE_PAWN;
+		/// <summary>Constant for a knight. </summary>
+		public const int KNIGHT = ChessConstants_Fields.KNIGHT;
+		/// <summary>Constant for a bishop. </summary>
+		public const int BISHOP = ChessConstants_Fields.BISHOP;
+		/// <summary>Constant for a rook. </summary>
+		public const int ROOK = ChessConstants_Fields.ROOK;
+		/// <summary>Constant for a queen. </summary>
+		public const int QUEEN = ChessConstants_Fields.QUEEN;
+		/// <summary>Constant for a king. </summary>
+		public const int KING = ChessConstants_Fields.KING;
+		/// <summary>Constant for a black pawn. </summary>
+		public const int BLACK_PAWN = KING + 1;
+
+		/// <summary>Mark end of Geometry arrays. </summary>
+		public const int LAST_PIECE = BLACK_PAWN + 1;
+
+
 		/// <summary> This class cannot be instantiated.</summary>
 		private Geometry()
 		{
@@ -237,6 +256,7 @@ namespace tgreiner.amy.chess.engine
 		/// <summary> Initialize the data structures for move generation.</summary>
 		private static void  initMoves()
 		{
+			// conversion array to convert offset into 16x16 board array to an 8x8 board 
 			sbyte[] conv = new sbyte[128];
 			
 			int square, square2;
@@ -259,7 +279,7 @@ namespace tgreiner.amy.chess.engine
 			{
 				for (square2 = 0; square2 < BitBoard.SIZE; square2++)
 				{
-					for (piece = ChessConstants_Fields.PAWN; piece <= ChessConstants_Fields.LAST_PIECE; piece++)
+					for (piece = WHITE_PAWN; piece <= BLACK_PAWN; piece++)
 					{
 						NEXT_POS[piece][square][square2] = - 1;
 						NEXT_DIR[piece][square][square2] = - 1;
@@ -277,30 +297,35 @@ namespace tgreiner.amy.chess.engine
 				int next;
 				int next2;
 				
+				// square is the offset for an 16x16 board, skip unless it is withing an 8x8 board
+				// not sure why we need to cmpute geometry on a 16x16 board
 				if ((square & OX88) != 0)
 				{
 					continue;
 				}
 				
+				// white pawn attack square (on 16x16 board) Rank +1, File +1
 				next = square + 0x11;
 				if (0 == (next & OX88))
 				{
-					// BUGBUG conv is int[128] and is set from 0..64 but NEXT_POS dimension is 344 x 344, 
-					// conv[] is the wrong size, the algorithm is wromg for a 3D board
-					NEXT_POS[ChessConstants_Fields.PAWN][conv[square]][conv[square]] = conv[next];
-					NEXT_DIR[ChessConstants_Fields.PAWN][conv[square]][conv[square]] = conv[next];
+					NEXT_POS[WHITE_PAWN][conv[square]][conv[square]] = conv[next];
+					NEXT_DIR[WHITE_PAWN][conv[square]][conv[square]] = conv[next];
 				}
 				else
 				{
 					next = square;
 				}
 				
+				// Rank +1, File -1 (on 16x16 board)
 				next2 = square + 0x0f;
 				if (0 == (next2 & OX88))
 				{
-					NEXT_POS[ChessConstants_Fields.PAWN][conv[square]][conv[next]] = conv[next2];
-					NEXT_DIR[ChessConstants_Fields.PAWN][conv[square]][conv[next]] = conv[next2];
+					NEXT_POS[WHITE_PAWN][conv[square]][conv[next]] = conv[next2];
+					NEXT_DIR[WHITE_PAWN][conv[square]][conv[next]] = conv[next2];
 				}
+
+				// BGUBUG TODO, add Level -2, Level +2. 
+				// Adjusting Rank/File will be +-2 depending on source/target level width
 			}
 			
 			for (square = 0; square < 128; square++)
@@ -313,22 +338,24 @@ namespace tgreiner.amy.chess.engine
 					continue;
 				}
 				
+				// black pawn attack square (on 16x16 board) Rank +1, File +1
 				next = square - 0x11;
 				if (0 == (next & OX88))
 				{
-					NEXT_POS[ChessConstants_Fields.LAST_PIECE][conv[square]][conv[square]] = conv[next];
-					NEXT_DIR[ChessConstants_Fields.LAST_PIECE][conv[square]][conv[square]] = conv[next];
+					NEXT_POS[BLACK_PAWN][conv[square]][conv[square]] = conv[next];
+					NEXT_DIR[BLACK_PAWN][conv[square]][conv[square]] = conv[next];
 				}
 				else
 				{
 					next = square;
 				}
 				
+				// Rank +1, File -1 (on 16x16 board)
 				next2 = square - 0x0f;
 				if (0 == (next2 & OX88))
 				{
-					NEXT_POS[ChessConstants_Fields.LAST_PIECE][conv[square]][conv[next]] = conv[next2];
-					NEXT_DIR[ChessConstants_Fields.LAST_PIECE][conv[square]][conv[next]] = conv[next2];
+					NEXT_POS[BLACK_PAWN][conv[square]][conv[next]] = conv[next2];
+					NEXT_DIR[BLACK_PAWN][conv[square]][conv[next]] = conv[next2];
 				}
 			}
 			
@@ -355,8 +382,8 @@ namespace tgreiner.amy.chess.engine
 						continue;
 					}
 					
-					NEXT_POS[ChessConstants_Fields.KNIGHT][conv[square]][conv[next]] = conv[next2];
-					NEXT_DIR[ChessConstants_Fields.KNIGHT][conv[square]][conv[next]] = conv[next2];
+					NEXT_POS[KNIGHT][conv[square]][conv[next]] = conv[next2];
+					NEXT_DIR[KNIGHT][conv[square]][conv[next]] = conv[next2];
 					
 					next = next2;
 				}
@@ -385,16 +412,16 @@ namespace tgreiner.amy.chess.engine
 						continue;
 					}
 					
-					NEXT_POS[ChessConstants_Fields.KING][conv[square]][conv[next]] = conv[next2];
-					NEXT_DIR[ChessConstants_Fields.KING][conv[square]][conv[next]] = conv[next2];
+					NEXT_POS[KING][conv[square]][conv[next]] = conv[next2];
+					NEXT_DIR[KING][conv[square]][conv[next]] = conv[next2];
 					
 					next = next2;
 				}
 			}
 			
-			initNextPos(DIRS_BISHOP_16, NEXT_POS[ChessConstants_Fields.BISHOP], NEXT_DIR[ChessConstants_Fields.BISHOP], conv);
-			initNextPos(DIRS_ROOK_16, NEXT_POS[ChessConstants_Fields.ROOK], NEXT_DIR[ChessConstants_Fields.ROOK], conv);
-			initNextPos(DIRS_QUEEN_16, NEXT_POS[ChessConstants_Fields.QUEEN], NEXT_DIR[ChessConstants_Fields.QUEEN], conv);
+			initNextPos(DIRS_BISHOP_16, NEXT_POS[BISHOP], NEXT_DIR[BISHOP], conv);
+			initNextPos(DIRS_ROOK_16, NEXT_POS[ROOK], NEXT_DIR[ROOK], conv);
+			initNextPos(DIRS_QUEEN_16, NEXT_POS[QUEEN], NEXT_DIR[QUEEN], conv);
 			
 			/*
 			* Inititialize NEXT_SQ
@@ -564,7 +591,7 @@ namespace tgreiner.amy.chess.engine
 		}
 		static Geometry()
 		{
-			NEXT_POS = new sbyte[ChessConstants_Fields.LAST_PIECE+1][][];
+			NEXT_POS = new sbyte[LAST_PIECE][][];
 			for (int i = 0; i < 8; i++)
 			{
 				NEXT_POS[i] = new sbyte[BitBoard.SIZE][];
@@ -573,7 +600,7 @@ namespace tgreiner.amy.chess.engine
 					NEXT_POS[i][i2] = new sbyte[BitBoard.SIZE];
 				}
 			}
-			NEXT_DIR = new sbyte[ChessConstants_Fields.LAST_PIECE+1][][];
+			NEXT_DIR = new sbyte[LAST_PIECE][][];
 			for (int i3 = 0; i3 < 8; i3++)
 			{
 				NEXT_DIR[i3] = new sbyte[BitBoard.SIZE][];
