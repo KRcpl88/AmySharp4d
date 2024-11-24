@@ -104,6 +104,7 @@ namespace tgreiner.amy.chess.engine
         internal static void  initMasks()
         {
             /* Initialize white backward pawn masks. */
+            // BUGBUG this class needs to be updsted for level, rank and file
             for (int i = 0; i < BitBoard.SIZE; i++)
             {
                 if ((i & 7) > 0)

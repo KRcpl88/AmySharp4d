@@ -239,8 +239,8 @@ namespace tgreiner.amy.chess.engine
 		{
 			sbyte[] conv = new sbyte[128];
 			
-			int square, sq2;
-			int pc;
+			int square, square2;
+			int piece;
 			
 			for (square = 0; square < 128; square++)
 			{
@@ -250,21 +250,21 @@ namespace tgreiner.amy.chess.engine
 			{
 				if (0 == (square & OX88))
 				{
-					sq2 = (square & 7) | (square & 0x70) >> 1;
-					conv[square] = (sbyte) sq2;
+					square2 = (square & 7) | (square & 0x70) >> 1;
+					conv[square] = (sbyte) square2;
 				}
 			}
 			
 			for (square = 0; square < BitBoard.SIZE; square++)
 			{
-				for (sq2 = 0; sq2 < BitBoard.SIZE; sq2++)
+				for (square2 = 0; square2 < BitBoard.SIZE; square2++)
 				{
-					for (pc = ChessConstants_Fields.PAWN; pc <= ChessConstants_Fields.LAST_PIECE; pc++)
+					for (piece = ChessConstants_Fields.PAWN; piece <= ChessConstants_Fields.LAST_PIECE; piece++)
 					{
-						NEXT_POS[pc][square][sq2] = - 1;
-						NEXT_DIR[pc][square][sq2] = - 1;
+						NEXT_POS[piece][square][square2] = - 1;
+						NEXT_DIR[piece][square][square2] = - 1;
 					}
-					NEXT_SQ[square][sq2] = - 1;
+					NEXT_SQ[square][square2] = - 1;
 				}
 			}
 			
@@ -285,6 +285,8 @@ namespace tgreiner.amy.chess.engine
 				next = square + 0x11;
 				if (0 == (next & OX88))
 				{
+					// BUGBUG conv is int[128] and is set from 0..64 but NEXT_POS dimension is 344 x 344, 
+					// conv[] is the wrong size, the algorithm is wromg for a 3D board
 					NEXT_POS[ChessConstants_Fields.PAWN][conv[square]][conv[square]] = conv[next];
 					NEXT_DIR[ChessConstants_Fields.PAWN][conv[square]][conv[square]] = conv[next];
 				}
