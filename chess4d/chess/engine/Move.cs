@@ -27,6 +27,7 @@
 */
 using System;
 using System.Collections.Generic;
+using tgreiner.amy.bitboard;
 using tgreiner.amy.common.engine;
 namespace tgreiner.amy.chess.engine
 {
@@ -38,44 +39,45 @@ namespace tgreiner.amy.chess.engine
 	/// </author>
 	public sealed class Move //: ChessConstants
 	{
+		private const int MOVE_SQUARE_MASK = 511;
 		
 		/// <summary>The shift constant for the 'to' part of a move. </summary>
-		private const int SHIFT_TO = 6;
+		private const int SHIFT_TO = 10;
 		
 		/// <summary>Constant for a capture move. </summary>
-		public const int CAPTURE = (1 << 13);
+		public const int CAPTURE = (1 << 21);
 		
 		/// <summary>Constant for a king side castling move. </summary>
-		public const int CASTLE_KSIDE = (1 << 14);
+		public const int CASTLE_KSIDE = (1 << 22);
 		
 		/// <summary>Constant for a queen side castling move. </summary>
-		public const int CASTLE_QSIDE = (1 << 15);
+		public const int CASTLE_QSIDE = (1 << 23);
 		
 		/// <summary>Constant for a castling move. </summary>
 		//UPGRADE_NOTE: Final was removed from the declaration of 'CASTLE '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
 		public static readonly int CASTLE = CASTLE_KSIDE | CASTLE_QSIDE;
 		
 		/// <summary>Constant for a promotion to knight. </summary>
-		public const int PROMO_KNIGHT = (1 << 16);
+		public const int PROMO_KNIGHT = (1 << 24);
 		
 		/// <summary>Constant for a promotion to bishop. </summary>
-		public const int PROMO_BISHOP = (1 << 17);
+		public const int PROMO_BISHOP = (1 << 25);
 		
 		/// <summary>Constant for a promotion to rook. </summary>
-		public const int PROMO_ROOK = (1 << 18);
+		public const int PROMO_ROOK = (1 << 26);
 		
 		/// <summary>Constant for a promotion to queen. </summary>
-		public const int PROMO_QUEEN = (1 << 19);
+		public const int PROMO_QUEEN = (1 << 27);
 		
 		/// <summary>Constant for a promotion. </summary>
 		//UPGRADE_NOTE: Final was removed from the declaration of 'PROMOTION '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
 		public static readonly int PROMOTION = PROMO_KNIGHT | PROMO_BISHOP | PROMO_ROOK | PROMO_QUEEN;
 		
 		/// <summary>Constant for a double pawn move. </summary>
-		public const int PAWN_DOUBLE = (1 << 20);
+		public const int PAWN_DOUBLE = (1 << 28);
 		
 		/// <summary>Constant for an en passant capture. </summary>
-		public const int ENPASSANT = (1 << 21);
+		public const int ENPASSANT = (1 << 29);
 		
 		/// <summary>SAN for king side castling move. </summary>
 		public const System.String KSIDE_CASTLE_SAN = "O-O";
@@ -84,6 +86,7 @@ namespace tgreiner.amy.chess.engine
 		public const System.String QSIDE_CASTLE_SAN = "O-O-O";
 		
 		/// <summary> This class cannot be instantiated.</summary>
+		// BUGBUG translate this to a proper class instead of s bunch of statis methods
 		private Move()
 		{
 		}
@@ -97,7 +100,7 @@ namespace tgreiner.amy.chess.engine
 		/// </returns>
 		public static int getFrom(int move)
 		{
-			return move & 63;
+			return move & MOVE_SQUARE_MASK;
 		}
 		
 		/// <summary> Get the <i>to</i> square of a move.
@@ -109,7 +112,7 @@ namespace tgreiner.amy.chess.engine
 		/// </returns>
 		public static int getTo(int move)
 		{
-			return (move >> SHIFT_TO) & 63;
+			return (move >> SHIFT_TO) & MOVE_SQUARE_MASK;
 		}
 		
 		/// <summary> Given 'from' and 'to' square, create a move.
@@ -532,12 +535,16 @@ namespace tgreiner.amy.chess.engine
 				
                 int from = getFrom(m);
                 if (board.getPieceAt(from) != type) { continue; }
-                if (fromRank != -1 && (from >> 3) != fromRank) { continue; }
-                if (fromFile != -1 && (from & 7) != fromFile) { continue; }
+				LRF fromLrf = BitBoard.LevelRankFile(from);
+                if (fromLevel != -1 && fromLrf.Level != fromLevel) { continue; }
+                if (fromRank != -1 && fromLrf.Rank != fromRank) { continue; }
+                if (fromFile != -1 && fromLrf.File != fromFile) { continue; }
 
                 int to = getTo(m);
-                if (toRank != -1 && (to >> 3) != toRank) { continue; }
-                if (toFile != -1 && (to & 7) != toFile) { continue; }
+				LRF toLrf = BitBoard.LevelRankFile(to);
+                if (toLevel != -1 && toLrf.Level != toLevel) { continue; }
+                if (toRank != -1 && toLrf.Rank != toRank) { continue; }
+                if (toFile != -1 && toLrf.File != toFile) { continue; }
 
                 if (promotion != 0 && (m & PROMOTION) != promotion) { continue; }
 
