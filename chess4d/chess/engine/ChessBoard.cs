@@ -1460,7 +1460,7 @@ namespace tgreiner.amy.chess.engine
         /// <summary> Get the piece on <code>square</code>.
         /// 
         /// </summary>
-        /// <param name="square">the square on the chessboard (0...63)
+        /// <param name="square">the square on the chessboard (0...343)
         /// </param>
         /// <returns> the type of the piece on <code>square</code> (0,
         /// <code>Pawn</code> ... <code>King</code>
@@ -1473,7 +1473,7 @@ namespace tgreiner.amy.chess.engine
         /// <summary> Get the piece on <code>square</code>.
         /// 
         /// </summary>
-        /// <param name="square">the square on the chessboard (0...63)
+        /// <param name="square">the square on the chessboard (0...343)
         /// </param>
         /// <returns> the type of the piece on <code>square</code> (0,
         /// <code>Pawn</code> ... <code>King</code>
@@ -1486,7 +1486,7 @@ namespace tgreiner.amy.chess.engine
         /// <summary> Get the color of the piece on <code>square</code>.
         /// 
         /// </summary>
-        /// <param name="square">the square on the chessboard (0...63)
+        /// <param name="square">the square on the chessboard (0...343)
         /// </param>
         /// <returns> <code>true</code> if the piece on <code>square</code>
         /// is white, <code>false</code> otherwise.
@@ -1499,7 +1499,7 @@ namespace tgreiner.amy.chess.engine
         /// <summary> Get the color of the piece on <code>square</code>.
         /// 
         /// </summary>
-        /// <param name="square">the square on the chessboard (0...63)
+        /// <param name="square">the square on the chessboard (0...343)
         /// </param>
         /// <returns> <code>true</code> if the piece on <code>square</code>
         /// is white, <code>false</code> otherwise.
