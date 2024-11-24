@@ -26,14 +26,92 @@
 * $Id: BitBoard.java 13 2010-01-01 15:09:22Z tetchu $
 */
 using System;
+using System.Runtime.CompilerServices;
 namespace tgreiner.amy.bitboard
 {
+    // Level, Rank and File of a square
     public struct LRF 
     {
         public LRF() {}
+        public LRF(int level, int rank, int file) 
+        {
+            Level = level;
+            Rank = rank;
+            File = file;
+
+            Validate();
+        }
+
+        public LRF(int offset) 
+        {
+            ValidateOffset(offset);
+
+            Level = BitBoard.LEVEL_OFFSET.Length-1;
+
+            while (offset < BitBoard.LEVEL_OFFSET[Level])
+            {
+                -- Level;
+            }
+
+            Rank = (offset - BitBoard.LEVEL_OFFSET[Level]) / BitBoard.LEVEL_WIDTH[Level];
+            File = (offset - BitBoard.LEVEL_OFFSET[Level]) % BitBoard.LEVEL_WIDTH[Level];
+        }
+
         public int Level=0; 
-        public int Rank=1; 
-        public int File=2;
+        public int Rank=0; 
+        public int File=0;
+
+        private void Validate()
+        {
+            if (!IsValid())
+            {
+                throw new IndexOutOfRangeException("LRF.Validate()");
+            }
+        }   
+
+        private static void ValidateOffset(int offset)
+        {
+            if (!IsValid(offset))
+            {
+                throw new IndexOutOfRangeException("LRF.ValidateOffset(offset) offset");
+            }
+        }   
+
+        public bool IsValid()
+        {
+            return IsValid(Level, Rank, File);
+        }
+        
+        public static bool IsValid(int level, int rank, int file)
+        {
+            if ((level < 0) || (level >= BitBoard.NUM_LEVELS))
+            {
+                return false;
+            }
+
+            if ((rank < 0) || (rank >= BitBoard.LEVEL_WIDTH[level])
+                || (file < 0) || (file >= BitBoard.LEVEL_WIDTH[level]))
+            {
+                return false;
+            }
+
+            return true;
+        }   
+
+        public static bool IsValid(int offset)
+        {
+            return ((offset < BitBoard.SIZE) && (offset >= 0));
+        }   
+
+        public static explicit operator int(LRF obj)
+        {
+            return BitBoard.BitOffset(obj.Level, obj.Rank, obj.File);
+        }
+
+        public static explicit operator LRF(int offset)
+        {
+            return new LRF(offset);
+        }
     };
 
     /// <summary> Some useful methods for using bitboards.
@@ -63,6 +141,8 @@ namespace tgreiner.amy.bitboard
             BoardConstants_Fields.LN, 
             BoardConstants_Fields.LO
         };
+
+        public const int NUM_LEVELS = 15;
 
         /// <summary>The size of a bitboard. </summary>
         public const int SIZE = 344;
@@ -310,23 +390,6 @@ namespace tgreiner.amy.bitboard
             return LEVEL_OFFSET[level] + rank * LEVEL_WIDTH[level] + file;
         }
 
-        public static LRF LevelRankFile(int offset)
-        {
-            LRF value =new LRF();
-            
-            ValidateOffset(offset);
-
-            value.Level = BitBoard.LEVEL_OFFSET.Length-1;
-
-            while (offset < BitBoard.LEVEL_OFFSET[value.Level])
-            {
-                -- value.Level;
-            }
-
-            value.Rank = (offset - BitBoard.LEVEL_OFFSET[value.Level]) / BitBoard.LEVEL_WIDTH[value.Level];
-            value.File = (offset - BitBoard.LEVEL_OFFSET[value.Level]) % BitBoard.LEVEL_WIDTH[value.Level];
-            return value;
-        }
         /// <summary> Count the number of bits set in a bitboard.
         /// 
         /// </summary>

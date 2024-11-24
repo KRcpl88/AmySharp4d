@@ -10,59 +10,87 @@
             int transSquare = 0;
             LRF lrf;
 
-            lrf = BitBoard.LevelRankFile(BoardConstants_Fields.LA);
+            lrf = (LRF)(BoardConstants_Fields.LA);
             Assert.IsTrue(lrf.Level == 0);
             Assert.IsTrue(lrf.Rank == 0);
             Assert.IsTrue(lrf.File == 0);
            
-            lrf = BitBoard.LevelRankFile(BoardConstants_Fields.LB);
+            lrf = (LRF)(BoardConstants_Fields.LB);
             Assert.IsTrue(lrf.Level == 1);
             Assert.IsTrue(lrf.Rank == 0);
             Assert.IsTrue(lrf.File == 0);
             
-            lrf = BitBoard.LevelRankFile(BoardConstants_Fields.LC);
+            lrf = (LRF)(BoardConstants_Fields.LC);
             Assert.IsTrue(lrf.Level == 2);
             Assert.IsTrue(lrf.Rank == 0);
             Assert.IsTrue(lrf.File == 0);
            
-            lrf = BitBoard.LevelRankFile(BoardConstants_Fields.LH);
+            lrf = (LRF)(BoardConstants_Fields.LH);
             Assert.IsTrue(lrf.Level == 7);
             Assert.IsTrue(lrf.Rank == 0);
             Assert.IsTrue(lrf.File == 0);
 
-            lrf = BitBoard.LevelRankFile(BoardConstants_Fields.LI);
+            lrf = (LRF)(BoardConstants_Fields.LI);
             Assert.IsTrue(lrf.Level == 8);
             Assert.IsTrue(lrf.Rank == 0);
             Assert.IsTrue(lrf.File == 0);
 
-            lrf = BitBoard.LevelRankFile(BoardConstants_Fields.LO);
+            lrf = (LRF)(BoardConstants_Fields.LO);
             Assert.IsTrue(lrf.Level == 14);
             Assert.IsTrue(lrf.Rank == 0);
             Assert.IsTrue(lrf.File == 0);
 
-            lrf = BitBoard.LevelRankFile(BoardConstants_Fields.HA1);
+            lrf = (LRF)(BoardConstants_Fields.HA1);
             Assert.IsTrue(lrf.Level == 7);
             Assert.IsTrue(lrf.Rank == 0);
             Assert.IsTrue(lrf.File == 0);
             
-            lrf = BitBoard.LevelRankFile(BoardConstants_Fields.HH1);
+            lrf = (LRF)(BoardConstants_Fields.HH1);
             Assert.IsTrue(lrf.Level == 7);
             Assert.IsTrue(lrf.Rank == 0);
             Assert.IsTrue(lrf.File == 7);
             
-            lrf = BitBoard.LevelRankFile(BoardConstants_Fields.HA8);
+            lrf = (LRF)(BoardConstants_Fields.HA8);
             Assert.IsTrue(lrf.Level == 7);
             Assert.IsTrue(lrf.Rank == 7);
             Assert.IsTrue(lrf.File == 0);
             
-            lrf = BitBoard.LevelRankFile(BoardConstants_Fields.HH8);
+            lrf = (LRF)(BoardConstants_Fields.HH8);
             Assert.IsTrue(lrf.Level == 7);
             Assert.IsTrue(lrf.Rank == 7);
             Assert.IsTrue(lrf.File == 7);
+
+            Assert.IsTrue(BoardConstants_Fields.HH8 == (int)lrf);
+
+            Assert.IsFalse(LRF.IsValid(-1));
+            Assert.IsFalse(LRF.IsValid(BitBoard.SIZE));
+            Assert.IsTrue(LRF.IsValid(0));
+            Assert.IsTrue(LRF.IsValid(BitBoard.SIZE-1));
             
+            Assert.IsFalse(LRF.IsValid(8,7,7));
+            Assert.IsFalse(LRF.IsValid(0,0,2));
+            Assert.IsFalse(LRF.IsValid(0,2,0));
+            Assert.IsFalse(LRF.IsValid(-1,-1,-1));
+            Assert.IsFalse(LRF.IsValid(BitBoard.NUM_LEVELS,0,0));            
+
+            Assert.IsTrue(LRF.IsValid(0,0,0));
+            Assert.IsTrue(LRF.IsValid(7,0,0));
+            Assert.IsTrue(LRF.IsValid(7,7,7));
+
+            bool caughtException = false;
+            try
+            {
+                lrf = (LRF)(BitBoard.SIZE);
+            }
+            catch(IndexOutOfRangeException e)
+            {
+                caughtException = true;
+            }
+            Assert.IsTrue(caughtException);
+
             for(int square = 0; BitBoard.SIZE > square; ++square)
             {
-                lrf = BitBoard.LevelRankFile(square);
+                lrf = (LRF)square;
                 transSquare = BitBoard.BitOffset(lrf.Level, lrf.Rank, lrf.File);
                 Assert.IsTrue(transSquare == square);
             }

@@ -535,13 +535,13 @@ namespace tgreiner.amy.chess.engine
 				
                 int from = getFrom(m);
                 if (board.getPieceAt(from) != type) { continue; }
-				LRF fromLrf = BitBoard.LevelRankFile(from);
+				LRF fromLrf = (LRF)from;
                 if (fromLevel != -1 && fromLrf.Level != fromLevel) { continue; }
                 if (fromRank != -1 && fromLrf.Rank != fromRank) { continue; }
                 if (fromFile != -1 && fromLrf.File != fromFile) { continue; }
 
                 int to = getTo(m);
-				LRF toLrf = BitBoard.LevelRankFile(to);
+				LRF toLrf = (LRF)to;
                 if (toLevel != -1 && toLrf.Level != toLevel) { continue; }
                 if (toRank != -1 && toLrf.Rank != toRank) { continue; }
                 if (toFile != -1 && toLrf.File != toFile) { continue; }
