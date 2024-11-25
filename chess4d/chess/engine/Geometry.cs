@@ -26,6 +26,7 @@
 * $Id: Geometry.java 2 2007-08-09 07:05:44Z tetchu $
 */
 using System;
+using tgreiner.amy.bitboard;
 using BitBoard = tgreiner.amy.bitboard.BitBoard;
 namespace tgreiner.amy.chess.engine
 {
@@ -60,6 +61,58 @@ namespace tgreiner.amy.chess.engine
 		private Geometry()
 		{
 		}
+
+		private static readonly short[][][] ATTACK_DELTA = new short [][][]
+		{
+			// WHITE_PAWN
+			new short [][] 
+			{
+				new short [] {0, 1, -1},
+				new short [] {0, 1, 1}
+			},
+			// KNIGHT
+			new short [][] 
+			{
+				new short [] {0, -2, -1},
+				new short [] {0, -2, 1},
+				new short [] {0, -1, 2},
+				new short [] {0, 1, 2},
+				new short [] {0, 2, -1},
+				new short [] {0, 2, 1},
+				new short [] {0, -1, -2},
+				new short [] {0, 1, -2}
+			},
+			// BISHOP
+			new short [][] 
+			{
+			},
+			// ROOK
+			new short [][] 
+			{
+			},
+			// QUEEN
+			new short [][] 
+			{
+			},
+			// KING
+			new short [][] 
+			{
+				new short [] {0,  0,  1},
+				new short [] {0,  1,  1},
+				new short [] {0,  1,  0},
+				new short [] {0,  1, -1},
+				new short [] {0,  0, -1},
+				new short [] {0, -1, -1},
+				new short [] {0, -1,  0},
+				new short [] {0, -1,  1}
+			},
+			// BLACK_PAWN
+			new short [][] 
+			{
+				new short [] {0, -1, -1},
+				new short [] {0, -1, 1}
+			}
+		};
 		
 		/// <summary> Next positions indexed by piece type, starting square, current square.</summary>
 		//UPGRADE_NOTE: Final was removed from the declaration of 'NEXT_POS '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
@@ -255,213 +308,122 @@ namespace tgreiner.amy.chess.engine
 		
 		/// <summary> Initialize the data structures for move generation.</summary>
 		private static void  initMoves()
-		{
-			// conversion array to convert offset into 16x16 board array to an 8x8 board 
-			sbyte[] conv = new sbyte[128];
-			
-			int square, square2;
-			int piece;
-			
-			for (square = 0; square < 128; square++)
-			{
-				conv[square] = 127;
-			}
-			for (square = 0; square < 128; square++)
-			{
-				if (0 == (square & OX88))
-				{
-					square2 = (square & 7) | (square & 0x70) >> 1;
-					conv[square] = (sbyte) square2;
-				}
-			}
-			
-			for (square = 0; square < BitBoard.SIZE; square++)
-			{
-				for (square2 = 0; square2 < BitBoard.SIZE; square2++)
-				{
-					for (piece = WHITE_PAWN; piece <= BLACK_PAWN; piece++)
-					{
-						NEXT_POS[piece][square][square2] = - 1;
-						NEXT_DIR[piece][square][square2] = - 1;
-					}
-					NEXT_SQ[square][square2] = - 1;
-				}
-			}
-			
-			/*
+        {
+            // conversion array to convert offset into 16x16 board array to an 8x8 board 
+            sbyte[] conv = new sbyte[128];
+
+            int square, square2;
+            int piece;
+
+            for (square = 0; square < 128; square++)
+            {
+                conv[square] = 127;
+            }
+            for (square = 0; square < 128; square++)
+            {
+                if (0 == (square & OX88))
+                {
+                    square2 = (square & 7) | (square & 0x70) >> 1;
+                    conv[square] = (sbyte)square2;
+                }
+            }
+
+            for (square = 0; square < BitBoard.SIZE; square++)
+            {
+                for (square2 = 0; square2 < BitBoard.SIZE; square2++)
+                {
+                    for (piece = WHITE_PAWN; piece <= BLACK_PAWN; piece++)
+                    {
+                        NEXT_POS[piece][square][square2] = -1;
+                        NEXT_DIR[piece][square][square2] = -1;
+                    }
+                    NEXT_SQ[square][square2] = -1;
+                }
+            }
+
+            /*
 			* Pawns
 			*/
-			
-			for (square = 0; square < 128; square++)
-			{
-				int next;
-				int next2;
-				
-				// square is the offset for an 16x16 board, skip unless it is withing an 8x8 board
-				// not sure why we need to cmpute geometry on a 16x16 board
-				if ((square & OX88) != 0)
-				{
-					continue;
-				}
-				
-				// white pawn attack square (on 16x16 board) Rank +1, File +1
-				next = square + 0x11;
-				if (0 == (next & OX88))
-				{
-					NEXT_POS[WHITE_PAWN][conv[square]][conv[square]] = conv[next];
-					NEXT_DIR[WHITE_PAWN][conv[square]][conv[square]] = conv[next];
-				}
-				else
-				{
-					next = square;
-				}
-				
-				// Rank +1, File -1 (on 16x16 board)
-				next2 = square + 0x0f;
-				if (0 == (next2 & OX88))
-				{
-					NEXT_POS[WHITE_PAWN][conv[square]][conv[next]] = conv[next2];
-					NEXT_DIR[WHITE_PAWN][conv[square]][conv[next]] = conv[next2];
-				}
 
-				// BGUBUG TODO, add Level -2, Level +2. 
-				// Adjusting Rank/File will be +-2 depending on source/target level width
-			}
-			
-			for (square = 0; square < 128; square++)
-			{
-				int next;
-				int next2;
-				
-				if ((square & OX88) != 0)
-				{
-					continue;
-				}
-				
-				// black pawn attack square (on 16x16 board) Rank +1, File +1
-				next = square - 0x11;
-				if (0 == (next & OX88))
-				{
-					NEXT_POS[BLACK_PAWN][conv[square]][conv[square]] = conv[next];
-					NEXT_DIR[BLACK_PAWN][conv[square]][conv[square]] = conv[next];
-				}
-				else
-				{
-					next = square;
-				}
-				
-				// Rank +1, File -1 (on 16x16 board)
-				next2 = square - 0x0f;
-				if (0 == (next2 & OX88))
-				{
-					NEXT_POS[BLACK_PAWN][conv[square]][conv[next]] = conv[next2];
-					NEXT_DIR[BLACK_PAWN][conv[square]][conv[next]] = conv[next2];
-				}
-			}
-			
-			/*
+            computeAttacks(WHITE_PAWN);
+			computeAttacks(BLACK_PAWN);
+
+            /*
 			* Knight
 			*/
-			
-			for (square = 0; square < 128; square++)
-			{
-				int next;
-				int i;
-				if ((square & OX88) != 0)
-				{
-					continue;
-				}
-				
-				next = square;
-				
-				for (i = 0; i < OFFSETS_KNIGHT_16.Length; i++)
-				{
-					int next2 = square + OFFSETS_KNIGHT_16[i];
-					if ((next2 & OX88) != 0)
-					{
-						continue;
-					}
-					
-					NEXT_POS[KNIGHT][conv[square]][conv[next]] = conv[next2];
-					NEXT_DIR[KNIGHT][conv[square]][conv[next]] = conv[next2];
-					
-					next = next2;
-				}
-			}
-			
-			/*
+
+			computeAttacks(KNIGHT);
+
+            /*
 			* King
 			*/
-			
-			for (square = 0; square < 128; square++)
-			{
-				int next;
-				int i;
-				if ((square & OX88) != 0)
-				{
-					continue;
-				}
-				
-				next = square;
-				
-				for (i = 0; i < OFFSETS_KING_16.Length; i++)
-				{
-					int next2 = square + OFFSETS_KING_16[i];
-					if ((next2 & OX88) != 0)
-					{
-						continue;
-					}
-					
-					NEXT_POS[KING][conv[square]][conv[next]] = conv[next2];
-					NEXT_DIR[KING][conv[square]][conv[next]] = conv[next2];
-					
-					next = next2;
-				}
-			}
-			
-			initNextPos(DIRS_BISHOP_16, NEXT_POS[BISHOP], NEXT_DIR[BISHOP], conv);
-			initNextPos(DIRS_ROOK_16, NEXT_POS[ROOK], NEXT_DIR[ROOK], conv);
-			initNextPos(DIRS_QUEEN_16, NEXT_POS[QUEEN], NEXT_DIR[QUEEN], conv);
-			
-			/*
+			computeAttacks(KING);
+
+            initNextPos(DIRS_BISHOP_16, NEXT_POS[BISHOP], NEXT_DIR[BISHOP], conv);
+            initNextPos(DIRS_ROOK_16, NEXT_POS[ROOK], NEXT_DIR[ROOK], conv);
+            initNextPos(DIRS_QUEEN_16, NEXT_POS[QUEEN], NEXT_DIR[QUEEN], conv);
+
+            /*
 			* Inititialize NEXT_SQ
 			*/
-			
-			for (square = 0; square < 128; square++)
-			{
-				int dir;
-				
-				if ((square & OX88) != 0)
-				{
-					continue;
-				}
-				
-				for (dir = 0; dir < DIRS_QUEEN_16.Length; dir++)
-				{
-					int next, next2;
-					
-					next = square + DIRS_QUEEN_16[dir];
-					if ((next & OX88) != 0)
-					{
-						continue;
-					}
-					
-					for (; ; )
-					{
-						next2 = next + DIRS_QUEEN_16[dir];
-						if ((next2 & OX88) != 0)
-						{
-							break;
-						}
-						NEXT_SQ[conv[square]][conv[next]] = conv[next2];
-						next = next2;
-					}
-				}
-			}
-		}
-		
-		/// <summary> Initializes Geometry Masks.</summary>
-		private static void  initGeometry()
+
+            for (square = 0; square < 128; square++)
+            {
+                int dir;
+
+                if ((square & OX88) != 0)
+                {
+                    continue;
+                }
+
+                for (dir = 0; dir < DIRS_QUEEN_16.Length; dir++)
+                {
+                    int next, next2;
+
+                    next = square + DIRS_QUEEN_16[dir];
+                    if ((next & OX88) != 0)
+                    {
+                        continue;
+                    }
+
+                    for (; ; )
+                    {
+                        next2 = next + DIRS_QUEEN_16[dir];
+                        if ((next2 & OX88) != 0)
+                        {
+                            break;
+                        }
+                        NEXT_SQ[conv[square]][conv[next]] = conv[next2];
+                        next = next2;
+                    }
+                }
+            }
+        }
+
+        private static void computeAttacks(int piece)
+        {
+            for (int square = 0; square < BitBoard.SIZE; square++)
+            {
+                LRF levelRankFile = new LRF(square);
+                int prevSquare = square;
+
+                foreach (short[] delta in ATTACK_DELTA[piece])
+                {
+                    if (LRF.IsValid(levelRankFile.Level + delta[0], levelRankFile.Rank + delta[1], levelRankFile.File + delta[2]))
+                    {
+                        LRF nextLrf = new LRF(levelRankFile.Level + delta[0], levelRankFile.Rank + delta[1], levelRankFile.File + delta[2]);
+
+                        NEXT_POS[piece][square][prevSquare] = (sbyte)(int)nextLrf;
+                        NEXT_DIR[piece][square][prevSquare] = (sbyte)(int)nextLrf;
+
+                        prevSquare = (int)nextLrf;
+                    }
+                }
+            }
+        }
+
+        /// <summary> Initializes Geometry Masks.</summary>
+        private static void  initGeometry()
 		{
 			
 			bool[] edge = new bool[100];
@@ -592,7 +554,7 @@ namespace tgreiner.amy.chess.engine
 		static Geometry()
 		{
 			NEXT_POS = new sbyte[LAST_PIECE][][];
-			for (int i = 0; i < 8; i++)
+			for (int i = 0; i < LAST_PIECE; i++)
 			{
 				NEXT_POS[i] = new sbyte[BitBoard.SIZE][];
 				for (int i2 = 0; i2 < BitBoard.SIZE; i2++)
@@ -600,6 +562,7 @@ namespace tgreiner.amy.chess.engine
 					NEXT_POS[i][i2] = new sbyte[BitBoard.SIZE];
 				}
 			}
+
 			NEXT_DIR = new sbyte[LAST_PIECE][][];
 			for (int i3 = 0; i3 < 8; i3++)
 			{
@@ -609,21 +572,26 @@ namespace tgreiner.amy.chess.engine
 					NEXT_DIR[i3][i4] = new sbyte[BitBoard.SIZE];
 				}
 			}
+
 			NEXT_SQ = new sbyte[BitBoard.SIZE][];
 			for (int i5 = 0; i5 < BitBoard.SIZE; i5++)
 			{
 				NEXT_SQ[i5] = new sbyte[BitBoard.SIZE];
 			}
+
 			RAY = new BitBoard[BitBoard.SIZE][];
 			for (int i6 = 0; i6 < BitBoard.SIZE; i6++)
 			{
 				RAY[i6] = BitBoard.CreateArray(BitBoard.SIZE);
 			}
+
 			INTER_PATH = new BitBoard[BitBoard.SIZE][];
 			for (int i7 = 0; i7 < BitBoard.SIZE; i7++)
 			{
 				INTER_PATH[i7] = BitBoard.CreateArray(BitBoard.SIZE);
 			}
+
+			ATTACK_DELTA = new short[LAST_PIECE][][];
 			WHITE_PAWN_EPM = BitBoard.CreateArray(BitBoard.SIZE);
 			BLACK_PAWN_EPM = BitBoard.CreateArray(BitBoard.SIZE);
 			KNIGHT_EPM = BitBoard.CreateArray(BitBoard.SIZE);
