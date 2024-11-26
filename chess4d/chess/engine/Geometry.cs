@@ -234,76 +234,47 @@ namespace tgreiner.amy.chess.engine
 		/// </param>
 		/// <param name="conv">array the translate from 16x16 board to 8x8 board
 		/// </param>
-		private static void  initNextPos(int[] dirs, sbyte[][] nextPos, sbyte[][] nextDir, sbyte[] conv)
+		private static void  initSlidingNextPos(int piece)
 		{
-			
-			for (int square = 0; square < 128; square++)
-			{
-				int dir, nextdir;
-				int next;
-				bool start = true;
-				
-				if ((square & OX88) != 0)
-				{
-					continue;
-				}
-				
-				dir = 0;
-				
-				while (dir < dirs.Length)
-				{
-					int next2 = - 1;
-					
-					next = square + dirs[dir];
-					if ((next & OX88) != 0)
+			for (int square = 0; square < BitBoard.SIZE; square++)
+            {
+
+                for (short direction = 0; direction < ATTACK_DELTA[piece].Length; ++direction)
+                {
+					LRF nextLevelRankFile = new LRF(square);
+					int prevSquare = square;
+					short[] delta;
+					long nextDirection = -1;
+
+					if ((direction + 1) < (ATTACK_DELTA[piece].Length ))
 					{
-						dir++;
-						continue;
+						delta = ATTACK_DELTA[piece][direction+1];
+                        LRF nextLrf = new LRF(nextLevelRankFile.Level + delta[0], nextLevelRankFile.Rank + delta[1], nextLevelRankFile.File + delta[2]);
+						nextDirection = (long)nextLrf;
 					}
-					
-					nextdir = dir + 1;
-					while (nextdir < dirs.Length)
-					{
-						next2 = square + dirs[nextdir];
-						if (0 == (next2 & OX88))
-						{
-							break;
-						}
-						nextdir++;
-					}
-					
-					if (start)
-					{
-						nextPos[conv[square]][conv[square]] = conv[next];
-						start = false;
-					}
-					
-					for (; ; )
-					{
-						int next3 = next + dirs[dir];
-						
-						if ((next3 & OX88) != 0)
-						{
-							if (nextdir < dirs.Length)
-							{
-								nextPos[conv[square]][conv[next]] = conv[next2];
-								nextDir[conv[square]][conv[next]] = conv[next2];
-							}
-							break;
-						}
-						else
-						{
-							nextPos[conv[square]][conv[next]] = conv[next3];
-							if (nextdir < dirs.Length)
-							{
-								nextDir[conv[square]][conv[next]] = conv[next2];
-							}
-						}
-						next = next3;
-					}
-					dir++;
-				}
-			}
+
+					delta = ATTACK_DELTA[piece][direction];
+					//short[] nextDelta = ((direction + 1) < (ATTACK_DELTA[piece].Length )) ? ATTACK_DELTA[piece][direction+1] : null;
+
+					prevSquare = (int)nextLevelRankFile;
+					nextLevelRankFile.Level += delta[0];
+					nextLevelRankFile.Rank += delta[1];
+					nextLevelRankFile.File += delta[2];
+					NEXT_DIR[piece][square][prevSquare] = (sbyte)(int)nextDirection;
+
+                    while (nextLevelRankFile.IsValid())
+                    {
+                        NEXT_POS[piece][square][prevSquare] = (sbyte)(int)nextLevelRankFile;
+
+                        prevSquare = (int)nextLevelRankFile;
+						nextLevelRankFile.Level += delta[0];
+						nextLevelRankFile.Rank += delta[1];
+						nextLevelRankFile.File += delta[2];
+
+                        NEXT_DIR[piece][square][prevSquare] = (sbyte)(int)nextDirection;
+                    }
+                }
+            }
 		}
 		
 		/// <summary> Initialize the data structures for move generation.</summary>
@@ -345,23 +316,23 @@ namespace tgreiner.amy.chess.engine
 			* Pawns
 			*/
 
-            computeAttacks(WHITE_PAWN);
-			computeAttacks(BLACK_PAWN);
+            initNextPos(WHITE_PAWN);
+			initNextPos(BLACK_PAWN);
 
             /*
 			* Knight
 			*/
 
-			computeAttacks(KNIGHT);
+			initNextPos(KNIGHT);
 
             /*
 			* King
 			*/
-			computeAttacks(KING);
+			initNextPos(KING);
 
-            initNextPos(DIRS_BISHOP_16, NEXT_POS[BISHOP], NEXT_DIR[BISHOP], conv);
-            initNextPos(DIRS_ROOK_16, NEXT_POS[ROOK], NEXT_DIR[ROOK], conv);
-            initNextPos(DIRS_QUEEN_16, NEXT_POS[QUEEN], NEXT_DIR[QUEEN], conv);
+            initSlidingNextPos(BISHOP);
+            initSlidingNextPos(ROOK);
+            initSlidingNextPos(QUEEN);
 
             /*
 			* Inititialize NEXT_SQ
@@ -400,7 +371,7 @@ namespace tgreiner.amy.chess.engine
             }
         }
 
-        private static void computeAttacks(int piece)
+        private static void initNextPos(int piece)
         {
             for (int square = 0; square < BitBoard.SIZE; square++)
             {
