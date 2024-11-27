@@ -266,6 +266,13 @@ namespace tgreiner.amy.chess.engine
                     {
                         NEXT_POS[piece][square][prevSquare] = (sbyte)(int)nextLevelRankFile;
 
+						if(piece == QUEEN)
+						{
+							// update NEXT_SQ too
+	                        NEXT_SQ[square][prevSquare] = (sbyte)(int)nextLevelRankFile;
+						}
+
+
                         prevSquare = (int)nextLevelRankFile;
 						nextLevelRankFile.Level += delta[0];
 						nextLevelRankFile.Rank += delta[1];

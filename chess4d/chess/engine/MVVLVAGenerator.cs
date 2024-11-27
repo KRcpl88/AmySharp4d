@@ -26,6 +26,7 @@
 * $Id: MVVLVAGenerator.java 12 2009-12-08 08:45:51Z tetchu $
 */
 using System;
+using tgreiner.amy.bitboard;
 using BitBoard = tgreiner.amy.bitboard.BitBoard;
 //using BoardConstants = tgreiner.amy.bitboard.BoardConstants;
 using Generator = tgreiner.amy.common.engine.Generator;
@@ -86,11 +87,11 @@ namespace tgreiner.amy.chess.engine
 				}
 				if (board.getPieceAt(attSq) == ChessConstants_Fields.PAWN)
 				{
-					if (board.WhiteToMove && victimSq >= tgreiner.amy.bitboard.BoardConstants_Fields.HA8)
+					if (board.WhiteToMove && victimSq >= BoardConstants_Fields.HA8)
 					{
 						return attSq | (victimSq << 6) | Move.CAPTURE | Move.PROMO_QUEEN;
 					}
-					if (!board.WhiteToMove && victimSq <= tgreiner.amy.bitboard.BoardConstants_Fields.HH1)
+					if (!board.WhiteToMove && victimSq <= BoardConstants_Fields.HH1)
 					{
 						return attSq | (victimSq << 6) | Move.CAPTURE | Move.PROMO_QUEEN;
 					}

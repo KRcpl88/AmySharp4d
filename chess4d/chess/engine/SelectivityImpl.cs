@@ -26,6 +26,7 @@
 * $Id: SelectivityImpl.java 2 2007-08-09 07:05:44Z tetchu $
 */
 using System;
+using tgreiner.amy.bitboard;
 //using BoardConstants = tgreiner.amy.bitboard.BoardConstants;
 namespace tgreiner.amy.chess.engine
 {
@@ -145,7 +146,7 @@ namespace tgreiner.amy.chess.engine
 			if (board.getPieceAt(Move.getFrom(move)) == ChessConstants_Fields.PAWN)
 			{
 				int to = Move.getTo(move);
-				if ((board.WhiteToMove && to >= tgreiner.amy.bitboard.BoardConstants_Fields.HA7 && to <= tgreiner.amy.bitboard.BoardConstants_Fields.HH7) || (!board.WhiteToMove && to >= tgreiner.amy.bitboard.BoardConstants_Fields.HA2 && to <= tgreiner.amy.bitboard.BoardConstants_Fields.HH2))
+				if ((board.WhiteToMove && to >= BoardConstants_Fields.HA7 && to <= BoardConstants_Fields.HH7) || (!board.WhiteToMove && to >= BoardConstants_Fields.HA2 && to <= BoardConstants_Fields.HH2))
 				{
 					if (swapper.swap(board, move) >= 0)
 					{

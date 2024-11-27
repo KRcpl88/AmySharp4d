@@ -462,7 +462,40 @@ namespace tgreiner.amy.chess.engine
         /// pawn on e4
         /// </summary>
         //UPGRADE_NOTE: Final was removed from the declaration of 'EP_TRANSLATE '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
-        private static readonly int[] EN_PASSANT_TRANSLATE = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, tgreiner.amy.bitboard.BoardConstants_Fields.A4, tgreiner.amy.bitboard.BoardConstants_Fields.B4, tgreiner.amy.bitboard.BoardConstants_Fields.C4, tgreiner.amy.bitboard.BoardConstants_Fields.D4, tgreiner.amy.bitboard.BoardConstants_Fields.E4, tgreiner.amy.bitboard.BoardConstants_Fields.F4, tgreiner.amy.bitboard.BoardConstants_Fields.G4, tgreiner.amy.bitboard.BoardConstants_Fields.H4, tgreiner.amy.bitboard.BoardConstants_Fields.A3, tgreiner.amy.bitboard.BoardConstants_Fields.B3, tgreiner.amy.bitboard.BoardConstants_Fields.C3, tgreiner.amy.bitboard.BoardConstants_Fields.D3, tgreiner.amy.bitboard.BoardConstants_Fields.E3, tgreiner.amy.bitboard.BoardConstants_Fields.F3, tgreiner.amy.bitboard.BoardConstants_Fields.G3, tgreiner.amy.bitboard.BoardConstants_Fields.H3, tgreiner.amy.bitboard.BoardConstants_Fields.A6, tgreiner.amy.bitboard.BoardConstants_Fields.B6, tgreiner.amy.bitboard.BoardConstants_Fields.C6, tgreiner.amy.bitboard.BoardConstants_Fields.D6, tgreiner.amy.bitboard.BoardConstants_Fields.E6, tgreiner.amy.bitboard.BoardConstants_Fields.F6, tgreiner.amy.bitboard.BoardConstants_Fields.G6, tgreiner.amy.bitboard.BoardConstants_Fields.H6, tgreiner.amy.bitboard.BoardConstants_Fields.A5, tgreiner.amy.bitboard.BoardConstants_Fields.B5, tgreiner.amy.bitboard.BoardConstants_Fields.C5, tgreiner.amy.bitboard.BoardConstants_Fields.D5, tgreiner.amy.bitboard.BoardConstants_Fields.E5, tgreiner.amy.bitboard.BoardConstants_Fields.F5, tgreiner.amy.bitboard.BoardConstants_Fields.G5, tgreiner.amy.bitboard.BoardConstants_Fields.H5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        private static readonly int[] EN_PASSANT_TRANSLATE = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+        BoardConstants_Fields.HA4, 
+        BoardConstants_Fields.HB4, 
+        BoardConstants_Fields.HC4, 
+        BoardConstants_Fields.HD4, 
+        BoardConstants_Fields.HE4, 
+        BoardConstants_Fields.HF4, 
+        BoardConstants_Fields.HG4, 
+        BoardConstants_Fields.HH4, 
+        BoardConstants_Fields.HA3, 
+        BoardConstants_Fields.HB3, 
+        BoardConstants_Fields.HC3, 
+        BoardConstants_Fields.HD3, 
+        BoardConstants_Fields.HE3, 
+        BoardConstants_Fields.HF3, 
+        BoardConstants_Fields.HG3, 
+        BoardConstants_Fields.HH3, 
+        BoardConstants_Fields.HA6, 
+        BoardConstants_Fields.HB6, 
+        BoardConstants_Fields.HC6, 
+        BoardConstants_Fields.HD6,
+        BoardConstants_Fields.HE6,
+        BoardConstants_Fields.HF6, 
+        BoardConstants_Fields.HG6, 
+        BoardConstants_Fields.HH6, 
+        BoardConstants_Fields.HA5, 
+        BoardConstants_Fields.HB5, 
+        BoardConstants_Fields.HC5, 
+        BoardConstants_Fields.HD5, 
+        BoardConstants_Fields.HE5, 
+        BoardConstants_Fields.HF5, 
+        BoardConstants_Fields.HG5, 
+        BoardConstants_Fields.HH5, 
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         
         /// <summary>Bits to calculate the material signature. </summary>
         private static short[] MATERIAL_SIGNATURE_BITS;
@@ -1009,22 +1042,22 @@ namespace tgreiner.amy.chess.engine
                 
                 if (whiteToMove)
                 {
-                    if (to == tgreiner.amy.bitboard.BoardConstants_Fields.HH8)
+                    if (to == BoardConstants_Fields.HH8)
                     {
                         castle &= ~ BLACK_CASTLE_KINGSIDE;
                     }
-                    if (to == tgreiner.amy.bitboard.BoardConstants_Fields.HA8)
+                    if (to == BoardConstants_Fields.HA8)
                     {
                         castle &= ~ BLACK_CASTLE_QUEENSIDE;
                     }
                 }
                 else
                 {
-                    if (to == tgreiner.amy.bitboard.BoardConstants_Fields.HH1)
+                    if (to == BoardConstants_Fields.HH1)
                     {
                         castle &= ~ WHITE_CASTLE_KINGSIDE;
                     }
-                    if (to == tgreiner.amy.bitboard.BoardConstants_Fields.HA1)
+                    if (to == BoardConstants_Fields.HA1)
                     {
                         castle &= ~ WHITE_CASTLE_QUEENSIDE;
                     }
@@ -1149,30 +1182,30 @@ namespace tgreiner.amy.chess.engine
             // Update castling rights if rook or king moved
             if (whiteToMove)
             {
-                if (from == tgreiner.amy.bitboard.BoardConstants_Fields.HH1)
+                if (from == BoardConstants_Fields.HH1)
                 {
                     castle &= ~ WHITE_CASTLE_KINGSIDE;
                 }
-                if (from == tgreiner.amy.bitboard.BoardConstants_Fields.HA1)
+                if (from == BoardConstants_Fields.HA1)
                 {
                     castle &= ~ WHITE_CASTLE_QUEENSIDE;
                 }
-                if (from == tgreiner.amy.bitboard.BoardConstants_Fields.HE1)
+                if (from == BoardConstants_Fields.HE1)
                 {
                     castle &= ~ (WHITE_CASTLE_QUEENSIDE | WHITE_CASTLE_KINGSIDE);
                 }
             }
             else
             {
-                if (from == tgreiner.amy.bitboard.BoardConstants_Fields.HH8)
+                if (from == BoardConstants_Fields.HH8)
                 {
                     castle &= ~ BLACK_CASTLE_KINGSIDE;
                 }
-                if (from == tgreiner.amy.bitboard.BoardConstants_Fields.HA8)
+                if (from == BoardConstants_Fields.HA8)
                 {
                     castle &= ~ BLACK_CASTLE_QUEENSIDE;
                 }
-                if (from == tgreiner.amy.bitboard.BoardConstants_Fields.HE8)
+                if (from == BoardConstants_Fields.HE8)
                 {
                     castle &= ~ (BLACK_CASTLE_QUEENSIDE | BLACK_CASTLE_KINGSIDE);
                 }
@@ -1630,7 +1663,7 @@ namespace tgreiner.amy.chess.engine
                 int from = attacks.findFirstOne();
                 attacks.ClearBit(from);
                 
-                if (getPieceAt(from) == ChessConstants_Fields.PAWN && (to <= tgreiner.amy.bitboard.BoardConstants_Fields.HH1 || to >= tgreiner.amy.bitboard.BoardConstants_Fields.HA8))
+                if (getPieceAt(from) == ChessConstants_Fields.PAWN && (to <= BoardConstants_Fields.HH1 || to >= BoardConstants_Fields.HA8))
                 {
                     // promotion
                     int move = Move.makeMove(from, to) | Move.CAPTURE;
@@ -1668,7 +1701,7 @@ namespace tgreiner.amy.chess.engine
                     int next = from + RANK_INC;
                     if (board[next] == 0)
                     {
-                        if (next >= tgreiner.amy.bitboard.BoardConstants_Fields.HA8)
+                        if (next >= BoardConstants_Fields.HA8)
                         {
                             // promotion
                             int move = Move.makeMove(from, next);
@@ -1680,7 +1713,7 @@ namespace tgreiner.amy.chess.engine
                         else
                         {
                             mvs.add(Move.makeMove(from, next));
-                            if (next >= tgreiner.amy.bitboard.BoardConstants_Fields.A3 && next <= tgreiner.amy.bitboard.BoardConstants_Fields.H3)
+                            if (next >= BoardConstants_Fields.HA3 && next <= BoardConstants_Fields.HH3)
                             {
                                 next += RANK_INC;
                                 if (board[next] == 0)
@@ -1697,7 +1730,7 @@ namespace tgreiner.amy.chess.engine
                     int next = from - RANK_INC;
                     if (board[next] == 0)
                     {
-                        if (next <= tgreiner.amy.bitboard.BoardConstants_Fields.HH1)
+                        if (next <= BoardConstants_Fields.HH1)
                         {
                             // promotion
                             int move = Move.makeMove(from, next);
@@ -1709,7 +1742,7 @@ namespace tgreiner.amy.chess.engine
                         else
                         {
                             mvs.add(Move.makeMove(from, next));
-                            if (next >= tgreiner.amy.bitboard.BoardConstants_Fields.A6 && next <= tgreiner.amy.bitboard.BoardConstants_Fields.H6)
+                            if (next >= BoardConstants_Fields.HA6 && next <= BoardConstants_Fields.HH6)
                             {
                                 next -= RANK_INC;
                                 if (board[next] == 0)
@@ -1741,22 +1774,22 @@ namespace tgreiner.amy.chess.engine
                 {
                     if ((castle & WHITE_CASTLE_KINGSIDE) != 0)
                     {
-                        mvs.add(Move.makeMove(tgreiner.amy.bitboard.BoardConstants_Fields.HE1, tgreiner.amy.bitboard.BoardConstants_Fields.HG1) | Move.CASTLE_KSIDE);
+                        mvs.add(Move.makeMove(BoardConstants_Fields.HE1, BoardConstants_Fields.HG1) | Move.CASTLE_KSIDE);
                     }
                     if ((castle & WHITE_CASTLE_QUEENSIDE) != 0)
                     {
-                        mvs.add(Move.makeMove(tgreiner.amy.bitboard.BoardConstants_Fields.HE1, tgreiner.amy.bitboard.BoardConstants_Fields.HC1) | Move.CASTLE_QSIDE);
+                        mvs.add(Move.makeMove(BoardConstants_Fields.HE1, BoardConstants_Fields.HC1) | Move.CASTLE_QSIDE);
                     }
                 }
                 else
                 {
                     if ((castle & BLACK_CASTLE_KINGSIDE) != 0)
                     {
-                        mvs.add(Move.makeMove(tgreiner.amy.bitboard.BoardConstants_Fields.HE8, tgreiner.amy.bitboard.BoardConstants_Fields.HG8) | Move.CASTLE_KSIDE);
+                        mvs.add(Move.makeMove(BoardConstants_Fields.HE8, BoardConstants_Fields.HG8) | Move.CASTLE_KSIDE);
                     }
                     if ((castle & BLACK_CASTLE_QUEENSIDE) != 0)
                     {
-                        mvs.add(Move.makeMove(tgreiner.amy.bitboard.BoardConstants_Fields.HE8, tgreiner.amy.bitboard.BoardConstants_Fields.HC8) | Move.CASTLE_QSIDE);
+                        mvs.add(Move.makeMove(BoardConstants_Fields.HE8, BoardConstants_Fields.HC8) | Move.CASTLE_QSIDE);
                     }
                 }
             }
