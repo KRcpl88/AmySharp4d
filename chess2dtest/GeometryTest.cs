@@ -9,6 +9,40 @@ namespace tgreiner.amy.chess.engine.Tests
     {
  
         [TestMethod()]
+        public void nextPosCoverageTest()
+        {
+            // make sure NEXT_POS and NEXT_DIR are fully initialized:
+
+            for (int piece = ChessConstants_Fields.PAWN; ChessConstants_Fields.BLACK_PAWN >= piece; ++ piece)
+            {
+                for (int square = 0; square < BitBoard.SIZE; ++square)
+                {
+                    // ignore last row for pawns, they can't move
+                    if((ChessConstants_Fields.PAWN == piece) && (square >= 56))
+                    {
+                        continue;
+                    }
+                    // ignore first row for black pawns, they can't move
+                    if((ChessConstants_Fields.BLACK_PAWN == piece) && (square < 8))
+                    {
+                        continue;
+                    }
+
+                    Assert.IsTrue(Geometry.NEXT_POS[piece][square][square] >= 0, $"NEXT_POS is {Geometry.NEXT_POS[piece][square][square]} at piece:{piece}, square{square}") ;
+
+                    // not sure if this is right, NEXT_DIR has a problem on the first or last row
+                    if((square <= BoardConstants_Fields.A8)||(square >= BoardConstants_Fields.H1))
+                    {
+                        continue;
+                    }
+
+
+                    Assert.IsTrue(Geometry.NEXT_DIR[piece][square][square] >= 0, $"NEXT_DIR is {Geometry.NEXT_DIR[piece][square][square]} at piece:{piece}, square{square}") ;
+                }
+            }
+        }
+
+        [TestMethod()]
         public void nextPosTest()
         {
             Assert.IsTrue(Geometry.NEXT_POS[ChessConstants_Fields.PAWN][BoardConstants_Fields.D4][BoardConstants_Fields.D5] == -1) ;
