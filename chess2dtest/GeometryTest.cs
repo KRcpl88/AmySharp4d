@@ -9,6 +9,27 @@ namespace tgreiner.amy.chess.engine.Tests
     {
  
         [TestMethod()]
+        public void nextSquareTest()
+        {
+            Assert.IsTrue(Geometry.NEXT_SQ[BoardConstants_Fields.A1][BoardConstants_Fields.A7] == BoardConstants_Fields.A8) ;
+            Assert.IsTrue(Geometry.NEXT_SQ[BoardConstants_Fields.A1][BoardConstants_Fields.G1] == BoardConstants_Fields.H1) ;
+            Assert.IsTrue(Geometry.NEXT_SQ[BoardConstants_Fields.A1][BoardConstants_Fields.G7] == BoardConstants_Fields.H8) ;
+            Assert.IsTrue(Geometry.NEXT_SQ[BoardConstants_Fields.H8][BoardConstants_Fields.H2] == BoardConstants_Fields.H1) ;
+            Assert.IsTrue(Geometry.NEXT_SQ[BoardConstants_Fields.H8][BoardConstants_Fields.B8] == BoardConstants_Fields.A8) ;
+            Assert.IsTrue(Geometry.NEXT_SQ[BoardConstants_Fields.H8][BoardConstants_Fields.B2] == BoardConstants_Fields.A1) ;
+
+            for (int square = 0; square < BitBoard.SIZE; ++square)
+            {
+                Assert.IsTrue(Geometry.NEXT_SQ[square][square] ==-1, $"NEXT_SQ is {Geometry.NEXT_SQ[square][square]} at square: {square}") ;
+            }
+
+            for (int square = 0; (square + 16) < BitBoard.SIZE; ++square)
+            {
+                Assert.IsTrue(Geometry.NEXT_SQ[square][square+8] >= 0, $"NEXT_SQ is {Geometry.NEXT_SQ[square][square]} at square: {square}, {square + 8}") ;
+            }
+        }
+
+        [TestMethod()]
         public void nextPosCoverageTest()
         {
             // make sure NEXT_POS and NEXT_DIR are fully initialized:
