@@ -295,10 +295,10 @@ namespace tgreiner.amy.chess.engine
                     {
                         NEXT_POS[piece][square][prevSquare] = (short)(int)nextLevelRankFile;
 
-						if(piece == QUEEN)
+						if((piece == QUEEN) && (square != prevSquare))
 						{
 							// update NEXT_SQ too
-	                        NEXT_SQ[square][prevSquare] = (short)(int)nextLevelRankFile;
+	                        NEXT_SQ[square][prevSquare] = NEXT_POS[piece][square][prevSquare];
 						}
 
 
