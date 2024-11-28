@@ -85,14 +85,30 @@ namespace tgreiner.amy.chess.engine
 			// BISHOP
 			new short [][] 
 			{
+				new short [] {0,  1,  1},
+				new short [] {0,  1, -1},
+				new short [] {0, -1, -1},
+				new short [] {0, -1,  1}
 			},
 			// ROOK
 			new short [][] 
 			{
+				new short [] {0,  0,  1},
+				new short [] {0,  1,  0},
+				new short [] {0,  0, -1},
+				new short [] {0, -1,  0}
 			},
 			// QUEEN
 			new short [][] 
 			{
+				new short [] {0,  0,  1},
+				new short [] {0,  1,  1},
+				new short [] {0,  1,  0},
+				new short [] {0,  1, -1},
+				new short [] {0,  0, -1},
+				new short [] {0, -1, -1},
+				new short [] {0, -1,  0},
+				new short [] {0, -1,  1}
 			},
 			// KING
 			new short [][] 
@@ -117,17 +133,17 @@ namespace tgreiner.amy.chess.engine
 		/// <summary> Next positions indexed by piece type, starting square, current square.</summary>
 		//UPGRADE_NOTE: Final was removed from the declaration of 'NEXT_POS '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
 		//UPGRADE_NOTE: The initialization of  'NEXT_POS' was moved to static method 'tgreiner.amy.chess.engine.Geometry'. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1005'"
-		public static readonly sbyte[][][] NEXT_POS;
+		public static readonly short[][][] NEXT_POS;
 		
 		/// <summary> Next directions indexed by piece type, starting square, current square.</summary>
 		//UPGRADE_NOTE: Final was removed from the declaration of 'NEXT_DIR '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
 		//UPGRADE_NOTE: The initialization of  'NEXT_DIR' was moved to static method 'tgreiner.amy.chess.engine.Geometry'. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1005'"
-		public static readonly sbyte[][][] NEXT_DIR;
+		public static readonly short[][][] NEXT_DIR;
 		
 		/// <summary>Next square on a row, file or diagonal. </summary>
 		//UPGRADE_NOTE: Final was removed from the declaration of 'NEXT_SQ '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
 		//UPGRADE_NOTE: The initialization of  'NEXT_SQ' was moved to static method 'tgreiner.amy.chess.engine.Geometry'. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1005'"
-		public static readonly sbyte[][] NEXT_SQ;
+		public static readonly short[][] NEXT_SQ;
 		
 		/// <summary>Bitboard of ray squares. </summary>
 		//UPGRADE_NOTE: Final was removed from the declaration of 'RAY '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
@@ -260,16 +276,16 @@ namespace tgreiner.amy.chess.engine
 					nextLevelRankFile.Level += delta[0];
 					nextLevelRankFile.Rank += delta[1];
 					nextLevelRankFile.File += delta[2];
-					NEXT_DIR[piece][square][prevSquare] = (sbyte)(int)nextDirection;
+					NEXT_DIR[piece][square][prevSquare] = (short)(int)nextDirection;
 
                     while (nextLevelRankFile.IsValid())
                     {
-                        NEXT_POS[piece][square][prevSquare] = (sbyte)(int)nextLevelRankFile;
+                        NEXT_POS[piece][square][prevSquare] = (short)(int)nextLevelRankFile;
 
 						if(piece == QUEEN)
 						{
 							// update NEXT_SQ too
-	                        NEXT_SQ[square][prevSquare] = (sbyte)(int)nextLevelRankFile;
+	                        NEXT_SQ[square][prevSquare] = (short)(int)nextLevelRankFile;
 						}
 
 
@@ -278,7 +294,7 @@ namespace tgreiner.amy.chess.engine
 						nextLevelRankFile.Rank += delta[1];
 						nextLevelRankFile.File += delta[2];
 
-                        NEXT_DIR[piece][square][prevSquare] = (sbyte)(int)nextDirection;
+                        NEXT_DIR[piece][square][prevSquare] = (short)(int)nextDirection;
                     }
                 }
             }
@@ -288,23 +304,8 @@ namespace tgreiner.amy.chess.engine
 		private static void  initMoves()
         {
             // conversion array to convert offset into 16x16 board array to an 8x8 board 
-            sbyte[] conv = new sbyte[128];
-
             int square, square2;
             int piece;
-
-            for (square = 0; square < 128; square++)
-            {
-                conv[square] = 127;
-            }
-            for (square = 0; square < 128; square++)
-            {
-                if (0 == (square & OX88))
-                {
-                    square2 = (square & 7) | (square & 0x70) >> 1;
-                    conv[square] = (sbyte)square2;
-                }
-            }
 
             for (square = 0; square < BitBoard.SIZE; square++)
             {
@@ -340,42 +341,6 @@ namespace tgreiner.amy.chess.engine
             initSlidingNextPos(BISHOP);
             initSlidingNextPos(ROOK);
             initSlidingNextPos(QUEEN);
-
-            /*
-			* Inititialize NEXT_SQ
-			*/
-
-            for (square = 0; square < 128; square++)
-            {
-                int dir;
-
-                if ((square & OX88) != 0)
-                {
-                    continue;
-                }
-
-                for (dir = 0; dir < DIRS_QUEEN_16.Length; dir++)
-                {
-                    int next, next2;
-
-                    next = square + DIRS_QUEEN_16[dir];
-                    if ((next & OX88) != 0)
-                    {
-                        continue;
-                    }
-
-                    for (; ; )
-                    {
-                        next2 = next + DIRS_QUEEN_16[dir];
-                        if ((next2 & OX88) != 0)
-                        {
-                            break;
-                        }
-                        NEXT_SQ[conv[square]][conv[next]] = conv[next2];
-                        next = next2;
-                    }
-                }
-            }
         }
 
         private static void initNextPos(int piece)
@@ -391,8 +356,8 @@ namespace tgreiner.amy.chess.engine
                     {
                         LRF nextLrf = new LRF(levelRankFile.Level + delta[0], levelRankFile.Rank + delta[1], levelRankFile.File + delta[2]);
 
-                        NEXT_POS[piece][square][prevSquare] = (sbyte)(int)nextLrf;
-                        NEXT_DIR[piece][square][prevSquare] = (sbyte)(int)nextLrf;
+                        NEXT_POS[piece][square][prevSquare] = (short)(int)nextLrf;
+                        NEXT_DIR[piece][square][prevSquare] = (short)(int)nextLrf;
 
                         prevSquare = (int)nextLrf;
                     }
@@ -531,30 +496,30 @@ namespace tgreiner.amy.chess.engine
 		}
 		static Geometry()
 		{
-			NEXT_POS = new sbyte[LAST_PIECE][][];
+			NEXT_POS = new short[LAST_PIECE][][];
 			for (int i = 0; i < LAST_PIECE; i++)
 			{
-				NEXT_POS[i] = new sbyte[BitBoard.SIZE][];
+				NEXT_POS[i] = new short[BitBoard.SIZE][];
 				for (int i2 = 0; i2 < BitBoard.SIZE; i2++)
 				{
-					NEXT_POS[i][i2] = new sbyte[BitBoard.SIZE];
+					NEXT_POS[i][i2] = new short[BitBoard.SIZE];
 				}
 			}
 
-			NEXT_DIR = new sbyte[LAST_PIECE][][];
+			NEXT_DIR = new short[LAST_PIECE][][];
 			for (int i3 = 0; i3 < 8; i3++)
 			{
-				NEXT_DIR[i3] = new sbyte[BitBoard.SIZE][];
+				NEXT_DIR[i3] = new short[BitBoard.SIZE][];
 				for (int i4 = 0; i4 < BitBoard.SIZE; i4++)
 				{
-					NEXT_DIR[i3][i4] = new sbyte[BitBoard.SIZE];
+					NEXT_DIR[i3][i4] = new short[BitBoard.SIZE];
 				}
 			}
 
-			NEXT_SQ = new sbyte[BitBoard.SIZE][];
+			NEXT_SQ = new short[BitBoard.SIZE][];
 			for (int i5 = 0; i5 < BitBoard.SIZE; i5++)
 			{
-				NEXT_SQ[i5] = new sbyte[BitBoard.SIZE];
+				NEXT_SQ[i5] = new short[BitBoard.SIZE];
 			}
 
 			RAY = new BitBoard[BitBoard.SIZE][];

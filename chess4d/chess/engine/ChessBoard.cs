@@ -557,7 +557,7 @@ namespace tgreiner.amy.chess.engine
         /// </param>
         private void  attackSet(int type, bool theWtm, int square)
         {
-            sbyte[] np, nd;
+            short[] np, nd;
             int nextSquare;
             
             if (type == ChessConstants_Fields.WHITE_PAWN)
@@ -622,7 +622,7 @@ namespace tgreiner.amy.chess.engine
         /// </param>
         private void  attackClr(int type, bool theWtm, int square)
         {
-            sbyte[] np, nd;
+            short[] np, nd;
             int nsq;
             
             attackTo[square].IsEmpty();
@@ -775,7 +775,7 @@ namespace tgreiner.amy.chess.engine
         /// </param>
         private void  gainAttack(int from, int to)
         {
-            sbyte[] nsq = Geometry.NEXT_SQ[from];
+            short[] nsq = Geometry.NEXT_SQ[from];
             int square = to;
             
             for (; ; )
@@ -805,7 +805,7 @@ namespace tgreiner.amy.chess.engine
         /// </param>
         private void  looseAttack(int from, int to)
         {
-            sbyte[] nsq = Geometry.NEXT_SQ[from];
+            short[] nsq = Geometry.NEXT_SQ[from];
             int square = to;
             
             for (; ; )
