@@ -33,7 +33,7 @@ using RecognizerMap = tgreiner.amy.chess.engine.recognizer.RecognizerMap;
 using Generator = tgreiner.amy.common.engine.Generator;
 using NodeType = tgreiner.amy.common.engine.NodeType;
 using TimeOutException = tgreiner.amy.common.timer.TimeOutException;
-using Timer = tgreiner.amy.common.timer.Timer;
+using IChessTimer = tgreiner.amy.common.timer.IChessTimer;
 //UPGRADE_TODO: The type 'org.apache.log4j.Logger' could not be found. If it was not included in the conversion, there may be compiler issues. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1262'"
 using AmySharp.chess.engine.logger;
 namespace tgreiner.amy.chess.engine
@@ -102,7 +102,7 @@ namespace tgreiner.amy.chess.engine
 		private RecognizerMap recognizerMap = new RecognizerMap();
 		
 		/// <summary>The timer. </summary>
-		private Timer timer;
+		private IChessTimer timer;
 		
 		/// <summary>The number of nodes visited. </summary>
 		private int nodes = 0;
@@ -140,7 +140,7 @@ namespace tgreiner.amy.chess.engine
 		/// </param>
 		/// <param name="theTimer">the timer.
 		/// </param>
-		public NegaScout(ChessBoard theBoard, ITransTable theTtable, PVSaver thePVSaver, Timer theTimer)
+		public NegaScout(ChessBoard theBoard, ITransTable theTtable, PVSaver thePVSaver, IChessTimer theTimer)
 		{
 			this.board = theBoard;
 			this.ttable = theTtable;

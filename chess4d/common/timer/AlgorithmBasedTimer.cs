@@ -70,7 +70,7 @@ namespace tgreiner.amy.common.timer
 			this.algorithm = theAlgorithm;
 		}
 		
-		/// <seealso cref="Timer.check">
+		/// <seealso cref="IChessTimer.check">
 		/// </seealso>
 		public override void  check()
 		{
@@ -98,7 +98,7 @@ namespace tgreiner.amy.common.timer
 			}
 		}
 		
-		/// <seealso cref="Timer.start">
+		/// <seealso cref="IChessTimer.start">
 		/// </seealso>
 		public override void  start()
 		{
@@ -107,14 +107,14 @@ namespace tgreiner.amy.common.timer
 			calls = callsBetweenChecks;
 		}
 		
-		/// <seealso cref="Timer.iterationFinished">
+		/// <seealso cref="IChessTimer.iterationFinished">
 		/// </seealso>
 		public override void  iterationFinished(int iteration)
 		{
 			algorithm.iterationFinished(iteration);
 		}
 		
-		/// <seealso cref="Timer.failLow">
+		/// <seealso cref="IChessTimer.failLow">
 		/// </seealso>
 		public override void  failLow()
 		{

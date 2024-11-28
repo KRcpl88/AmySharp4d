@@ -34,7 +34,7 @@ namespace tgreiner.amy.common.timer
 	/// </summary>
 	/// <author>  Thorsten Greiner
 	/// </author>
-	public interface Timer
+	public interface IChessTimer
 	{
 		/// <summary> Get the elapsed time of the search.
 		/// 

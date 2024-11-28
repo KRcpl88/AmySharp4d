@@ -37,12 +37,7 @@ import tgreiner.amy.chess.book.BookMoveSelector;
 import tgreiner.amy.chess.book.BookMoveSelectorImpl;
 import tgreiner.amy.chess.book.DatabaseProvider;*/
 using tgreiner.amy.common.engine;
-using AlgorithmBasedTimer = tgreiner.amy.common.timer.AlgorithmBasedTimer;
-using ExtendOnFailLowTimerAlgorithm = tgreiner.amy.common.timer.ExtendOnFailLowTimerAlgorithm;
-using QuotaTimeControl = tgreiner.amy.common.timer.QuotaTimeControl;
-using SuddenDeathTimeControl = tgreiner.amy.common.timer.SuddenDeathTimeControl;
-using TimeControl = tgreiner.amy.common.timer.TimeControl;
-using Timer = tgreiner.amy.common.timer.Timer;
+using tgreiner.amy.common.timer;
 //UPGRADE_TODO: The type 'org.apache.log4j.Logger' could not be found. If it was not included in the conversion, there may be compiler issues. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1262'"
 using AmySharp.chess.engine.logger;
 using tgreiner.amy.bitboard;
@@ -74,7 +69,7 @@ namespace tgreiner.amy.chess.engine
 		private SearchOutputXBoard searchOutput;
 		
 		/// <summary>The timer. </summary>
-		private Timer timer;
+		private tgreiner.amy.common.timer.IChessTimer timer;
 		
 		/// <summary>The timer algorithm. </summary>
 		private ExtendOnFailLowTimerAlgorithm timerAlgorithm;

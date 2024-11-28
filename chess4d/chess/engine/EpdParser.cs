@@ -60,12 +60,23 @@ namespace tgreiner.amy.chess.engine
                 throw new Exception("Invalid EPD");
             }
 
-            int rank = 7;
+            int level = BitBoard.NUM_LEVELS -1;
+            int rank = BitBoard.LEVEL_WIDTH[level]-1;
             int file = 0;
 
             foreach (char ch in fenParts[0])
             {
-                int square = 8 * rank + file;
+                if (file >= BitBoard.LEVEL_WIDTH[level])
+                {
+                    throw new IllegalEpdException(
+                        $"EPD file {file} out of bounds on  Level: {level} Rank: {rank}");
+                }
+                if (!LRF.IsValid(level, rank, file))
+                {
+                    throw new IllegalEpdException(
+                        $"EPD contains invalid posiiton on Level: {level} Rank: {rank} File: {file}");
+                }
+                int square = BitBoard.BitOffset(level, rank, file);
                 switch (ch)
                 {
 
@@ -145,8 +156,13 @@ namespace tgreiner.amy.chess.engine
                         file = 0;
                         if (rank < 0)
                         {
-                            throw new IllegalEpdException(
-                                "EPD contains more than 8 ranks");
+                            --level;
+                            if (level < 0)
+                            {
+                                throw new IllegalEpdException(
+                                    "EPD contains too many ranks");
+                            }
+                            rank = BitBoard.LEVEL_WIDTH[level]-1;
                         }
                         break;
 
@@ -187,15 +203,24 @@ namespace tgreiner.amy.chess.engine
             int enPassant = 0;
             if (!fenParts[3].Equals("-"))
             {
-                int epFile = (int)(fenParts[3][0] - 'a');
-                int epRank = (int)(fenParts[3][1] - '1');
+                if (fenParts[3].Length < 3)
+                {
+                    throw new IllegalEpdException("Illegal en passant square");
+                }
+                int epLevel = (int)(fenParts[3][0] - 'a');
+                int epFile = (int)(fenParts[3][1] - 'a');
+                int epRank = (int)(fenParts[3][2] - '1');
 
-                if (epFile < 0 || epFile > 7 || (epRank != 2 && epRank != 5))
+                if (!LRF.IsValid(epLevel, epRank, epFile))
+                {
+                    throw new IllegalEpdException("Illegal en passant square");
+                }
+                if (epFile < 0 || epFile > (BitBoard.LEVEL_WIDTH[epLevel] -1) || (epRank != 2 && epRank != (BitBoard.LEVEL_WIDTH[epLevel] -3)))
                 {
                     throw new IllegalEpdException("Illegal en passant square");
                 }
 
-                enPassant = epRank * 8 + epFile;
+                enPassant = BitBoard.BitOffset(epLevel, epRank, epFile);
             }
 
             return new BoardPosition(board, whiteToMove, enPassant, wCastleK, wCastleQ, bCastleK, bCastleQ, this);

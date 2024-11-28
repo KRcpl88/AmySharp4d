@@ -28,7 +28,7 @@
 using System;
 using System.Threading;
 using PonderingTimerDecorator = tgreiner.amy.common.timer.PonderingTimerDecorator;
-using Timer = tgreiner.amy.common.timer.Timer;
+using IChessTimer = tgreiner.amy.common.timer.IChessTimer;
 //UPGRADE_TODO: The type 'org.apache.log4j.Logger' could not be found. If it was not included in the conversion, there may be compiler issues. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1262'"
 using AmySharp.chess.engine.logger;
 using tgreiner.amy;
@@ -125,7 +125,7 @@ namespace tgreiner.amy.chess.engine
 		/// </param>
 		/// <param name="theSearchOutput">the search output
 		/// </param>
-		public PonderThread(ChessBoard theBoard, int thePonderMove, ITransTable theTransTable, Timer theTimer, ISearchOutput theSearchOutput, int maxDepth)
+		public PonderThread(ChessBoard theBoard, int thePonderMove, ITransTable theTransTable, IChessTimer theTimer, ISearchOutput theSearchOutput, int maxDepth)
 		{
 			
 			this.board = new ChessBoard(theBoard);

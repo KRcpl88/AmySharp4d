@@ -50,7 +50,7 @@ namespace tgreiner.amy.common.timer
 			this.depth = theDepth;
 		}
 		
-		/// <seealso cref="Timer.iterationFinished">
+		/// <seealso cref="IChessTimer.iterationFinished">
 		/// </seealso>
 		public override void  iterationFinished(int currentDepth)
 		{

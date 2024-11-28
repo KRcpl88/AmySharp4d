@@ -31,7 +31,7 @@ using System;
 using IntVector = tgreiner.amy.common.engine.IntVector;
 using NodeType = tgreiner.amy.common.engine.NodeType;
 using TimeOutException = tgreiner.amy.common.timer.TimeOutException;
-using Timer = tgreiner.amy.common.timer.Timer;
+using tgreiner.amy.common.timer;
 //UPGRADE_TODO: The type 'org.apache.log4j.Logger' could not be found. If it was not included in the conversion, there may be compiler issues. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1262'"
 using AmySharp.chess.engine.logger;
 namespace tgreiner.amy.chess.engine
@@ -135,7 +135,7 @@ namespace tgreiner.amy.chess.engine
 		private ITransTable transTable;
 		
 		/// <summary>The timer. </summary>
-		private Timer timer;
+		private IChessTimer timer;
 		
 		/// <summary>The search window for the aspiration search. </summary>
 		private int window = 33;
@@ -158,7 +158,7 @@ namespace tgreiner.amy.chess.engine
 		/// </param>
 		/// <param name="theTimer">the timer
 		/// </param>
-		public Driver(ChessBoard theBoard, ITransTable ttable, Timer theTimer)
+		public Driver(ChessBoard theBoard, ITransTable ttable, IChessTimer theTimer)
 		{
 			
 			this.transTable = ttable;

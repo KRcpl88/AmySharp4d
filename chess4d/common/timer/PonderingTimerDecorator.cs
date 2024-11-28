@@ -38,9 +38,9 @@ namespace tgreiner.amy.common.timer
 	/// </summary>
 	/// <author>  <a href = "mailto:thorsten.greiner@googlemail.com">Thorsten Greiner</a>
 	/// </author>
-	public class PonderingTimerDecorator : Timer
+	public class PonderingTimerDecorator : IChessTimer
 	{
-		/// <seealso cref="Timer.getTime">
+		/// <seealso cref="IChessTimer.getTime">
 		/// </seealso>
 		virtual public int Time
 		{
@@ -58,19 +58,19 @@ namespace tgreiner.amy.common.timer
 		private bool aborted = false;
 		
 		/// <summary>The decorated Timer. </summary>
-		private Timer decorated;
+		private IChessTimer decorated;
 		
 		/// <summary> Create a PonderingTimerDecorator.
 		/// 
 		/// </summary>
 		/// <param name="theDecorated">the Timer to decorate.
 		/// </param>
-		public PonderingTimerDecorator(Timer theDecorated)
+		public PonderingTimerDecorator(IChessTimer theDecorated)
 		{
 			this.decorated = theDecorated;
 		}
 		
-		/// <seealso cref="Timer.check">
+		/// <seealso cref="IChessTimer.check">
 		/// </seealso>
 		public virtual void  check()
 		{
@@ -84,14 +84,14 @@ namespace tgreiner.amy.common.timer
 			}
 		}
 		
-		/// <seealso cref="Timer.start">
+		/// <seealso cref="IChessTimer.start">
 		/// </seealso>
 		public virtual void  start()
 		{
 			decorated.start();
 		}
 		
-		/// <seealso cref="Timer.iterationFinished">
+		/// <seealso cref="IChessTimer.iterationFinished">
 		/// </seealso>
 		public virtual void  iterationFinished(int iteration)
 		{
@@ -105,7 +105,7 @@ namespace tgreiner.amy.common.timer
 			}
 		}
 		
-		/// <seealso cref="Timer.failLow">
+		/// <seealso cref="IChessTimer.failLow">
 		/// </seealso>
 		public virtual void  failLow()
 		{

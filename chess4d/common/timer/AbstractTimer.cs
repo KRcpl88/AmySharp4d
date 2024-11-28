@@ -37,9 +37,9 @@ namespace tgreiner.amy.common.timer
 	/// </summary>
 	/// <author>  Thorsten Greiner
 	/// </author>
-	public abstract class AbstractTimer : Timer
+	public abstract class AbstractTimer : IChessTimer
 	{
-		/// <seealso cref="Timer.getTime">
+		/// <seealso cref="IChessTimer.getTime">
 		/// </seealso>
 		virtual public int Time
 		{
@@ -57,7 +57,7 @@ namespace tgreiner.amy.common.timer
 		/// <summary>time of search start. </summary>
 		protected internal long startTime;
 		
-		/// <seealso cref="Timer.start">
+		/// <seealso cref="IChessTimer.start">
 		/// </seealso>
 		public virtual void  start()
 		{
