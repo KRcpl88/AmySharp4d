@@ -64,6 +64,8 @@ namespace tgreiner.amy.chess.engine
 
 		private static readonly short[][][] ATTACK_DELTA = new short [][][]
 		{
+			// first piece 0 is not valid
+			null,
 			// WHITE_PAWN
 			new short [][] 
 			{
@@ -265,8 +267,19 @@ namespace tgreiner.amy.chess.engine
 					if ((direction + 1) < (ATTACK_DELTA[piece].Length ))
 					{
 						delta = ATTACK_DELTA[piece][direction+1];
-                        LRF nextLrf = new LRF(nextLevelRankFile.Level + delta[0], nextLevelRankFile.Rank + delta[1], nextLevelRankFile.File + delta[2]);
-						nextDirection = (long)nextLrf;
+						LRF nextLrf = nextLevelRankFile;
+						nextLrf.Level += delta[0];
+						nextLrf.Rank += delta[1];
+						nextLrf.File += delta[2];
+
+						if (nextLrf.IsValid())
+						{
+							nextDirection = (long)nextLrf;
+						}
+						else
+						{
+							nextDirection = -1;
+						}
 					}
 
 					delta = ATTACK_DELTA[piece][direction];
@@ -534,7 +547,7 @@ namespace tgreiner.amy.chess.engine
 				INTER_PATH[i7] = BitBoard.CreateArray(BitBoard.SIZE);
 			}
 
-			ATTACK_DELTA = new short[LAST_PIECE][][];
+			//ATTACK_DELTA = new short[LAST_PIECE][][];
 			WHITE_PAWN_EPM = BitBoard.CreateArray(BitBoard.SIZE);
 			BLACK_PAWN_EPM = BitBoard.CreateArray(BitBoard.SIZE);
 			KNIGHT_EPM = BitBoard.CreateArray(BitBoard.SIZE);
