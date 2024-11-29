@@ -186,6 +186,16 @@ namespace tgreiner.amy.bitboard
             data = new ulong[SIZE_LONG];
         }
 
+        public BitBoard(BitBoard other)
+        {
+            data = new ulong[SIZE_LONG];
+
+            for (int i =0;i < data.Length; ++i)
+            {
+                data[i] = other.data[i];
+            }
+        }
+
         public BitBoard(int [] offsets)
         {
             data = new ulong[SIZE_LONG];

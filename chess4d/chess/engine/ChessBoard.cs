@@ -696,7 +696,7 @@ namespace tgreiner.amy.chess.engine
         {
             for (int i = 0; i < BitBoard.SIZE; i++)
             {
-                BitBoard tmp = attackTo[i];
+                BitBoard tmp = new BitBoard(attackTo[i]);
                 while (tmp.IsEmpty() == false)
                 {
                     int idx = tmp.findFirstOne();
@@ -938,7 +938,7 @@ namespace tgreiner.amy.chess.engine
                 }
             }
             
-            tmp = pieceMask[0][0];
+            tmp = new BitBoard(pieceMask[0][0]);
             while (tmp.IsEmpty() == false)
             {
                 int square = tmp.findFirstOne();
@@ -946,7 +946,7 @@ namespace tgreiner.amy.chess.engine
                 attackSet(board[square], true, square);
             }
             
-            tmp = pieceMask[1][0];
+            tmp = new BitBoard(pieceMask[1][0]);
             while (tmp.IsEmpty() == false)
             {
                 int square = tmp.findFirstOne();
@@ -2110,7 +2110,7 @@ namespace tgreiner.amy.chess.engine
         /// </returns>
         public BitBoard getMask(bool theWhiteToMove)
         {
-            return pieceMask[Side(theWhiteToMove)][0];
+            return new BitBoard(pieceMask[Side(theWhiteToMove)][0]);
         }
         
         /// <summary> Get the mask for a given side/piece type.
@@ -2124,7 +2124,7 @@ namespace tgreiner.amy.chess.engine
         /// </returns>
         public BitBoard getMask(bool theWhiteToMove, int type)
         {
-            return pieceMask[Side(theWhiteToMove)][type];
+            return new BitBoard(pieceMask[Side(theWhiteToMove)][type]);
         }
         
         /// <summary> Check if white can castle to the king side.
@@ -2409,8 +2409,8 @@ namespace tgreiner.amy.chess.engine
             InitBlock();
             for (int i = 0; i < BitBoard.SIZE; i++)
             {
-                this.attackTo[i] = theBoard.attackTo[i];
-                this.attackFrom[i] = theBoard.attackFrom[i];
+                this.attackTo[i] = new BitBoard(theBoard.attackTo[i]);
+                this.attackFrom[i] = new BitBoard(theBoard.attackFrom[i]);
                 this.board[i] = theBoard.board[i];
             }
             
@@ -2418,7 +2418,7 @@ namespace tgreiner.amy.chess.engine
             {
                 for (int j = 0; j <= ChessConstants_Fields.KING; j++)
                 {
-                    this.pieceMask[i][j] = theBoard.pieceMask[i][j];
+                    this.pieceMask[i][j] = new BitBoard(theBoard.pieceMask[i][j]);
                 }
                 this.kingPos[i] = theBoard.kingPos[i];
             }

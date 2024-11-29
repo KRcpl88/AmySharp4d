@@ -10,7 +10,7 @@ namespace tgreiner.amy.chess.engine.Tests
         [TestMethod()]
         public void fenTest()
         {
-            var board = new ChessBoard("////////////////////////////rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -");
+            var board = new ChessBoard("1/2/2/3/3/3/4/4/4/4/5/5/5/5/5/6/6/6/6/6/6/7/7/7/7/7/7/7/rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -");
             Assert.IsTrue(board.getMask(true, ChessConstants_Fields.KING).countBits() == 1) ;
             Assert.IsTrue(board.getMask(false, ChessConstants_Fields.KING).countBits() == 1) ;
             Assert.IsTrue(board.getMask(true, ChessConstants_Fields.ROOK).countBits() == 2) ;
@@ -18,13 +18,13 @@ namespace tgreiner.amy.chess.engine.Tests
             Assert.IsTrue(board.getMask(true, ChessConstants_Fields.PAWN).countBits() == 8) ;
             Assert.IsTrue(board.getMask(false, ChessConstants_Fields.PAWN).countBits() == 8) ;
 
-            board = new ChessBoard("///////////////////////////////2k2K///r6R w - -");
+            board = new ChessBoard("1/2/2/3/3/3/4/4/4/4/5/5/5/5/5/6/6/6/6/6/6/7/7/7/7/7/7/7/2k2K///r6R w - -");
             Assert.IsTrue(board.getMask(true, ChessConstants_Fields.KING).countBits() == 1) ;
             Assert.IsTrue(board.getMask(false, ChessConstants_Fields.KING).countBits() == 1) ;
             Assert.IsTrue(board.getMask(true, ChessConstants_Fields.ROOK).countBits() == 1) ;
             Assert.IsTrue(board.getMask(false, ChessConstants_Fields.ROOK).countBits() == 1) ;
 
-            board = new ChessBoard("////////////////////////////6k/1r////1R/6K w - -");
+            board = new ChessBoard("1/2/2/3/3/3/4/4/4/4/5/5/5/5/5/6/6/6/6/6/6/7/7/7/7/7/7/7/6k/1r////1R/6K w - -");
             Assert.IsTrue(board.getMask(true, ChessConstants_Fields.KING).countBits() == 1) ;
             Assert.IsTrue(board.getMask(false, ChessConstants_Fields.KING).countBits() == 1) ;
             Assert.IsTrue(board.getMask(true, ChessConstants_Fields.ROOK).countBits() == 1) ;
@@ -34,7 +34,7 @@ namespace tgreiner.amy.chess.engine.Tests
         [TestMethod()]
         public void parseSanTest()
         {
-            var board = new ChessBoard("///////////////////////////////2k2K/1p///6P w - -");
+            var board = new ChessBoard("1/2/2/3/3/3/4/4/4/4/5/5/5/5/5/6/6/6/6/6/6/7/7/7/7/7/7/7/8/8/8/2k2K/1p///6P w - -");
             Assert.IsTrue(board.getPieceAt(7,4,5) == ChessConstants_Fields.KING);
             Assert.IsTrue(board.getSideAt(BitBoard.BitOffset(7,4,5)) == Player.white);
             Assert.IsTrue(board.getPieceAt(7,4,2) == ChessConstants_Fields.KING);
