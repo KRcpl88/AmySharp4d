@@ -66,15 +66,18 @@ namespace tgreiner.amy.chess.engine
 
             foreach (char ch in fenParts[0])
             {
-                if (file >= BitBoard.LEVEL_WIDTH[level])
+                if (ch != '/')
                 {
-                    throw new IllegalEpdException(
-                        $"EPD file {file} out of bounds on  Level: {level} Rank: {rank}");
-                }
-                if (!LRF.IsValid(level, rank, file))
-                {
-                    throw new IllegalEpdException(
-                        $"EPD contains invalid posiiton on Level: {level} Rank: {rank} File: {file}");
+                    if (file >= BitBoard.LEVEL_WIDTH[level])
+                    {
+                        throw new IllegalEpdException(
+                            $"EPD file {file} out of bounds on  Level: {level} Rank: {rank}");
+                    }
+                    if (!LRF.IsValid(level, rank, file))
+                    {
+                        throw new IllegalEpdException(
+                            $"EPD contains invalid posiiton on Level: {level} Rank: {rank} File: {file}");
+                    }
                 }
                 int square = BitBoard.BitOffset(level, rank, file);
                 switch (ch)

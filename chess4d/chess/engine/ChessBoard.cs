@@ -1526,7 +1526,7 @@ namespace tgreiner.amy.chess.engine
         /// </returns>
         public engine.Player getSideAt(int square)
         {
-            return (board[square] == 0) ? Player.none : ((board[square] < 0) ? Player.black : Player.none);
+            return (board[square] == 0) ? Player.none : ((board[square] < 0) ? Player.black : Player.white);
         }
 
         /// <summary> Get the color of the piece on <code>square</code>.
