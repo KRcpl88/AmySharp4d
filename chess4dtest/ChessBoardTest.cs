@@ -43,7 +43,9 @@ namespace tgreiner.amy.chess.engine.Tests
             Assert.IsTrue(board.getSideAt(BitBoard.BitOffset(7,0,6)) == Player.white);
             Assert.IsTrue(board.getPieceAt(7,3,1) == ChessConstants_Fields.PAWN);
             Assert.IsTrue(board.getSideAt(BitBoard.BitOffset(7,3,1)) == Player.black);
-            
+            Assert.IsTrue(board.WhiteToMove == true);
+
+            int move = Move.parseSAN(board,"Khe6-hf6");
             /*
             BitBoard pieces = board.getMask(false, ChessConstants_Fields.PAWN);
             int count = 0;
