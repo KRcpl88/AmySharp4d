@@ -1600,16 +1600,7 @@ namespace tgreiner.amy.chess.engine
         /// </param>
         public virtual void  generatePseudoLegalMoves(IMoveList mvs)
         {
-            generatePlmOneSide(mvs, !whiteToMove);
-
-            generatePlmOneSide(mvs, whiteToMove);
-
-            generateEnPassant(mvs);
-        }
-
-        private void generatePlmOneSide(IMoveList mvs, bool whiteToMove)
-        {
-            BitBoard tmp = getMask(whiteToMove);
+            BitBoard tmp = getMask(!whiteToMove);
 
             while (tmp.IsEmpty() == false)
             {
@@ -1618,6 +1609,18 @@ namespace tgreiner.amy.chess.engine
 
                 generateTo(to, mvs);
             }
+
+            tmp = getMask(whiteToMove);
+
+            while (tmp.IsEmpty() == false)
+            {
+                int to = tmp.findFirstOne();
+                tmp.ClearBit(to);
+
+                generateFrom(to, mvs);
+            }
+            
+            generateEnPassant(mvs);
         }
 
         /// <summary> Generate all legal moves in this position.
