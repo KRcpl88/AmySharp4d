@@ -462,40 +462,121 @@ namespace tgreiner.amy.chess.engine
         /// pawn on e4
         /// </summary>
         //UPGRADE_NOTE: Final was removed from the declaration of 'EP_TRANSLATE '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
-        private static readonly int[] EN_PASSANT_TRANSLATE = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-        BoardConstants_Fields.HA4, 
-        BoardConstants_Fields.HB4, 
-        BoardConstants_Fields.HC4, 
-        BoardConstants_Fields.HD4, 
-        BoardConstants_Fields.HE4, 
-        BoardConstants_Fields.HF4, 
-        BoardConstants_Fields.HG4, 
-        BoardConstants_Fields.HH4, 
-        BoardConstants_Fields.HA3, 
-        BoardConstants_Fields.HB3, 
-        BoardConstants_Fields.HC3, 
-        BoardConstants_Fields.HD3, 
-        BoardConstants_Fields.HE3, 
-        BoardConstants_Fields.HF3, 
-        BoardConstants_Fields.HG3, 
-        BoardConstants_Fields.HH3, 
-        BoardConstants_Fields.HA6, 
-        BoardConstants_Fields.HB6, 
-        BoardConstants_Fields.HC6, 
-        BoardConstants_Fields.HD6,
-        BoardConstants_Fields.HE6,
-        BoardConstants_Fields.HF6, 
-        BoardConstants_Fields.HG6, 
-        BoardConstants_Fields.HH6, 
-        BoardConstants_Fields.HA5, 
-        BoardConstants_Fields.HB5, 
-        BoardConstants_Fields.HC5, 
-        BoardConstants_Fields.HD5, 
-        BoardConstants_Fields.HE5, 
-        BoardConstants_Fields.HF5, 
-        BoardConstants_Fields.HG5, 
-        BoardConstants_Fields.HH5, 
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        private static readonly int[] EN_PASSANT_TRANSLATE = new int[]{
+            // BUGBUG need to correct en passant moves for multiple levels
+            //  for now, only level H is populated
+
+            0, 
+
+            0, 0, 
+            0, 0, 
+
+            0, 0, 0, 
+            0, 0, 0, 
+            0, 0, 0, 
+
+            0, 0, 0, 0, 
+            0, 0, 0, 0, 
+            0, 0, 0, 0, 
+            0, 0, 0, 0, 
+
+            0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 
+
+            0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 0, 
+
+            0, 0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 0, 0, 
+
+            0, 0, 0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 0, 0, 0, 
+            // rank 3
+            BoardConstants_Fields.HA4, 
+            BoardConstants_Fields.HB4, 
+            BoardConstants_Fields.HC4, 
+            BoardConstants_Fields.HD4, 
+            BoardConstants_Fields.HE4, 
+            BoardConstants_Fields.HF4, 
+            BoardConstants_Fields.HG4, 
+            BoardConstants_Fields.HH4, 
+            // rank 4
+            BoardConstants_Fields.HA3, 
+            BoardConstants_Fields.HB3, 
+            BoardConstants_Fields.HC3, 
+            BoardConstants_Fields.HD3, 
+            BoardConstants_Fields.HE3, 
+            BoardConstants_Fields.HF3, 
+            BoardConstants_Fields.HG3, 
+            BoardConstants_Fields.HH3, 
+            // rank 5
+            BoardConstants_Fields.HA6, 
+            BoardConstants_Fields.HB6, 
+            BoardConstants_Fields.HC6, 
+            BoardConstants_Fields.HD6,
+            BoardConstants_Fields.HE6,
+            BoardConstants_Fields.HF6, 
+            BoardConstants_Fields.HG6, 
+            BoardConstants_Fields.HH6, 
+            // rank 6
+            BoardConstants_Fields.HA5, 
+            BoardConstants_Fields.HB5, 
+            BoardConstants_Fields.HC5, 
+            BoardConstants_Fields.HD5, 
+            BoardConstants_Fields.HE5, 
+            BoardConstants_Fields.HF5, 
+            BoardConstants_Fields.HG5, 
+            BoardConstants_Fields.HH5, 
+            0, 0, 0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 0, 0, 0,
+
+            0, 0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 0, 0, 
+
+            0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 0, 
+            
+            0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 
+
+            0, 0, 0, 0, 
+            0, 0, 0, 0, 
+            0, 0, 0, 0, 
+            0, 0, 0, 0, 
+
+            0, 0, 0, 
+            0, 0, 0, 
+            0, 0, 0, 
+
+            0, 0, 
+            0, 0, 
+
+            0
+        };
         
         /// <summary>Bits to calculate the material signature. </summary>
         private static short[] MATERIAL_SIGNATURE_BITS;

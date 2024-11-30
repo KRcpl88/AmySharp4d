@@ -52,6 +52,13 @@ namespace tgreiner.amy.chess.engine.Tests
             Assert.IsTrue(moves.size() == 10);
 
             Assert.IsTrue(moves.contains(Move.makeMove(BoardConstants_Fields.F5, BoardConstants_Fields.F6)));
+            Assert.IsTrue(moves.contains(Move.makeMove(BoardConstants_Fields.F5, BoardConstants_Fields.G6)));
+            Assert.IsTrue(moves.contains(Move.makeMove(BoardConstants_Fields.F5, BoardConstants_Fields.G5)));
+            Assert.IsTrue(moves.contains(Move.makeMove(BoardConstants_Fields.F5, BoardConstants_Fields.G4)));
+            Assert.IsTrue(moves.contains(Move.makeMove(BoardConstants_Fields.F5, BoardConstants_Fields.F4)));
+            Assert.IsTrue(moves.contains(Move.makeMove(BoardConstants_Fields.F5, BoardConstants_Fields.E4)));
+            Assert.IsTrue(moves.contains(Move.makeMove(BoardConstants_Fields.F5, BoardConstants_Fields.E5)));
+            Assert.IsTrue(moves.contains(Move.makeMove(BoardConstants_Fields.F5, BoardConstants_Fields.E6)));
         }
 
 
@@ -73,6 +80,11 @@ namespace tgreiner.amy.chess.engine.Tests
             */
 
             int move = Move.parseSAN(board,"Kf5-f6");
+            var from = Move.getFrom(move);
+            Assert.IsTrue(from == BoardConstants_Fields.HF5);
+            var to = Move.getTo(move);
+            Assert.IsTrue(to == BoardConstants_Fields.HF6);
+
             /*
             BitBoard pieces = board.getMask(false, ChessConstants_Fields.PAWN);
             int count = 0;

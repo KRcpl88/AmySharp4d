@@ -1,6 +1,7 @@
 
 using tgreiner.amy.bitboard;
 using tgreiner.amy.chess.engine;
+using tgreiner.amy.common.engine;
 
 namespace tgreiner.amy.chess.engine.Tests
 {
@@ -32,20 +33,64 @@ namespace tgreiner.amy.chess.engine.Tests
         }
 
         [TestMethod()]
+        public void generateMoveTest()
+        {
+            var board = new ChessBoard("1/2/2/3/3/3/4/4/4/4/5/5/5/5/5/6/6/6/6/6/6/7/7/7/7/7/7/7/8/8/8/2k2K/1p//6P w - -");
+            Assert.IsTrue(board.getPieceAt(BoardConstants_Fields.HF5) == ChessConstants_Fields.KING);
+            Assert.IsTrue(board.getSideAt(BoardConstants_Fields.HF5) == Player.white);
+            Assert.IsTrue(board.getPieceAt(BoardConstants_Fields.HC5) == ChessConstants_Fields.KING);
+            Assert.IsTrue(board.getSideAt(BoardConstants_Fields.HC5) == Player.black);
+
+			var plm = new IntVector();
+			board.generatePseudoLegalMoves(plm);
+
+            Assert.IsTrue(plm.size() == 10);
+            Assert.IsTrue(plm.contains(Move.makeMove(BoardConstants_Fields.HF5, BoardConstants_Fields.HF6)));
+            Assert.IsTrue(plm.contains(Move.makeMove(BoardConstants_Fields.HF5, BoardConstants_Fields.HG6)));
+            Assert.IsTrue(plm.contains(Move.makeMove(BoardConstants_Fields.HF5, BoardConstants_Fields.HG5)));
+            Assert.IsTrue(plm.contains(Move.makeMove(BoardConstants_Fields.HF5, BoardConstants_Fields.HG4)));
+            Assert.IsTrue(plm.contains(Move.makeMove(BoardConstants_Fields.HF5, BoardConstants_Fields.HF4)));
+            Assert.IsTrue(plm.contains(Move.makeMove(BoardConstants_Fields.HF5, BoardConstants_Fields.HE4)));
+            Assert.IsTrue(plm.contains(Move.makeMove(BoardConstants_Fields.HF5, BoardConstants_Fields.HE5)));
+            Assert.IsTrue(plm.contains(Move.makeMove(BoardConstants_Fields.HF5, BoardConstants_Fields.HE6)));
+
+            var moves = new IntVector();
+
+            board.generateLegalMoves(moves);
+/*
+            Assert.IsTrue(moves.size() == 10);
+
+            Assert.IsTrue(moves.contains(Move.makeMove(BoardConstants_Fields.HF5, BoardConstants_Fields.HF6)));
+            Assert.IsTrue(moves.contains(Move.makeMove(BoardConstants_Fields.HF5, BoardConstants_Fields.HG6)));
+            Assert.IsTrue(moves.contains(Move.makeMove(BoardConstants_Fields.HF5, BoardConstants_Fields.HG5)));
+            Assert.IsTrue(moves.contains(Move.makeMove(BoardConstants_Fields.HF5, BoardConstants_Fields.HG4)));
+            Assert.IsTrue(moves.contains(Move.makeMove(BoardConstants_Fields.HF5, BoardConstants_Fields.HF4)));
+            Assert.IsTrue(moves.contains(Move.makeMove(BoardConstants_Fields.HF5, BoardConstants_Fields.HE4)));
+            Assert.IsTrue(moves.contains(Move.makeMove(BoardConstants_Fields.HF5, BoardConstants_Fields.HE5)));
+            Assert.IsTrue(moves.contains(Move.makeMove(BoardConstants_Fields.HF5, BoardConstants_Fields.HE6)));
+*/
+        }
+        
+        [TestMethod()]
         public void parseSanTest()
         {
-            var board = new ChessBoard("1/2/2/3/3/3/4/4/4/4/5/5/5/5/5/6/6/6/6/6/6/7/7/7/7/7/7/7/8/8/8/2k2K/1p///6P w - -");
+            var board = new ChessBoard("1/2/2/3/3/3/4/4/4/4/5/5/5/5/5/6/6/6/6/6/6/7/7/7/7/7/7/7/8/8/8/2k2K/1p//6P w - -");
             Assert.IsTrue(board.getPieceAt(7,4,5) == ChessConstants_Fields.KING);
             Assert.IsTrue(board.getSideAt(BitBoard.BitOffset(7,4,5)) == Player.white);
             Assert.IsTrue(board.getPieceAt(7,4,2) == ChessConstants_Fields.KING);
             Assert.IsTrue(board.getSideAt(BitBoard.BitOffset(7,4,2)) == Player.black);
-            Assert.IsTrue(board.getPieceAt(7,0,6) == ChessConstants_Fields.PAWN);
-            Assert.IsTrue(board.getSideAt(BitBoard.BitOffset(7,0,6)) == Player.white);
+            Assert.IsTrue(board.getPieceAt(7,1,6) == ChessConstants_Fields.PAWN);
+            Assert.IsTrue(board.getSideAt(BitBoard.BitOffset(7,1,6)) == Player.white);
             Assert.IsTrue(board.getPieceAt(7,3,1) == ChessConstants_Fields.PAWN);
             Assert.IsTrue(board.getSideAt(BitBoard.BitOffset(7,3,1)) == Player.black);
             Assert.IsTrue(board.WhiteToMove == true);
 
-            int move = Move.parseSAN(board,"Khe6-hf6");
+            int move = Move.parseSAN(board,"Khf5-hf6");
+            var from = Move.getFrom(move);
+            Assert.IsTrue(from == BoardConstants_Fields.HF5);
+            var to = Move.getTo(move);
+            Assert.IsTrue(to == BoardConstants_Fields.HF6);
+
             /*
             BitBoard pieces = board.getMask(false, ChessConstants_Fields.PAWN);
             int count = 0;
