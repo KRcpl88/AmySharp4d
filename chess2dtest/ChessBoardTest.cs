@@ -1,6 +1,7 @@
 
 using tgreiner.amy.bitboard;
 using tgreiner.amy.chess.engine;
+using tgreiner.amy.common.engine;
 
 namespace tgreiner.amy.chess.engine.Tests
 {
@@ -32,9 +33,32 @@ namespace tgreiner.amy.chess.engine.Tests
         }
 
         [TestMethod()]
+        public void generateMoveTest()
+        {
+            var board = new ChessBoard("8/8/8/2k2K/1p//6P w - -");
+            Assert.IsTrue(board.getPieceAt(BoardConstants_Fields.F5) == ChessConstants_Fields.KING);
+            Assert.IsTrue(board.isWhiteAt(BoardConstants_Fields.F5) == true);
+            Assert.IsTrue(board.getPieceAt(BoardConstants_Fields.C5) == ChessConstants_Fields.KING);
+            Assert.IsTrue(board.isWhiteAt(BoardConstants_Fields.C5) == false);
+
+			var plm = new IntVector();
+			board.generatePseudoLegalMoves(plm);
+
+            Assert.IsTrue(plm.size() == 10);
+
+            var moves = new IntVector();
+
+            board.generateLegalMoves(moves);
+            Assert.IsTrue(moves.size() == 10);
+
+            Assert.IsTrue(moves.contains(Move.makeMove(BoardConstants_Fields.F5, BoardConstants_Fields.F6)));
+        }
+
+
+        [TestMethod()]
         public void parseSanTest()
         {
-            var board = new ChessBoard("8/8/8/2k2K/1p///6P w - -");
+            var board = new ChessBoard("8/8/8/2k2K/1p//6P w - -");
             Assert.IsTrue(board.getPieceAt(BoardConstants_Fields.F5) == ChessConstants_Fields.KING);
             Assert.IsTrue(board.isWhiteAt(BoardConstants_Fields.F5) == true);
             Assert.IsTrue(board.getPieceAt(BoardConstants_Fields.C5) == ChessConstants_Fields.KING);
@@ -48,7 +72,7 @@ namespace tgreiner.amy.chess.engine.Tests
             Assert.IsTrue(board.WhiteToMove == true);
             */
 
-            int move = Move.parseSAN(board,"Ke6-f6");
+            int move = Move.parseSAN(board,"Kf5-f6");
             /*
             BitBoard pieces = board.getMask(false, ChessConstants_Fields.PAWN);
             int count = 0;
