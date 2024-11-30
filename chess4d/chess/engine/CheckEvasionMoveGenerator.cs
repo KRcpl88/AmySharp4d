@@ -292,6 +292,7 @@ namespace tgreiner.amy.chess.engine
 							}
 							if (validToSquares.GetBit(to) != 0)
 							{
+								// BUGBUG fix row calculation for 3D
 								if (to >= BoardConstants_Fields.HA8)
 								{
 									theMoves.add(Move.makeMove(from, to) | Move.PROMO_QUEEN);

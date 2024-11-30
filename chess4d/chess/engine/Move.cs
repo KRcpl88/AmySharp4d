@@ -647,6 +647,9 @@ namespace tgreiner.amy.chess.engine
 		/// </returns>
 		public static char file(int square)
 		{
+			// BUGBUG convert to3D
+			// BUGBUG convert all &7 to3D
+			
 			return (char) ('a' + (square & 7));
 		}
 		
@@ -659,6 +662,8 @@ namespace tgreiner.amy.chess.engine
 		/// </returns>
 		public static char rank(int square)
 		{
+			// BUGBUG convert to3D
+			// BUGBUG convert all >>3 to3D
 			return (char) ('1' + (square >> 3));
 		}
 	}

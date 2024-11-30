@@ -1747,6 +1747,7 @@ namespace tgreiner.amy.chess.engine
                 int from = attacks.findFirstOne();
                 attacks.ClearBit(from);
                 
+                // BUGBUG fix row calculation for pawn prmootion to 3D
                 if (getPieceAt(from) == ChessConstants_Fields.PAWN && (to <= BoardConstants_Fields.HH1 || to >= BoardConstants_Fields.HA8))
                 {
                     // promotion
@@ -1785,6 +1786,7 @@ namespace tgreiner.amy.chess.engine
                     int next = from + RANK_INC;
                     if (board[next] == 0)
                     {
+                        // BUGBUG fix row calculation for pawn prmootion to 3D
                         if (next >= BoardConstants_Fields.HA8)
                         {
                             // promotion
@@ -1814,6 +1816,7 @@ namespace tgreiner.amy.chess.engine
                     int next = from - RANK_INC;
                     if (board[next] == 0)
                     {
+                        // BUGBUG fix row calculation for pawn prmootion to 3D
                         if (next <= BoardConstants_Fields.HH1)
                         {
                             // promotion

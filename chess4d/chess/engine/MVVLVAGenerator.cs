@@ -87,6 +87,7 @@ namespace tgreiner.amy.chess.engine
 				}
 				if (board.getPieceAt(attSq) == ChessConstants_Fields.PAWN)
 				{
+					// BUGBUG fix capture row calculation
 					if (board.WhiteToMove && victimSq >= BoardConstants_Fields.HA8)
 					{
 						return attSq | (victimSq << 6) | Move.CAPTURE | Move.PROMO_QUEEN;

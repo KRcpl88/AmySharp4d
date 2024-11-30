@@ -97,6 +97,7 @@ namespace tgreiner.amy.chess.engine
                         board.generateTo(square, moves);
                     }
 
+                    // BGUBUG check pawnOn&th logic for 3D, looks like RSNK_MASK is wrong dimension
                     BitBoard pawnOn7th = board.getMask(board.WhiteToMove, ChessConstants_Fields.PAWN) & EvalMasks.RANK_MASK[board.WhiteToMove ? 6 : 1];
 
                     while (pawnOn7th.IsEmpty() == false)
@@ -104,6 +105,8 @@ namespace tgreiner.amy.chess.engine
                         int square = pawnOn7th.findFirstOne();
                         pawnOn7th.ClearBit(square);
 
+                        // BUGBUG fix row math to 3D
+                        // BUGBUG fix all +- 8 to 3D
                         int to = board.WhiteToMove ? square + 8 : square - 8;
                         if (board.getPieceAt(to) != 0)
                         {
