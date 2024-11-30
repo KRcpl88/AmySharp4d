@@ -447,6 +447,7 @@ namespace tgreiner.amy.chess.engine
         private IEvaluator evaluator;
         
         /// <summary>The increment needed to advance one rank. </summary>
+        // BUGBUG fix math for RANK_INC, find and replace wiht LRF rank calculation
         private const int RANK_INC = 8;
         
         /// <summary> Indicates wether a piece is a sliding piece - <code>true</code> for
@@ -1786,8 +1787,8 @@ namespace tgreiner.amy.chess.engine
                     int next = from + RANK_INC;
                     if (board[next] == 0)
                     {
-                        // BUGBUG fix row calculation for pawn prmootion to 3D
-                        if (next >= BoardConstants_Fields.HA8)
+                        LRF nextLrf = (LRF) next;
+                        if (nextLrf.Rank == (BitBoard.LEVEL_WIDTH[nextLrf.Level] - 1))
                         {
                             // promotion
                             int move = Move.makeMove(from, next);
@@ -1801,6 +1802,7 @@ namespace tgreiner.amy.chess.engine
                             mvs.add(Move.makeMove(from, next));
                             if (next >= BoardConstants_Fields.HA3 && next <= BoardConstants_Fields.HH3)
                             {
+                                // BUGBUG fix math for RANK_INC
                                 next += RANK_INC;
                                 if (board[next] == 0)
                                 {
@@ -1816,8 +1818,7 @@ namespace tgreiner.amy.chess.engine
                     int next = from - RANK_INC;
                     if (board[next] == 0)
                     {
-                        // BUGBUG fix row calculation for pawn prmootion to 3D
-                        if (next <= BoardConstants_Fields.HH1)
+                        if (((LRF)next).Rank == 0)
                         {
                             // promotion
                             int move = Move.makeMove(from, next);
@@ -1831,6 +1832,7 @@ namespace tgreiner.amy.chess.engine
                             mvs.add(Move.makeMove(from, next));
                             if (next >= BoardConstants_Fields.HA6 && next <= BoardConstants_Fields.HH6)
                             {
+                                // BUGBUG fix math for RANK_INC
                                 next -= RANK_INC;
                                 if (board[next] == 0)
                                 {
@@ -2105,8 +2107,9 @@ namespace tgreiner.amy.chess.engine
                     }
                     buffer.Append("\n");
                 }
-                buffer.Append("  ");
+                buffer.Append(" ");
                 IndentRow(buffer, level);
+                buffer.Append((char)(97 + level));
                 for (int file = 0; file < BitBoard.LEVEL_WIDTH[level]; file++)
                 {
                     buffer.Append("   ");
