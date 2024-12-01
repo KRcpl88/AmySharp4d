@@ -66,13 +66,4 @@ namespace tgreiner.amy.chess.engine
 	}
 
 	public enum Player { none, black, white};
-
-	// BUGBUG not needed
-	/*
-	public interface ChessConstants
-	{
-		//UPGRADE_NOTE: Members of interface 'ChessConstants' were extracted into structure 'ChessConstants_Fields'. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1045'"
-		
-	}
-	*/
 }

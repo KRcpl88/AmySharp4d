@@ -124,7 +124,6 @@ namespace tgreiner.amy.chess.engine
 		{
             // expect("xboard");
             // expectRE("protover \\d+");
-            BitBoard.StaticInitializer();
 
             sendFeatures();
 			

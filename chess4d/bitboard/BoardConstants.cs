@@ -124,12 +124,4 @@ namespace tgreiner.amy.bitboard
         public const int HG1 = LH + 6;
         public const int HH1 = LH + 7;
     }
-
-    // BUGBUG not needed
-    /*
-    public interface BoardConstants
-    {
-        //UPGRADE_NOTE: Members of interface 'BoardConstants' were extracted into structure 'BoardConstants_Fields'. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1045'"
-    }
-    */
 }

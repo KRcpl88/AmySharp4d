@@ -81,9 +81,9 @@ namespace tgreiner.amy.chess.engine.Tests
 
             int move = Move.parseSAN(board,"Kf5-f6");
             var from = Move.getFrom(move);
-            Assert.IsTrue(from == BoardConstants_Fields.HF5);
+            Assert.IsTrue(from == BoardConstants_Fields.F5);
             var to = Move.getTo(move);
-            Assert.IsTrue(to == BoardConstants_Fields.HF6);
+            Assert.IsTrue(to == BoardConstants_Fields.F6);
 
             /*
             BitBoard pieces = board.getMask(false, ChessConstants_Fields.PAWN);

@@ -27,6 +27,7 @@
 */
 using System;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks.Dataflow;
 namespace tgreiner.amy.bitboard
 {
     // Level, Rank and File of a square
@@ -103,16 +104,149 @@ namespace tgreiner.amy.bitboard
             return ((offset < BitBoard.SIZE) && (offset >= 0));
         }   
 
+        /// <summary>Explicit conversion from LRF to square offset.</summary>
         public static explicit operator int(LRF obj)
         {
             return BitBoard.BitOffset(obj.Level, obj.Rank, obj.File);
         }
 
+        /// <summary>Explicit conversion from square offset to LRF.</summary>
         public static explicit operator LRF(int offset)
         {
             return new LRF(offset);
         }
     };
+
+    /// <summary>Universal coordinates for level, rasnk and file in 1/2 squares, aligned with each level.</summary>
+    public class UCoord
+    {
+        /// <summary>Cartersian coordinate data.</summary>
+        public int[] data = new int[3];
+
+        /// <summary>Data index for level.</summary>
+        public const int idxLevel = 0;
+
+        /// <summary>Data index for half ranks.</summary>
+        public const int idxHalfRank = 1;
+
+        /// <summary>Data index for half files.</summary>
+        public const int idxHalfFile = 2;
+
+        public UCoord() {}
+
+        public UCoord(int level, int halfRank, int halfFile) 
+        {
+            Level = level;
+            HalfRank = halfRank;
+            HalfFile = halfFile;
+        }
+
+        /// <summary>Level.</summary>
+        public int Level
+        {
+            get {return data[idxLevel];}
+            set {data[idxLevel] = value;}
+        }
+
+        /// <summary>1/2 ranks.</summary>
+        public int HalfRank
+        {
+            get {return data[idxHalfRank];}
+            set {data[idxHalfRank] = value;}
+        }
+
+        /// <summary>1/2 files.</summary>
+        public int HalfFile
+        {
+            get {return data[idxHalfFile];}
+            set {data[idxHalfFile] = value;}
+        }
+
+        /// <summary>Rank adjusted for the current level</summary>
+        public int Rank
+        {
+            get {return (data[idxHalfRank] - (BitBoard.MAX_LEVEL_WIDTH - BitBoard.LEVEL_WIDTH[Level]))/2;}
+            set {data[idxHalfRank] = (value * 2) + (BitBoard.MAX_LEVEL_WIDTH - BitBoard.LEVEL_WIDTH[Level]);}
+        }
+
+        /// <summary>File adjusted for the current level</summary>
+        public int File
+        {
+            get {return (data[idxHalfFile] - (BitBoard.MAX_LEVEL_WIDTH - BitBoard.LEVEL_WIDTH[Level]))/2;}
+            set {data[idxHalfFile] = (value * 2) + (BitBoard.MAX_LEVEL_WIDTH - BitBoard.LEVEL_WIDTH[Level]);}
+        }
+
+        /// <summary>Explicit conversion from UCoord to square offset.</summary>
+        public static explicit operator int(UCoord obj)
+        {
+            if(LRF.IsValid(obj.Level, obj.Rank, obj.File))
+            {
+                return BitBoard.BitOffset(obj.Level, obj.Rank, obj.File);
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        /// <summary>Explicit conversion from square offset to UCoord.</summary>
+        public static explicit operator UCoord(int offset)
+        {
+            return (UCoord)(LRF)(offset);
+        }
+
+        /// <summary>Explicit conversion from UCoord to LRF.</summary>
+        public static explicit operator LRF(UCoord obj)
+        {
+            return new LRF(obj.Level, obj.Rank, obj.File);
+        }
+
+        /// <summary>Explicit conversion from LRF to UCoord.</summary>
+        public static explicit operator UCoord(LRF lrf)
+        {
+            var result = new UCoord();
+            result.Level = lrf.Level;
+            result.Rank = lrf.Rank;
+            result.File = lrf.File;
+            return result;
+        }
+
+        public static UCoord operator +(UCoord a, UCoord b)
+        {
+            var result = new UCoord();
+
+            for (int i = 0; result.data.Length > i; ++i)
+            {
+                result.data[i] = a.data[i] + b.data[i];
+            }
+
+            return result;
+        }
+
+        public static UCoord operator -(UCoord a, UCoord b)
+        {
+            var result = new UCoord();
+
+            for (int i = 0; result.data.Length > i; ++i)
+            {
+                result.data[i] = a.data[i] - b.data[i];
+            }
+
+            return result;
+        }
+
+        public static UCoord operator -(UCoord a)
+        {
+            var result = new UCoord();
+
+            for (int i = 0; result.data.Length > i; ++i)
+            {
+                result.data[i] = - a.data[i];
+            }
+
+            return result;
+        }
+    }
 
     /// <summary> Some useful methods for using bitboards.
     /// 
@@ -121,8 +255,13 @@ namespace tgreiner.amy.bitboard
     /// </author>
     public sealed class BitBoard
     {
+        /// <summary>The number of squares in each level.</summary>
         public static readonly int[] LEVEL_SIZE = { 1, 4, 9, 16, 25, 36, 49, 64, 49, 36, 25, 16, 9, 4, 1 };
+
+        /// <summary>The width of each level.</summary>
         public static readonly int[] LEVEL_WIDTH = { 1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5, 4, 3, 2, 1 };
+
+        /// <summary>offset in squares to the first square in each level.</summary>
         public static readonly int[] LEVEL_OFFSET = 
         {
             BoardConstants_Fields.LA, 
@@ -142,11 +281,19 @@ namespace tgreiner.amy.bitboard
             BoardConstants_Fields.LO
         };
 
+        /// <summary>The number of levels in a bitboard.</summary>
         public const int NUM_LEVELS = 15;
 
-        /// <summary>The size of a bitboard. </summary>
+        /// <summary>The width of the largest level in the botboard.</summary>
+        public const int MAX_LEVEL_WIDTH = 8;
+
+        /// <summary>The total number of squares of a bitboard. </summary>
         public const int SIZE = 344;
+
+        /// <summary>The total number of bits in a ulong. </summary>
         public const int ULONG_SIZE_BITS = 8 * sizeof(ulong);
+
+        /// <summary>The number of ulongs needed to store the bits for each square in the botboard.</summary>
         public const int SIZE_LONG = (344 / ULONG_SIZE_BITS) + 1;
 
 
@@ -156,26 +303,11 @@ namespace tgreiner.amy.bitboard
 
 
         /// <summary>Masks all but first column. </summary>
-        private const long ALL_BUT_FIRST_COLUMN = 0x7F7F7F7F7F7F7F7FL;
+        //private const long ALL_BUT_FIRST_COLUMN = 0x7F7F7F7F7F7F7F7FL;
 
         /// <summary>Masks all but last column. </summary>
         //UPGRADE_TODO: Literal detected as an unsigned long can generate compilation errors. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1175'"
-        private const long ALL_BUT_LAST_COLUMN = -72340172838076674; //0xFEFEFEFEFEFEFEFEL
-
-        /// <summary>Used to set a bit in a BitBoard. </summary>
-        //UPGRADE_NOTE: Final was removed from the declaration of 'SET_MASK '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
-        // BUGBUG replace this with SetBit
-        //public static readonly long[] SET_MASK = new long[SIZE];
-
-        /// <summary>Used to clear a bit in a BitBoard. </summary>
-        //UPGRADE_NOTE: Final was removed from the declaration of 'CLEAR_MASK '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
-        // BUGBUG replace this with ClearBit
-        //public static readonly long[] CLEAR_MASK = new long[SIZE];
-
-        /// <summary>Used to find the first bit set in a BitBoard. </summary>
-        //UPGRADE_NOTE: Final was removed from the declaration of 'FIRST_ONES '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
-        // BUGBUG find first one has been simplified to not need this, but this is a useful optimization, consider updating later
-        private static readonly int[] FIRST_ONES = new int[65536];
+        //private const long ALL_BUT_LAST_COLUMN = -72340172838076674; //0xFEFEFEFEFEFEFEFEL
 
         private ulong[] data;
 
@@ -466,23 +598,6 @@ namespace tgreiner.amy.bitboard
             return buf.ToString();
         }
 
-        public static void StaticInitializer()
-        {
-            {
-                //long one = 1;
-                for (int mask = 0; mask < 65536; mask++)
-                {
-                    for (int bit = 0; bit < 16; bit++)
-                    {
-                        if ((mask & (1 << bit)) != 0)
-                        {
-                            FIRST_ONES[mask] = bit;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
 
         public void Clear()
         {

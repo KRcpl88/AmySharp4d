@@ -62,73 +62,73 @@ namespace tgreiner.amy.chess.engine
 		{
 		}
 
-		private static readonly short[][][] ATTACK_DELTA = new short [][][]
+		private static readonly UCoord[][] ATTACK_DELTA = new UCoord [][]
 		{
 			// first piece 0 is not valid
 			null,
 			// WHITE_PAWN
-			new short [][] 
+			new UCoord[]
 			{
-				new short [] {0, 1, -1},
-				new short [] {0, 1, 1}
+				new UCoord(0, 2, -2),
+				new UCoord(0, 2, 2)
 			},
 			// KNIGHT
-			new short [][] 
+			new UCoord[] 
 			{
-				new short [] {0, -2, -1},
-				new short [] {0, -2, 1},
-				new short [] {0, -1, 2},
-				new short [] {0, 1, 2},
-				new short [] {0, 2, -1},
-				new short [] {0, 2, 1},
-				new short [] {0, -1, -2},
-				new short [] {0, 1, -2}
+				new UCoord(0, -4, -2),
+				new UCoord(0, -4, 2),
+				new UCoord(0, -2, 4),
+				new UCoord(0, 2, 4),
+				new UCoord(0, 4, -2),
+				new UCoord(0, 4, 2),
+				new UCoord(0, -2, -4),
+				new UCoord(0, 2, -4)
 			},
 			// BISHOP
-			new short [][] 
+			new UCoord[] 
 			{
-				new short [] {0,  1,  1},
-				new short [] {0,  1, -1},
-				new short [] {0, -1, -1},
-				new short [] {0, -1,  1}
+				new UCoord(0,  2, 2),
+				new UCoord(0,  2, -2),
+				new UCoord(0, -2, -2),
+				new UCoord(0, -2, 2)
 			},
 			// ROOK
-			new short [][] 
+			new UCoord[] 
 			{
-				new short [] {0,  0,  1},
-				new short [] {0,  1,  0},
-				new short [] {0,  0, -1},
-				new short [] {0, -1,  0}
+				new UCoord(0,  0, 2),
+				new UCoord(0,  2, 0),
+				new UCoord(0,  0, -2),
+				new UCoord(0, -2, 0)
 			},
 			// QUEEN
-			new short [][] 
+			new UCoord[] 
 			{
-				new short [] {0,  0,  1},
-				new short [] {0,  1,  1},
-				new short [] {0,  1,  0},
-				new short [] {0,  1, -1},
-				new short [] {0,  0, -1},
-				new short [] {0, -1, -1},
-				new short [] {0, -1,  0},
-				new short [] {0, -1,  1}
+				new UCoord(0,  0, 2),
+				new UCoord(0,  2, 2),
+				new UCoord(0,  2, 0),
+				new UCoord(0,  2, -2),
+				new UCoord(0,  0, -2),
+				new UCoord(0, -2, -2),
+				new UCoord(0, -2, 0),
+				new UCoord(0, -2, 2)
 			},
 			// KING
-			new short [][] 
+			new UCoord[] 
 			{
-				new short [] {0,  0,  1},
-				new short [] {0,  1,  1},
-				new short [] {0,  1,  0},
-				new short [] {0,  1, -1},
-				new short [] {0,  0, -1},
-				new short [] {0, -1, -1},
-				new short [] {0, -1,  0},
-				new short [] {0, -1,  1}
+				new UCoord(0,  0, 2),
+				new UCoord(0,  2, 2),
+				new UCoord(0,  2, 0),
+				new UCoord(0,  2, -2),
+				new UCoord(0,  0, -2),
+				new UCoord(0, -2, -2),
+				new UCoord(0, -2, 0),
+				new UCoord(0, -2, 2)
 			},
 			// BLACK_PAWN
-			new short [][] 
+			new UCoord[] 
 			{
-				new short [] {0, -1, -1},
-				new short [] {0, -1, 1}
+				new UCoord(0, -2, -2),
+				new UCoord(0, -2, 2)
 			}
 		};
 		
@@ -259,41 +259,25 @@ namespace tgreiner.amy.chess.engine
 
                 for (short direction = 0; direction < ATTACK_DELTA[piece].Length; ++direction)
                 {
-					LRF nextLevelRankFile = new LRF(square);
+					var nextCoord = (UCoord)(LRF)square;
 					int prevSquare = square;
-					short[] delta;
+					UCoord delta;
 					long nextDirection = -1;
 
 					if ((direction + 1) < (ATTACK_DELTA[piece].Length ))
 					{
 						delta = ATTACK_DELTA[piece][direction+1];
-						LRF nextLrf = nextLevelRankFile;
-						nextLrf.Level += delta[0];
-						nextLrf.Rank += delta[1];
-						nextLrf.File += delta[2];
-
-						if (nextLrf.IsValid())
-						{
-							nextDirection = (long)nextLrf;
-						}
-						else
-						{
-							nextDirection = -1;
-						}
+						nextDirection = (int)(delta + nextCoord);
 					}
 
 					delta = ATTACK_DELTA[piece][direction];
-					//short[] nextDelta = ((direction + 1) < (ATTACK_DELTA[piece].Length )) ? ATTACK_DELTA[piece][direction+1] : null;
 
-					prevSquare = (int)nextLevelRankFile;
-					nextLevelRankFile.Level += delta[0];
-					nextLevelRankFile.Rank += delta[1];
-					nextLevelRankFile.File += delta[2];
-					NEXT_DIR[piece][square][prevSquare] = (short)(int)nextDirection;
+					prevSquare = (int)nextCoord;
+					NEXT_DIR[piece][square][prevSquare] = (short)nextDirection;
 
-                    while (nextLevelRankFile.IsValid())
+                    while (LRF.IsValid(nextCoord.Level, nextCoord.Rank, nextCoord.File))
                     {
-                        NEXT_POS[piece][square][prevSquare] = (short)(int)nextLevelRankFile;
+                        NEXT_POS[piece][square][prevSquare] = (short)nextCoord;
 
 						if((piece == QUEEN) && (square != prevSquare))
 						{
@@ -301,13 +285,10 @@ namespace tgreiner.amy.chess.engine
 	                        NEXT_SQ[square][prevSquare] = NEXT_POS[piece][square][prevSquare];
 						}
 
+                        prevSquare = (int)nextCoord;
+						nextCoord += delta;
 
-                        prevSquare = (int)nextLevelRankFile;
-						nextLevelRankFile.Level += delta[0];
-						nextLevelRankFile.Rank += delta[1];
-						nextLevelRankFile.File += delta[2];
-
-                        NEXT_DIR[piece][square][prevSquare] = (short)(int)nextDirection;
+                        NEXT_DIR[piece][square][prevSquare] = (short)nextDirection;
                     }
                 }
             }
@@ -363,11 +344,12 @@ namespace tgreiner.amy.chess.engine
                 LRF levelRankFile = new LRF(square);
                 int prevSquare = square;
 
-                foreach (short[] delta in ATTACK_DELTA[piece])
+                foreach (UCoord delta in ATTACK_DELTA[piece])
                 {
-                    if (LRF.IsValid(levelRankFile.Level + delta[0], levelRankFile.Rank + delta[1], levelRankFile.File + delta[2]))
+					UCoord temp = (UCoord)levelRankFile + delta;
+                    if (LRF.IsValid(temp.Level, temp.Rank, temp.File))
                     {
-                        LRF nextLrf = new LRF(levelRankFile.Level + delta[0], levelRankFile.Rank + delta[1], levelRankFile.File + delta[2]);
+                        LRF nextLrf = (LRF)temp;
 
                         NEXT_POS[piece][square][prevSquare] = (short)(int)nextLrf;
                         NEXT_DIR[piece][square][prevSquare] = (short)(int)nextLrf;

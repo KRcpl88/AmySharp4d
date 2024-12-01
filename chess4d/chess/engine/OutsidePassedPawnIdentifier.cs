@@ -104,7 +104,8 @@ namespace tgreiner.amy.chess.engine
 				if ((blackPawns & FILES_LEFT_QS[file]).IsEmpty())
 				{
 					//UPGRADE_NOTE: Labeled break statement was changed to a goto statement. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1012'"
-					goto outer_brk;
+					//goto outer_brk;
+					break;
 				}
 				
 				if (((whitePawns & FILES_RIGHT_QS[file]).IsEmpty() == false) && ((blackPawns & FILES_RIGHT_QS[file]).IsEmpty() == false))
@@ -116,7 +117,7 @@ namespace tgreiner.amy.chess.engine
 			}
 			//UPGRADE_NOTE: Label 'outer_brk' was added. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1011'"
 // BUGBUG WTF is outer_brk?
-outer_brk: ;
+// outer_brk: ;
 			
 			
 			for (int file = 0; file < 4; file++)
