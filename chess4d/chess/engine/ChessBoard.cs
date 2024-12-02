@@ -403,7 +403,7 @@ namespace tgreiner.amy.chess.engine
         /// </summary>
         //UPGRADE_NOTE: The initialization of  'atkFr' was moved to method 'InitBlock'. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1005'"
         private BitBoard[] attackFrom;
-        
+
         /// <summary>Bitboards containing the piece masks. </summary>
         private BitBoard[][] pieceMask = new BitBoard[2][];
         
@@ -2027,13 +2027,18 @@ namespace tgreiner.amy.chess.engine
             
             return true;
         }
+
+        public override System.String ToString()
+        {
+            return ToString(-1);
+        }
         
         /// <summary> Create a textual representatiquion of the current position.
         /// 
         /// </summary>
         /// <returns> the current position as an ASCII graphics board.
         /// </returns>
-        public override System.String ToString()
+        public System.String ToString(int showAttacksFrom)
         {
             System.Text.StringBuilder buffer = new System.Text.StringBuilder();
             
@@ -2060,29 +2065,22 @@ namespace tgreiner.amy.chess.engine
                         buffer.Append('|');
                         if (enPassant != 0 && i == enPassant)
                         {
-                            buffer.Append("<E>");
+                            if ((showAttacksFrom < 0) && (attackFrom[showAttacksFrom].GetBit(i) == 1))
+                            {
+                                buffer.Append(".E.");
+                            }
+                            else
+                            {
+                                buffer.Append("<E>");
+                            }
                         }
                         else
                         {
-                            if (getSideAt(i) == Player.black)
-                            {
-                                buffer.Append('*');
-                            }
-                            else
-                            {
-                                buffer.Append(' ');
-                            }
+                            MarkPieceSide(buffer, i, showAttacksFrom);
 
                             buffer.Append(PIECE_NAME[getPieceAt(i)]);
 
-                            if (getSideAt(i) == Player.black)
-                            {
-                                buffer.Append('*');
-                            }
-                            else
-                            {
-                                buffer.Append(' ');
-                            }
+                            MarkPieceSide(buffer, i, showAttacksFrom);
                         }
                     }
                     buffer.Append("|");
@@ -2118,7 +2116,34 @@ namespace tgreiner.amy.chess.engine
                 }
                 buffer.Append("\n");
             }
+            showAttacksFrom = -1;
             return buffer.ToString();
+        }
+
+        private void MarkPieceSide(StringBuilder buffer, int i, int showAttacksFrom)
+        {
+            if (getSideAt(i) == Player.black)
+            {
+                if ((showAttacksFrom >= 0) && (attackFrom[showAttacksFrom].GetBit(i) == 1))
+                {
+                    buffer.Append('x');
+                }
+                else
+                {
+                    buffer.Append('*');
+                }
+            }
+            else
+            {
+                if ((showAttacksFrom >= 0) && (attackFrom[showAttacksFrom].GetBit(i) == 1))
+                {
+                    buffer.Append('.');
+                }
+                else
+                {
+                    buffer.Append(' ');
+                }
+            }
         }
 
         private static void IndentRow(StringBuilder buffer, int level)

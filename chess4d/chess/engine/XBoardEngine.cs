@@ -201,6 +201,20 @@ namespace tgreiner.amy.chess.engine
                         log.Error("Got bad move " + moveStr);
                     }
                 }
+                else if (this.command.StartsWith("showmoves "))
+                {
+                    System.String squareStr = this.command.Substring(10);
+                    try
+                    {
+                        LRF lrf = new LRF(squareStr[0] - 'a',squareStr[2] - '1', squareStr[1] - 'a');
+
+                        Console.WriteLine(board.ToString((int)lrf));
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        log.Error("Invalid square " + squareStr);
+                    }
+                }
                 else if ("force".Equals(this.command))
                 {
                     if (ponderThread != null)
