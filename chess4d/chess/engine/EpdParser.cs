@@ -230,6 +230,7 @@ namespace tgreiner.amy.chess.engine
         }
 
         // Genrates FEN except the the last part(no of moves)
+        // BUGBUG math is wrong for 3D, assumes 8x8 board
         public static string GetFEN(IPosition pos)
         {
             StringBuilder sb = new StringBuilder(100);

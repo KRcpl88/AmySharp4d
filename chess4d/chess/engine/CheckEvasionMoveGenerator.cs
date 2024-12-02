@@ -285,6 +285,7 @@ namespace tgreiner.amy.chess.engine
 						
 						if (board.WhiteToMove)
 						{
+							// BUGBUG +8 is meant to be next rank, fix math for 3D
 							int to = from + 8;
 							if (board.getPieceAt(to) != 0)
 							{
@@ -316,6 +317,7 @@ namespace tgreiner.amy.chess.engine
 						}
 						else
 						{
+							// BUGBUG -8 is meant to be prior/lowwer rank, fix math for 3D
 							int to = from - 8;
 							if (board.getPieceAt(to) != 0)
 							{

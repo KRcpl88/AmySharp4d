@@ -67,6 +67,7 @@ namespace tgreiner.amy.chess.engine
         //UPGRADE_NOTE: Final was removed from the declaration of 'BLACK_PASSED '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
         public static readonly BitBoard[] BLACK_PASSED;
         
+        // BUGBUG RANK_MASK and FILE_MASK need to be updated for 3D board
         /// <summary>Masks for file. </summary>
         //UPGRADE_NOTE: Final was removed from the declaration of 'FILE_MASK '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
         public static readonly BitBoard[] FILE_MASK = BitBoard.CreateArray(8);

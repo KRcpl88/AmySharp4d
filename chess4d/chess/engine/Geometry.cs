@@ -379,6 +379,7 @@ namespace tgreiner.amy.chess.engine
 				trfr[i] = 0;
 			}
 			
+			// BUGBUG fix trfr/trto initialization for 3D LRF
 			for (i = 0; i < 10; i++)
 			{
 				edge[i] = true;
@@ -502,7 +503,7 @@ namespace tgreiner.amy.chess.engine
 			}
 
 			NEXT_DIR = new short[LAST_PIECE][][];
-			for (int i3 = 0; i3 < 8; i3++)
+			for (int i3 = 0; i3 < LAST_PIECE; i3++)
 			{
 				NEXT_DIR[i3] = new short[BitBoard.SIZE][];
 				for (int i4 = 0; i4 < BitBoard.SIZE; i4++)

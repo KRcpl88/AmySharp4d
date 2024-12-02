@@ -1748,7 +1748,7 @@ namespace tgreiner.amy.chess.engine
                 int from = attacks.findFirstOne();
                 attacks.ClearBit(from);
                 
-                // BUGBUG fix row calculation for pawn prmootion to 3D
+                // BUGBUG fix row calculation for pawn promotion to 3D
                 if (getPieceAt(from) == ChessConstants_Fields.PAWN && (to <= BoardConstants_Fields.HH1 || to >= BoardConstants_Fields.HA8))
                 {
                     // promotion
@@ -2002,6 +2002,7 @@ namespace tgreiner.amy.chess.engine
                         return false;
                     }
                     
+                    // BUGBUG fix promo row logic here for 3D / ranks
                     if (whiteToMove && !Move.isPromotion(move) && to >= BoardConstants_Fields.HA8)
                     {
                         return false;

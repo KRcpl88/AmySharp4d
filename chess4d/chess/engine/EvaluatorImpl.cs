@@ -814,6 +814,7 @@ namespace tgreiner.amy.chess.engine
 		private int rookOnSemiOpenFile = 3;
 		
 		/// <summary>Penalty for isolated pawn, indexed by file. </summary>
+		/// BUGBUG this math assumes 2D 8x8 board
 		private int[] isolatedPawn = new int[]{- 7, - 8, - 9, - 10, - 10, - 9, - 8, - 7};
 		
 		/// <summary>Penalty for backward pawn. </summary>
