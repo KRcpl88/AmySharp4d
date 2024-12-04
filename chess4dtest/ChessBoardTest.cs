@@ -114,6 +114,40 @@ namespace tgreiner.amy.chess.engine.Tests
 
         }
 
+                [TestMethod()]
+        public void attsckTests()
+        {
+            var board = new ChessBoard("1/2/2/3/3/3/4/4/4/4/5/5/5/5/5/6/6/6/6/6/6/7/7/7/7/7/7/7/8/1r/6R/2k2K/1p//7P w - -");
+
+            BitBoard pieces = board.getMask(false, ChessConstants_Fields.PAWN);
+            Assert.IsTrue(pieces.countBits() == 1);
+            pieces = board.getMask(true, ChessConstants_Fields.PAWN);
+            Assert.IsTrue(pieces.countBits() == 1);
+            pieces = board.getMask(false, ChessConstants_Fields.ROOK);
+            Assert.IsTrue(pieces.countBits() == 1);
+            pieces = board.getMask(true, ChessConstants_Fields.ROOK);
+            Assert.IsTrue(pieces.countBits() == 1);
+
+
+            int squareWhiteRook = pieces.findFirstOne();
+            Assert.IsTrue(squareWhiteRook == BoardConstants_Fields.HG6);
+
+            BitBoard moves = board.getAttackTo(squareWhiteRook);
+            moves.SetBit(BoardConstants_Fields.HG6);
+
+            BitBoard fileG = EvalMasks.FILE_MASK[((LRF)squareWhiteRook).File];
+            BitBoard rank6 = EvalMasks.RANK_MASK[((LRF)squareWhiteRook).Rank];
+
+            // rook attacks should be file G and rank 6
+            Assert.IsTrue((moves & fileG) == fileG);
+            Assert.IsTrue((moves & rank6) == rank6);
+
+            moves &= ~fileG;
+            moves &= ~rank6;
+            Assert.IsTrue(moves.IsEmpty());
+        }
+
+
         [TestMethod()]
         public void standardBoardLayoutTest()
         {

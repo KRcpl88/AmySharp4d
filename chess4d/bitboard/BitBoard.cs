@@ -339,6 +339,32 @@ namespace tgreiner.amy.bitboard
             return Enumerable.Repeat(new BitBoard(), size).ToArray();
         }
 
+        public static bool operator ==(BitBoard a, BitBoard b)
+        {
+            for (int i =0; a.data.Length > i; ++i)
+            {
+                if (a.data[i] != b.data[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        
+        public static bool operator !=(BitBoard a, BitBoard b)
+        {
+            for (int i =0; a.data.Length > i; ++i)
+            {
+                if (a.data[i] != b.data[i])
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static BitBoard operator &(BitBoard a, BitBoard b)
         {
             var result = new BitBoard();

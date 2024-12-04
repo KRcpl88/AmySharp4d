@@ -2079,7 +2079,7 @@ namespace tgreiner.amy.chess.engine
 		/// </param>
 		/// <returns> the atkFr mask
 		/// </returns>
-		internal long getAtkFr(int sq)
+		public long getAtkFr(int sq)
 		{
 			return atkFr[sq];
 		}
@@ -2091,7 +2091,7 @@ namespace tgreiner.amy.chess.engine
 		/// </param>
 		/// <returns> the atkTo mask
 		/// </returns>
-		internal long getAtkTo(int sq)
+		public long getAtkTo(int sq)
 		{
 			return atkTo[sq];
 		}

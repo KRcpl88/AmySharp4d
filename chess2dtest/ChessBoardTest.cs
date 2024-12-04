@@ -1,4 +1,5 @@
 
+using System.Reflection;
 using tgreiner.amy.bitboard;
 using tgreiner.amy.chess.engine;
 using tgreiner.amy.common.engine;
@@ -65,7 +66,7 @@ namespace tgreiner.amy.chess.engine.Tests
         [TestMethod()]
         public void parseSanTest()
         {
-            var board = new ChessBoard("8/8/8/2k2K/1p//6P w - -");
+            var board = new ChessBoard("8/1r/6R/2k2K/1p//7P w - -");
             Assert.IsTrue(board.getPieceAt(BoardConstants_Fields.F5) == ChessConstants_Fields.KING);
             Assert.IsTrue(board.isWhiteAt(BoardConstants_Fields.F5) == true);
             Assert.IsTrue(board.getPieceAt(BoardConstants_Fields.C5) == ChessConstants_Fields.KING);
@@ -79,33 +80,39 @@ namespace tgreiner.amy.chess.engine.Tests
             Assert.IsTrue(board.WhiteToMove == true);
             */
 
-            int move = Move.parseSAN(board,"Kf5-f6");
+            int move = Move.parseSAN(board,"Kf5-f4");
             var from = Move.getFrom(move);
             Assert.IsTrue(from == BoardConstants_Fields.F5);
             var to = Move.getTo(move);
-            Assert.IsTrue(to == BoardConstants_Fields.F6);
+            Assert.IsTrue(to == BoardConstants_Fields.F4);
 
-            /*
-            BitBoard pieces = board.getMask(false, ChessConstants_Fields.PAWN);
-            int count = 0;
-            LRF lrf;
-            while (pieces.IsEmpty() == false)
-            {
-                lrf = (LRF)pieces.findFirstOne();
-                switch(count)
-                {
-                    case 0:
-                        Assert.IsTrue(lrf.Level == 7 && lrf.Rank == 3 && lrf.File == 1) ;
-                        break;
-                    case 1:
-                        Assert.IsTrue(lrf.Level == 7 && lrf.Rank == 5 && lrf.File == 4) ;
-                        break;
-                }
-                pieces.ClearBit((int)lrf);
-                ++count;
-            }
-            */
+            long pieces = board.getMask(false, ChessConstants_Fields.PAWN);
+            Assert.IsTrue(BitBoard.countBits(pieces) == 1);
+            pieces = board.getMask(true, ChessConstants_Fields.PAWN);
+            Assert.IsTrue(BitBoard.countBits(pieces) == 1);
+            pieces = board.getMask(false, ChessConstants_Fields.ROOK);
+            Assert.IsTrue(BitBoard.countBits(pieces) == 1);
+            pieces = board.getMask(true, ChessConstants_Fields.ROOK);
+            Assert.IsTrue(BitBoard.countBits(pieces) == 1);
 
+
+            int squareWhiteRook = BitBoard.findFirstOne(pieces);
+            Assert.IsTrue(squareWhiteRook == BoardConstants_Fields.G6);
+
+            long moves = board.getAtkTo(squareWhiteRook);
+
+            long fileG = EvalMasks.FILE_MASK[squareWhiteRook & 7];
+            long rank6 = EvalMasks.RANK_MASK[squareWhiteRook >> 3];
+
+            // rook attacks should be file G and rank 6
+            Assert.IsTrue(((moves & fileG)  
+                | BitBoard.SET_MASK[BoardConstants_Fields.G6]) == fileG);
+            Assert.IsTrue(((moves & rank6)  
+                | BitBoard.SET_MASK[BoardConstants_Fields.G6]) == rank6);
+
+            moves &= ~fileG;
+            moves &= ~rank6;
+            Assert.IsTrue(moves == 0);
         }
 
         [TestMethod()]

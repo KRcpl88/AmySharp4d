@@ -2294,7 +2294,7 @@ namespace tgreiner.amy.chess.engine
         /// </param>
         /// <returns> the atkFr mask
         /// </returns>
-        internal BitBoard getAttackFrom(int square)
+        public BitBoard getAttackFrom(int square)
         {
             return attackFrom[square];
         }
@@ -2306,7 +2306,7 @@ namespace tgreiner.amy.chess.engine
         /// </param>
         /// <returns> the atkTo mask
         /// </returns>
-        internal BitBoard getAttackTo(int square)
+        public BitBoard getAttackTo(int square)
         {
             return attackTo[square];
         }
