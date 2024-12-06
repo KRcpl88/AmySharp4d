@@ -446,10 +446,6 @@ namespace tgreiner.amy.chess.engine
         /// <summary>The Evaluator for this board. </summary>
         private IEvaluator evaluator;
         
-        /// <summary>The increment needed to advance one rank. </summary>
-        // BUGBUG fix math for RANK_INC, find and replace wiht LRF rank calculation
-        private const int RANK_INC = 8;
-        
         /// <summary> Indicates wether a piece is a sliding piece - <code>true</code> for
         /// Bishop, Rook and Queen.
         /// </summary>
@@ -1779,122 +1775,138 @@ namespace tgreiner.amy.chess.engine
             bool isWhite = getSideAt(from) == Player.white;
             if (pc == ChessConstants_Fields.PAWN)
             {
-                if (isWhite)
-                {
-                    
-                    // white pawns
-                    
-                    int next = from + RANK_INC;
-                    if (board[next] == 0)
-                    {
-                        LRF nextLrf = (LRF) next;
-                        if (nextLrf.Rank == (BitBoard.LEVEL_WIDTH[nextLrf.Level] - 1))
-                        {
-                            // promotion
-                            int move = Move.makeMove(from, next);
-                            mvs.add(move | Move.PROMO_QUEEN);
-                            mvs.add(move | Move.PROMO_ROOK);
-                            mvs.add(move | Move.PROMO_BISHOP);
-                            mvs.add(move | Move.PROMO_KNIGHT);
-                        }
-                        else
-                        {
-                            mvs.add(Move.makeMove(from, next));
-                            if (next >= BoardConstants_Fields.HA3 && next <= BoardConstants_Fields.HH3)
-                            {
-                                // BUGBUG fix math for RANK_INC
-                                next += RANK_INC;
-                                if (board[next] == 0)
-                                {
-                                    mvs.add(Move.makeMove(from, next) | Move.PAWN_DOUBLE);
-                                }
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    // black pawns
-                    int next = from - RANK_INC;
-                    if (board[next] == 0)
-                    {
-                        if (((LRF)next).Rank == 0)
-                        {
-                            // promotion
-                            int move = Move.makeMove(from, next);
-                            mvs.add(move | Move.PROMO_QUEEN);
-                            mvs.add(move | Move.PROMO_ROOK);
-                            mvs.add(move | Move.PROMO_BISHOP);
-                            mvs.add(move | Move.PROMO_KNIGHT);
-                        }
-                        else
-                        {
-                            mvs.add(Move.makeMove(from, next));
-                            if (next >= BoardConstants_Fields.HA6 && next <= BoardConstants_Fields.HH6)
-                            {
-                                // BUGBUG fix math for RANK_INC
-                                next -= RANK_INC;
-                                if (board[next] == 0)
-                                {
-                                    mvs.add(Move.makeMove(from, next) | Move.PAWN_DOUBLE);
-                                }
-                            }
-                        }
-                    }
-                }
+                generateFromPawn(from, mvs, isWhite);
             }
             else if (pc == ChessConstants_Fields.KING)
             {
-                BitBoard attack = attackTo[from] & ~ (pieceMask[0][0] | pieceMask[1][0]);
-                BitBoard opponent = getMask(!isWhite);
-                
-                while (attack.IsEmpty() == false)
+                generateFromKing(from, mvs, isWhite);
+            }
+            else
+            {
+                generateFromOtherPieces(from, mvs);
+            }
+        }
+
+        private void generateFromOtherPieces(int from, IMoveList mvs)
+        {
+            BitBoard attacks = attackTo[from] & ~(pieceMask[0][0] | pieceMask[1][0]);
+            while (attacks.IsEmpty() == false)
+            {
+                int to = attacks.findFirstOne();
+                attacks.ClearBit(to);
+
+                mvs.add(Move.makeMove(from, to));
+            }
+        }
+
+        private void generateFromKing(int from, IMoveList mvs, bool isWhite)
+        {
+            BitBoard attack = attackTo[from] & ~(pieceMask[0][0] | pieceMask[1][0]);
+            BitBoard opponent = getMask(!isWhite);
+
+            while (attack.IsEmpty() == false)
+            {
+                int to = attack.findFirstOne();
+                attack.ClearBit(to);
+
+                if ((attackFrom[to] & opponent).IsEmpty())
                 {
-                    int to = attack.findFirstOne();
-                    attack.ClearBit(to);
-                    
-                    if ((attackFrom[to] & opponent).IsEmpty())
-                    {
-                        mvs.add(Move.makeMove(from, to));
-                    }
+                    mvs.add(Move.makeMove(from, to));
                 }
-                
-                if (isWhite)
+            }
+
+            if (isWhite)
+            {
+                if ((castle & WHITE_CASTLE_KINGSIDE) != 0)
                 {
-                    if ((castle & WHITE_CASTLE_KINGSIDE) != 0)
-                    {
-                        mvs.add(Move.makeMove(BoardConstants_Fields.HE1, BoardConstants_Fields.HG1) | Move.CASTLE_KSIDE);
-                    }
-                    if ((castle & WHITE_CASTLE_QUEENSIDE) != 0)
-                    {
-                        mvs.add(Move.makeMove(BoardConstants_Fields.HE1, BoardConstants_Fields.HC1) | Move.CASTLE_QSIDE);
-                    }
+                    mvs.add(Move.makeMove(BoardConstants_Fields.HE1, BoardConstants_Fields.HG1) | Move.CASTLE_KSIDE);
                 }
-                else
+                if ((castle & WHITE_CASTLE_QUEENSIDE) != 0)
                 {
-                    if ((castle & BLACK_CASTLE_KINGSIDE) != 0)
+                    mvs.add(Move.makeMove(BoardConstants_Fields.HE1, BoardConstants_Fields.HC1) | Move.CASTLE_QSIDE);
+                }
+            }
+            else
+            {
+                if ((castle & BLACK_CASTLE_KINGSIDE) != 0)
+                {
+                    mvs.add(Move.makeMove(BoardConstants_Fields.HE8, BoardConstants_Fields.HG8) | Move.CASTLE_KSIDE);
+                }
+                if ((castle & BLACK_CASTLE_QUEENSIDE) != 0)
+                {
+                    mvs.add(Move.makeMove(BoardConstants_Fields.HE8, BoardConstants_Fields.HC8) | Move.CASTLE_QSIDE);
+                }
+            }
+        }
+
+        private void generateFromPawn(int from, IMoveList mvs, bool isWhite)
+        {
+            if (isWhite)
+            {
+
+                // white pawns
+
+                LRF next = (LRF)from;
+                next.Rank++;
+                if (board[(int)next] == 0)
+                {
+                    if (next.Rank == (BitBoard.LEVEL_WIDTH[next.Level] - 1))
                     {
-                        mvs.add(Move.makeMove(BoardConstants_Fields.HE8, BoardConstants_Fields.HG8) | Move.CASTLE_KSIDE);
+                        // promotion
+                        int move = Move.makeMove(from, (int)next);
+                        mvs.add(move | Move.PROMO_QUEEN);
+                        mvs.add(move | Move.PROMO_ROOK);
+                        mvs.add(move | Move.PROMO_BISHOP);
+                        mvs.add(move | Move.PROMO_KNIGHT);
                     }
-                    if ((castle & BLACK_CASTLE_QUEENSIDE) != 0)
+                    else
                     {
-                        mvs.add(Move.makeMove(BoardConstants_Fields.HE8, BoardConstants_Fields.HC8) | Move.CASTLE_QSIDE);
+                        mvs.add(Move.makeMove(from, (int)next));
+
+                        // BUGBUG this math should be adjusted for 3D, different levels on different ranks
+                        if (next.Rank == 2)
+                        {
+                            next.Rank++;
+                            if (board[(int)next] == 0)
+                            {
+                                mvs.add(Move.makeMove(from, (int)next) | Move.PAWN_DOUBLE);
+                            }
+                        }
                     }
                 }
             }
             else
             {
-                BitBoard attacks = attackTo[from] & ~ (pieceMask[0][0] | pieceMask[1][0]);
-                while (attacks.IsEmpty() == false)
+                // black pawns
+                LRF next = (LRF)from;
+                next.Rank--;
+                if (board[(int)next] == 0)
                 {
-                    int to = attacks.findFirstOne();
-                    attacks.ClearBit(to);
-                    
-                    mvs.add(Move.makeMove(from, to));
+                    if (next.Rank == 0)
+                    {
+                        // promotion
+                        int move = Move.makeMove(from, (int)next);
+                        mvs.add(move | Move.PROMO_QUEEN);
+                        mvs.add(move | Move.PROMO_ROOK);
+                        mvs.add(move | Move.PROMO_BISHOP);
+                        mvs.add(move | Move.PROMO_KNIGHT);
+                    }
+                    else
+                    {
+                        mvs.add(Move.makeMove(from, (int)next));
+                        if (next.Rank == 5)
+                        {
+                            next.Rank--;
+                            if (board[(int)next] == 0)
+                            {
+                                mvs.add(Move.makeMove(from, (int)next) | Move.PAWN_DOUBLE);
+                            }
+                        }
+                    }
                 }
             }
         }
-        
+
         /// <summary> Generate en passant captures.
         /// 
         /// </summary>
@@ -1987,17 +1999,18 @@ namespace tgreiner.amy.chess.engine
                 }
                 if (getPieceAt(from) == ChessConstants_Fields.PAWN)
                 {
-                    int next = whiteToMove?from + RANK_INC:from - RANK_INC;
+                    LRF next = (LRF)from;
+                    next.Rank = whiteToMove?next.Rank + 1:next.Rank - 1;
                     if ((move & Move.PAWN_DOUBLE) != 0)
                     {
-                        if (board[next] != 0)
+                        if (board[(int)next] != 0)
                         {
                             return false;
                         }
-                        next = whiteToMove?next + RANK_INC:next - RANK_INC;
+                        next.Rank = whiteToMove?next.Rank + 1:next.Rank -1;
                     }
                     
-                    if (next != to)
+                    if (((int)next) != to)
                     {
                         return false;
                     }
