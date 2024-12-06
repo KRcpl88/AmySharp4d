@@ -208,7 +208,10 @@ namespace tgreiner.amy.chess.engine
                     {
                         LRF lrf = new LRF(squareStr[0] - 'a',squareStr[2] - '1', squareStr[1] - 'a');
 
-                        Console.WriteLine(board.ToString((int)lrf));
+                        if (board.getPieceAt((int)lrf) != 0)
+                        {
+                            Console.WriteLine(board.ToString((int)lrf));
+                        }
                     }
                     catch (IndexOutOfRangeException)
                     {

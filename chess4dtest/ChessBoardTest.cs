@@ -115,7 +115,7 @@ namespace tgreiner.amy.chess.engine.Tests
         }
 
                 [TestMethod()]
-        public void attsckTests()
+        public void attackTests()
         {
             var board = new ChessBoard("1/2/2/3/3/3/4/4/4/4/5/5/5/5/5/6/6/6/6/6/6/7/7/7/7/7/7/7/8/1r/6R/2k2K/1p//7P w - -");
 
@@ -130,21 +130,24 @@ namespace tgreiner.amy.chess.engine.Tests
 
 
             int squareWhiteRook = pieces.findFirstOne();
+            LRF lrfWhiteRook = (LRF) squareWhiteRook;
             Assert.IsTrue(squareWhiteRook == BoardConstants_Fields.HG6);
 
             BitBoard moves = board.getAttackTo(squareWhiteRook);
             moves.SetBit(BoardConstants_Fields.HG6);
 
-            BitBoard fileG = EvalMasks.FILE_MASK[((LRF)squareWhiteRook).File];
-            BitBoard rank6 = EvalMasks.RANK_MASK[((LRF)squareWhiteRook).Rank];
+            for (int i = 0; 8 > i; ++i)
+            {
+                Assert.IsTrue(moves.GetBit(lrfWhiteRook.Level, lrfWhiteRook.Rank, i) == 1);
+                Assert.IsTrue(moves.GetBit(lrfWhiteRook.Level, i, lrfWhiteRook.File) == 1);
+            }
 
-            // rook attacks should be file G and rank 6
-            Assert.IsTrue((moves & fileG) == fileG);
-            Assert.IsTrue((moves & rank6) == rank6);
-
-            moves &= ~fileG;
-            moves &= ~rank6;
-            Assert.IsTrue(moves.IsEmpty());
+            while(moves.IsEmpty() == false)
+            {
+                LRF square = (LRF)(moves.findFirstOne());
+                Assert.IsTrue(square.Level == lrfWhiteRook.Level);
+                Assert.IsTrue((square.Rank == lrfWhiteRook.Rank) || (square.File == lrfWhiteRook.File));
+            }
         }
 
 

@@ -2051,7 +2051,7 @@ namespace tgreiner.amy.chess.engine
         /// </summary>
         /// <returns> the current position as an ASCII graphics board.
         /// </returns>
-        public System.String ToString(int showAttacksFrom)
+        public System.String ToString(int showMoves)
         {
             System.Text.StringBuilder buffer = new System.Text.StringBuilder();
             
@@ -2078,7 +2078,7 @@ namespace tgreiner.amy.chess.engine
                         buffer.Append('|');
                         if (enPassant != 0 && i == enPassant)
                         {
-                            if ((showAttacksFrom < 0) && (attackFrom[showAttacksFrom].GetBit(i) == 1))
+                            if ((showMoves < 0) && (attackTo[showMoves].GetBit(i) == 1))
                             {
                                 buffer.Append(".E.");
                             }
@@ -2089,11 +2089,11 @@ namespace tgreiner.amy.chess.engine
                         }
                         else
                         {
-                            MarkPieceSide(buffer, i, showAttacksFrom);
+                            MarkPieceSide(buffer, i, showMoves);
 
                             buffer.Append(PIECE_NAME[getPieceAt(i)]);
 
-                            MarkPieceSide(buffer, i, showAttacksFrom);
+                            MarkPieceSide(buffer, i, showMoves);
                         }
                     }
                     buffer.Append("|");
@@ -2129,15 +2129,15 @@ namespace tgreiner.amy.chess.engine
                 }
                 buffer.Append("\n");
             }
-            showAttacksFrom = -1;
+            showMoves = -1;
             return buffer.ToString();
         }
 
-        private void MarkPieceSide(StringBuilder buffer, int i, int showAttacksFrom)
+        private void MarkPieceSide(StringBuilder buffer, int i, int showMoves)
         {
             if (getSideAt(i) == Player.black)
             {
-                if ((showAttacksFrom >= 0) && (attackFrom[showAttacksFrom].GetBit(i) == 1))
+                if ((showMoves >= 0) && (attackTo[showMoves].GetBit(i) == 1))
                 {
                     buffer.Append('x');
                 }
@@ -2148,7 +2148,7 @@ namespace tgreiner.amy.chess.engine
             }
             else
             {
-                if ((showAttacksFrom >= 0) && (attackFrom[showAttacksFrom].GetBit(i) == 1))
+                if ((showMoves >= 0) && (attackTo[showMoves].GetBit(i) == 1))
                 {
                     buffer.Append('.');
                 }
