@@ -1,4 +1,5 @@
 
+using System.Runtime.CompilerServices;
 using tgreiner.amy.bitboard;
 using tgreiner.amy.chess.engine;
 
@@ -68,6 +69,195 @@ namespace tgreiner.amy.chess.engine.Tests
                 }
             }
         }
+
+        public void rookNextDirTest(LRF start)
+        {
+            // make sure NEXT_POS and NEXT_DIR are fully initialized:
+
+            int piece = ChessConstants_Fields.ROOK;
+            int startSquare = (int)start;
+
+            LRF dest = new LRF
+            {
+                Level = 7
+            };
+
+            for (dest.Rank =0; 8 > dest.Rank; ++dest.Rank)
+            {
+                for (dest.File = 0; 8 > dest.File; ++dest.File)
+                {
+                    int nextDirSquare = Geometry.NEXT_DIR[piece][(int)start][((int)dest)];
+                    LRF nextDir = new LRF();
+                    if (LRF.IsValid(nextDirSquare))
+                    {
+                        nextDir = (LRF) nextDirSquare;
+                    }
+
+                    // skip if its the same start and dest are the same
+                    if((dest.Rank == start.Rank) && (dest.File == start.File))
+                    {
+                        continue;
+                    }
+                    else if (nextDirSquare == -1)
+                    {
+                        continue;
+                    }
+                    else if ((start.Rank == dest.Rank) || (start.File == dest.File))
+                    {
+                            Assert.IsTrue(( nextDir.Rank >= (start.Rank - 1)) && (nextDir.Rank <= (start.Rank + 1))
+                                && (nextDir.File >= (start.File - 1)) && (nextDir.File >= (start.File - 1)), 
+                                $"NEXT_POS is {(char)(97 + nextDir.File)}{nextDir.Rank+1} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}") ;
+
+                            Assert.IsFalse((nextDir.Rank == start.Rank) && (nextDir.File == start.File), 
+                                $"NEXT_POS is {(char)(97 + nextDir.File)}{nextDir.Rank+1} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}") ;
+                    }
+                    else
+                    {
+                        // illegal move
+                        Assert.IsTrue(nextDirSquare == -1, 
+                            $"NEXT_POS is {nextDirSquare} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}") ;
+                    }
+                }
+            }
+        }
+
+        public void rookNextPostTest(LRF start)
+        {
+            // make sure NEXT_POS and NEXT_DIR are fully initialized:
+
+            int piece = ChessConstants_Fields.ROOK;
+            int lastSquare = -1;
+            LRF dest = new LRF
+            {
+                Level = 7
+            };
+
+            for (dest.Rank =0; 8 > dest.Rank; ++dest.Rank)
+            {
+                for (dest.File = 0; 8 > dest.File; ++dest.File)
+                {
+                    int destSquare = (int)dest;
+                    int nextSquare = (Geometry.NEXT_POS[piece][(int)start][destSquare] );
+                    LRF next = new LRF();
+                    if (LRF.IsValid(nextSquare))
+                    {
+                        next = (LRF) nextSquare;
+                    }
+                    
+                    // skip if its the same start and dest are the same
+                    if((dest.Rank == start.Rank) && (dest.File == start.File))
+                    {
+                        continue;
+                    }
+                    else if (start.Rank == dest.Rank)
+                    {
+                        if ((dest.File == 0) || (dest.File == 7))
+                        {
+                            if ((lastSquare == -1) && (-1 == nextSquare))
+                            {
+                                // this is the last square in the NEXT_POS sequence
+                                lastSquare = destSquare;
+                            }
+                            else
+                            {
+                                // this is an edge, but its not the last square in the next_pos sequence
+                                // so it needs to go back to a square within 1 square of the starting square
+                                Assert.IsTrue(LRF.IsValid(nextSquare), 
+                                    $"NEXT_POS is {nextSquare} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}") ;
+                                
+                                Assert.IsTrue(( next.Rank >= (start.Rank - 1)) && (next.Rank <= (start.Rank + 1))
+                                    && (next.File >= (start.File - 1)) && (next.File >= (start.File - 1)), 
+                                    $"NEXT_POS is {(char)(97 + next.File)}{next.Rank+1} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}") ;
+
+                                Assert.IsFalse((next.Rank == start.Rank) && (next.File == start.File), 
+                                    $"NEXT_POS is {(char)(97 + next.File)}{next.Rank+1} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}") ;
+                            }
+                            continue;
+                        }
+                        else
+                        {
+                            // startRank == destRank but we are not on the last file
+                            if(dest.File < start.File) 
+                            {
+                                Assert.IsTrue((next.File == dest.File - 1) && (next.Rank == start.Rank), 
+                                    $"NEXT_POS is {(char)(97 + next.File)}{next.Rank+1} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}") ;
+                            }
+                            else
+                            {
+                                Assert.IsTrue((next.File == dest.File + 1) && (next.Rank == start.Rank), 
+                                    $"NEXT_POS is {(char)(97 + next.File)}{next.Rank+1} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}") ;
+                            }
+                        }
+                    }
+                    else if (start.File == dest.File)
+                    {
+                        if ((dest.Rank == 0) || (dest.Rank == 7))
+                        {
+                            if ((lastSquare == -1) && (nextSquare == -1))
+                            {
+                                // this is the last square in the NEXT_POS sequence
+                                lastSquare = destSquare;
+                            }
+                            else
+                            {
+                                // this is an edgae, but its not the last square in the next_pos sequence
+                                // so it needs to go back to a square within 1 square of the starting square
+                                Assert.IsTrue(LRF.IsValid(nextSquare), 
+                                    $"NEXT_POS is {nextSquare} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}, last square was {(char)(97 + ((LRF)lastSquare).File)}{((LRF)lastSquare).Rank + 1}") ;
+                                
+                                Assert.IsTrue(( next.Rank >= (start.Rank - 1)) && (next.Rank <= (start.Rank + 1))
+                                    && (next.File >= (start.File - 1)) && (next.File >= (start.File - 1)), 
+                                    $"NEXT_POS is {(char)(97 + next.File)}{next.Rank+1} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}") ;
+
+                                Assert.IsFalse((next.Rank == start.Rank) && (next.File == start.File), 
+                                    $"NEXT_POS is {(char)(97 + next.File)}{next.Rank+1} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}") ;
+                            }
+                            continue;
+                        }
+                        else
+                        {
+                            // startFile == destFile but we are not on the last rank 
+                            if(dest.Rank < start.Rank) 
+                            {
+                                Assert.IsTrue((next.Rank == dest.Rank - 1) && (next.File == start.File), 
+                                    $"NEXT_POS is {(char)(97 + next.File)}{next.Rank+1} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}") ;
+                            }
+                            else
+                            {
+                                Assert.IsTrue((next.Rank == dest.Rank + 1) && (next.File == start.File), 
+                                    $"NEXT_POS is {(char)(97 + next.File)}{next.Rank+1} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}") ;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // illegal move
+                        Assert.IsTrue(nextSquare == -1, 
+                            $"NEXT_POS is {nextSquare} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}") ;
+                    }
+                }
+            }
+        }
+
+        [TestMethod()]
+        public void geometryRookTest()
+        {
+            LRF start = new LRF
+            {
+                Level = 7
+            };
+
+            // make sure NEXT_POS and NEXT_DIR are fully initialized:
+            for (start.Rank =0; 8>start.Rank; ++start.Rank)
+            {
+                for (start.File = 0; 8 > start.File; ++start.File)
+                {
+                    rookNextPostTest(start);
+                    rookNextDirTest(start);
+                }
+            }
+        }
+
 
         [TestMethod()]
         public void nextPosTest()
