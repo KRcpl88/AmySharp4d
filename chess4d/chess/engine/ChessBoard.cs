@@ -1846,7 +1846,7 @@ namespace tgreiner.amy.chess.engine
 
                 // white pawns
 
-                LRF next = (LRF)from;
+                Lrf next = (Lrf)from;
                 next.Rank++;
                 if (board[(int)next] == 0)
                 {
@@ -1878,7 +1878,7 @@ namespace tgreiner.amy.chess.engine
             else
             {
                 // black pawns
-                LRF next = (LRF)from;
+                Lrf next = (Lrf)from;
                 next.Rank--;
                 if (board[(int)next] == 0)
                 {
@@ -1999,7 +1999,7 @@ namespace tgreiner.amy.chess.engine
                 }
                 if (getPieceAt(from) == ChessConstants_Fields.PAWN)
                 {
-                    LRF next = (LRF)from;
+                    Lrf next = (Lrf)from;
                     next.Rank = whiteToMove?next.Rank + 1:next.Rank - 1;
                     if ((move & Move.PAWN_DOUBLE) != 0)
                     {

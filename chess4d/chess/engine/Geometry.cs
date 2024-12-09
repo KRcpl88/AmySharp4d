@@ -259,7 +259,7 @@ namespace tgreiner.amy.chess.engine
 
                 for (short direction = 0; direction < ATTACK_DELTA[piece].Length; ++direction)
                 {
-					var nextCoord = (UCoord)(LRF)square;
+					var nextCoord = (UCoord)(Lrf)square;
 					int prevSquare = square;
 					UCoord delta;
 					long nextDirection = -1;
@@ -275,7 +275,7 @@ namespace tgreiner.amy.chess.engine
 					prevSquare = (int)nextCoord;
 					NEXT_DIR[piece][square][prevSquare] = (short)nextDirection;
 
-                    while (LRF.IsValid(nextCoord.Level, nextCoord.Rank, nextCoord.File))
+                    while (Lrf.IsValid(nextCoord.Level, nextCoord.Rank, nextCoord.File))
                     {
                         NEXT_POS[piece][square][prevSquare] = (short)nextCoord;
 
@@ -290,6 +290,11 @@ namespace tgreiner.amy.chess.engine
 
                         NEXT_DIR[piece][square][prevSquare] = (short)nextDirection;
                     }
+
+					// once we run off of the end of the board, set the last POS and DIR to be 
+					// the start of the next one
+                    //NEXT_POS[piece][square][prevSquare] = (short)nextDirection;
+                    //NEXT_DIR[piece][square][prevSquare] = (short)nextDirection;
                 }
             }
 		}
@@ -341,15 +346,15 @@ namespace tgreiner.amy.chess.engine
         {
             for (int square = 0; square < BitBoard.SIZE; square++)
             {
-                LRF levelRankFile = new LRF(square);
+                Lrf levelRankFile = new Lrf(square);
                 int prevSquare = square;
 
                 foreach (UCoord delta in ATTACK_DELTA[piece])
                 {
 					UCoord temp = (UCoord)levelRankFile + delta;
-                    if (LRF.IsValid(temp.Level, temp.Rank, temp.File))
+                    if (Lrf.IsValid(temp.Level, temp.Rank, temp.File))
                     {
-                        LRF nextLrf = (LRF)temp;
+                        Lrf nextLrf = (Lrf)temp;
 
                         NEXT_POS[piece][square][prevSquare] = (short)(int)nextLrf;
                         NEXT_DIR[piece][square][prevSquare] = (short)(int)nextLrf;

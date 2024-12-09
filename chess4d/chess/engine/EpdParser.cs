@@ -73,7 +73,7 @@ namespace tgreiner.amy.chess.engine
                         throw new IllegalEpdException(
                             $"EPD file {file} out of bounds on  Level: {level} Rank: {rank}");
                     }
-                    if (!LRF.IsValid(level, rank, file))
+                    if (!Lrf.IsValid(level, rank, file))
                     {
                         throw new IllegalEpdException(
                             $"EPD contains invalid posiiton on Level: {level} Rank: {rank} File: {file}");
@@ -214,7 +214,7 @@ namespace tgreiner.amy.chess.engine
                 int epFile = (int)(fenParts[3][1] - 'a');
                 int epRank = (int)(fenParts[3][2] - '1');
 
-                if (!LRF.IsValid(epLevel, epRank, epFile))
+                if (!Lrf.IsValid(epLevel, epRank, epFile))
                 {
                     throw new IllegalEpdException("Illegal en passant square");
                 }

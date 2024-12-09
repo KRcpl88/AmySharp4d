@@ -130,7 +130,7 @@ namespace tgreiner.amy.chess.engine.Tests
 
 
             int squareWhiteRook = pieces.findFirstOne();
-            LRF lrfWhiteRook = (LRF) squareWhiteRook;
+            Lrf lrfWhiteRook = (Lrf) squareWhiteRook;
             Assert.IsTrue(squareWhiteRook == BoardConstants_Fields.HG6);
 
             BitBoard moves = board.getAttackTo(squareWhiteRook);
@@ -144,7 +144,7 @@ namespace tgreiner.amy.chess.engine.Tests
 
             while(moves.IsEmpty() == false)
             {
-                LRF square = (LRF)(moves.findFirstOne());
+                Lrf square = (Lrf)(moves.findFirstOne());
                 Assert.IsTrue(square.Level == lrfWhiteRook.Level);
                 Assert.IsTrue((square.Rank == lrfWhiteRook.Rank) || (square.File == lrfWhiteRook.File));
             }

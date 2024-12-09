@@ -26,7 +26,7 @@ namespace tgreiner.amy.chess.engine.Tests
 
             for (int square = 0; (square + 16) < BitBoard.SIZE; ++square)
             {
-                LRF nextSquare = new LRF(square);
+                Lrf nextSquare = new Lrf(square);
                 nextSquare.Rank += 1;
 
                 if (nextSquare.IsValid() && nextSquare.Rank < (BitBoard.LEVEL_WIDTH[nextSquare.Rank] - 1))
@@ -70,14 +70,14 @@ namespace tgreiner.amy.chess.engine.Tests
             }
         }
 
-        public void rookNextDirTest(LRF start)
+        public void rookNextDirTest(Lrf start)
         {
             // make sure NEXT_POS and NEXT_DIR are fully initialized:
 
             int piece = ChessConstants_Fields.ROOK;
             int startSquare = (int)start;
 
-            LRF dest = new LRF
+            Lrf dest = new Lrf
             {
                 Level = 7
             };
@@ -87,10 +87,10 @@ namespace tgreiner.amy.chess.engine.Tests
                 for (dest.File = 0; 8 > dest.File; ++dest.File)
                 {
                     int nextDirSquare = Geometry.NEXT_DIR[piece][(int)start][((int)dest)];
-                    LRF nextDir = new LRF();
-                    if (LRF.IsValid(nextDirSquare))
+                    Lrf nextDir = new Lrf();
+                    if (Lrf.IsValid(nextDirSquare))
                     {
-                        nextDir = (LRF) nextDirSquare;
+                        nextDir = (Lrf) nextDirSquare;
                     }
 
                     // skip if its the same start and dest are the same
@@ -121,13 +121,13 @@ namespace tgreiner.amy.chess.engine.Tests
             }
         }
 
-        public void rookNextPostTest(LRF start)
+        public void rookNextPostTest(Lrf start)
         {
             // make sure NEXT_POS and NEXT_DIR are fully initialized:
 
             int piece = ChessConstants_Fields.ROOK;
             int lastSquare = -1;
-            LRF dest = new LRF
+            Lrf dest = new Lrf
             {
                 Level = 7
             };
@@ -138,10 +138,10 @@ namespace tgreiner.amy.chess.engine.Tests
                 {
                     int destSquare = (int)dest;
                     int nextSquare = (Geometry.NEXT_POS[piece][(int)start][destSquare] );
-                    LRF next = new LRF();
-                    if (LRF.IsValid(nextSquare))
+                    Lrf next = new Lrf();
+                    if (Lrf.IsValid(nextSquare))
                     {
-                        next = (LRF) nextSquare;
+                        next = (Lrf) nextSquare;
                     }
                     
                     // skip if its the same start and dest are the same
@@ -162,7 +162,7 @@ namespace tgreiner.amy.chess.engine.Tests
                             {
                                 // this is an edge, but its not the last square in the next_pos sequence
                                 // so it needs to go back to a square within 1 square of the starting square
-                                Assert.IsTrue(LRF.IsValid(nextSquare), 
+                                Assert.IsTrue(Lrf.IsValid(nextSquare), 
                                     $"NEXT_POS is {nextSquare} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}") ;
                                 
                                 Assert.IsTrue(( next.Rank >= (start.Rank - 1)) && (next.Rank <= (start.Rank + 1))
@@ -202,8 +202,8 @@ namespace tgreiner.amy.chess.engine.Tests
                             {
                                 // this is an edgae, but its not the last square in the next_pos sequence
                                 // so it needs to go back to a square within 1 square of the starting square
-                                Assert.IsTrue(LRF.IsValid(nextSquare), 
-                                    $"NEXT_POS is {nextSquare} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}, last square was {(char)(97 + ((LRF)lastSquare).File)}{((LRF)lastSquare).Rank + 1}") ;
+                                Assert.IsTrue(Lrf.IsValid(nextSquare), 
+                                    $"NEXT_POS is {nextSquare} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}, last square was {(char)(97 + ((Lrf)lastSquare).File)}{((Lrf)lastSquare).Rank + 1}") ;
                                 
                                 Assert.IsTrue(( next.Rank >= (start.Rank - 1)) && (next.Rank <= (start.Rank + 1))
                                     && (next.File >= (start.File - 1)) && (next.File >= (start.File - 1)), 
@@ -242,7 +242,7 @@ namespace tgreiner.amy.chess.engine.Tests
         [TestMethod()]
         public void geometryRookTest()
         {
-            LRF start = new LRF
+            Lrf start = new Lrf
             {
                 Level = 7
             };
