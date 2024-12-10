@@ -7,17 +7,34 @@
         [TestMethod()]
         public void hexLrfTest()
         {
-            HexLrf hexLrf = new HexLrf(new Lrf(0,0,0));
-            Assert.IsTrue((hexLrf.Level == 0) && (hexLrf.Rank == 7) && (hexLrf.File == 0));
+            HexLrf hexLrf = new HexLrf(new Lrf(0,0,0)); // aa1
+            Assert.IsTrue((hexLrf.Level == 0) && (hexLrf.Rank == 7) && (hexLrf.File == 0)); // aa8
 
-            hexLrf = new HexLrf(new Lrf(14,0,0));
-            Assert.IsTrue((hexLrf.Level == 7) && (hexLrf.Rank == 0) && (hexLrf.File == 7));
+            hexLrf = new HexLrf(new Lrf(14,0,0)); // oa1
+            Assert.IsTrue((hexLrf.Level == 7) && (hexLrf.Rank == 0) && (hexLrf.File == 7)); // hh1
 
-            hexLrf = new HexLrf(new Lrf(7,0,0));
-            Assert.IsTrue((hexLrf.Level == 0) && (hexLrf.Rank == 0) && (hexLrf.File == 0));
+            hexLrf = new HexLrf(new Lrf(7,0,0)); // ha1
+            Assert.IsTrue((hexLrf.Level == 0) && (hexLrf.Rank == 0) && (hexLrf.File == 0)); // aa1
 
-            hexLrf = new HexLrf(new Lrf(7,7,0));
+            hexLrf = new HexLrf(new Lrf(7,7,0)); // ha8
             Assert.IsTrue((hexLrf.Level == 7) && (hexLrf.Rank == 7) && (hexLrf.File == 0)); // ha8
+
+            hexLrf = new HexLrf(new Lrf(7,0,7)); // hh1
+            Assert.IsTrue((hexLrf.Level == 0) && (hexLrf.Rank == 0) && (hexLrf.File == 7)); // ah1
+
+            hexLrf = new HexLrf(new Lrf(7,7,7)); // hh8
+            Assert.IsTrue((hexLrf.Level == 7) && (hexLrf.Rank == 7) && (hexLrf.File == 7)); // hh8
+
+            // count all LRF squares mapped to each hexLrf, there should be no double counts
+            bool[] hexes = new bool[8*8*8];
+
+            for(int square = 0; square < BitBoard.SIZE; ++square)
+            {
+                hexLrf = new HexLrf(new Lrf(square));
+                Assert.IsFalse(hexes[hexLrf.Level * 64 + hexLrf.Rank * 8 + hexLrf.File]);
+
+                hexes[hexLrf.Level * 64 + hexLrf.Rank * 8 + hexLrf.File] = true;
+            }
         }
 
         [TestMethod()]
