@@ -320,23 +320,20 @@ a  \ / \ / \ / \ / \ / \ / \ / \ /
         /// <summary>
         /// Offest to the HexLrf level or file for each Lrf level
         /// </summary>
-        public int[] HexLrfLevelFileOffset = new int[] {0,0,0,0,0,0,0,0,1,2,3,4,5,6,7};
+        public static int[] Relu16 = new int[] {0,0,0,0,0,0,0,0,1,2,3,4,5,6,7};
 
         /// <summary>
         /// Offest to the HexLrf rank for each Lrf level
         /// </summary>
-        public int[] HexLrfRankOffset = new int[] {7,6,5,4,3,2,1,0,0,0,0,0,0,0,0};
+        public static int[] NegRelu16 = new int[] {7,6,5,4,3,2,1,0,0,0,0,0,0,0,0};
 
         public HexLrf(Lrf lrf) 
         {
             lrf.Validate();
 
-            Level = lrf.Rank + HexLrfLevelFileOffset[lrf.Level]; // {0,0,0,0,0,0,0,0,1,2,3,4,5,6,7};
-            Rank = lrf.Rank + HexLrfRankOffset[lrf.Level]; // {7,6,5,4,3,2,1,0,0,0,0,0,0,0,0};
-            File = lrf.File + HexLrfLevelFileOffset[lrf.Level]; // {0,0,0,0,0,0,0,0,1,2,3,4,5,6,7};
-
-            //Rank = (offset - BitBoard.LEVEL_OFFSET[Level]) / BitBoard.LEVEL_WIDTH[Level];
-            //File = (offset - BitBoard.LEVEL_OFFSET[Level]) % BitBoard.LEVEL_WIDTH[Level];
+            Level = lrf.Rank + Relu16[lrf.Level];   // {0,0,0,0,0,0,0,0,1,2,3,4,5,6,7};
+            Rank = lrf.Rank + NegRelu16[lrf.Level]; // {7,6,5,4,3,2,1,0,0,0,0,0,0,0,0};
+            File = lrf.File + Relu16[lrf.Level]; // {0,0,0,0,0,0,0,0,1,2,3,4,5,6,7};
         }
 
         public int Level=0; 
@@ -380,6 +377,11 @@ a  \ / \ / \ / \ / \ / \ / \ / \ /
             return true;
         }   
 
+        public static int RankWidth(int level, int rank)
+        {
+            return 8 - Relu16[level + rank] - NegRelu16[level + rank];
+        }
+
         public static bool IsValid(int offset)
         {
             return ((offset < BitBoard.SIZE) && (offset >= 0));
@@ -391,10 +393,45 @@ a  \ / \ / \ / \ / \ / \ / \ / \ /
             return BitBoard.BitOffset(obj.Level, obj.Rank, obj.File);
         }
 
-        /// <summary>Explicit conversion from square offset to LRF.</summary>
+        /// <summary>Explicit conversion from Lrf to HexLrf.</summary>
         public static explicit operator HexLrf(Lrf lrf)
         {
             return new HexLrf(lrf);
+        }
+
+        /// <summary>Explicit conversion from HexLrf to Lrf.</summary>
+        public static explicit operator Lrf(HexLrf hexLrf)
+        {
+            Lrf ret = new Lrf();
+            //Relu16[hexLrf.Level]; // {0,0,0,0,0,0,0,0,1,2,3,4,5,6,7};
+            //NegRelu16[hexLrf.Level]; // {7,6,5,4,3,2,1,0,0,0,0,0,0,0,0};
+            ret.Level =  7 + hexLrf.Level - hexLrf.Rank;
+            ret.Rank = hexLrf.Rank;
+            ret.File = hexLrf.File + Relu16[hexLrf.Level+hexLrf.Rank] + NegRelu16[hexLrf.Level+hexLrf.Rank];
+
+
+            // HF  HR   F
+            // 0   7    0
+            // 1   7    1
+            // 1   6    0
+            // 2   6    1
+            // 2   5    0
+            // 3   4    0
+            //ret.File = hexLrf.File - 7 + hexLrf.Rank;
+
+            // L 3
+            // HF  HR   F
+            // 0   7    0
+            // 0   6    0
+            // 0   5    0
+            // 0   4    0
+            // 0   3    0
+            // 1   2    0
+            // 2   1    0
+            // 3   0    0                                                             // {0,0,0,0,0,0,0,0,1,2,3,4,5,6,7};
+            //ret.File = hexLrf.Level + HexLrfRankOffset[hexLrf.Level + hexLrf.Rank]; // {7,6,5,4,3,2,1,0,0,0,0,0,0,0,0}; ;
+
+            return ret;
         }
     };
 }

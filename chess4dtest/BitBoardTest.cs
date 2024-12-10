@@ -8,22 +8,28 @@
         public void hexLrfTest()
         {
             HexLrf hexLrf = new HexLrf(new Lrf(0,0,0)); // aa1
-            Assert.IsTrue((hexLrf.Level == 0) && (hexLrf.Rank == 7) && (hexLrf.File == 0)); // aa8
+            Assert.IsTrue((hexLrf.Level == 0) && (hexLrf.Rank == 7) && (hexLrf.File == 0),
+                $"Lrf aa1 => x{(char)(97 + hexLrf.Level)}{(char)(97 + hexLrf.File)}{hexLrf.Rank+1}"); // aa8
 
             hexLrf = new HexLrf(new Lrf(14,0,0)); // oa1
-            Assert.IsTrue((hexLrf.Level == 7) && (hexLrf.Rank == 0) && (hexLrf.File == 7)); // hh1
+            Assert.IsTrue((hexLrf.Level == 7) && (hexLrf.Rank == 0) && (hexLrf.File == 7),
+                $"Lrf oa1 => x{(char)(97 + hexLrf.Level)}{(char)(97 + hexLrf.File)}{hexLrf.Rank+1}"); // hh1
 
             hexLrf = new HexLrf(new Lrf(7,0,0)); // ha1
-            Assert.IsTrue((hexLrf.Level == 0) && (hexLrf.Rank == 0) && (hexLrf.File == 0)); // aa1
+            Assert.IsTrue((hexLrf.Level == 0) && (hexLrf.Rank == 0) && (hexLrf.File == 0),
+                $"Lrf ha1 => x{(char)(97 + hexLrf.Level)}{(char)(97 + hexLrf.File)}{hexLrf.Rank+1}"); // aa1
 
             hexLrf = new HexLrf(new Lrf(7,7,0)); // ha8
-            Assert.IsTrue((hexLrf.Level == 7) && (hexLrf.Rank == 7) && (hexLrf.File == 0)); // ha8
+            Assert.IsTrue((hexLrf.Level == 7) && (hexLrf.Rank == 7) && (hexLrf.File == 0),
+                $"Lrf ha8 => x{(char)(97 + hexLrf.Level)}{(char)(97 + hexLrf.File)}{hexLrf.Rank+1}"); // ha8
 
             hexLrf = new HexLrf(new Lrf(7,0,7)); // hh1
-            Assert.IsTrue((hexLrf.Level == 0) && (hexLrf.Rank == 0) && (hexLrf.File == 7)); // ah1
+            Assert.IsTrue((hexLrf.Level == 0) && (hexLrf.Rank == 0) && (hexLrf.File == 7),
+                $"Lrf hh1 => x{(char)(97 + hexLrf.Level)}{(char)(97 + hexLrf.File)}{hexLrf.Rank+1}"); // ah1
 
             hexLrf = new HexLrf(new Lrf(7,7,7)); // hh8
-            Assert.IsTrue((hexLrf.Level == 7) && (hexLrf.Rank == 7) && (hexLrf.File == 7)); // hh8
+            Assert.IsTrue((hexLrf.Level == 7) && (hexLrf.Rank == 7) && (hexLrf.File == 7),
+                $"Lrf hh8 => x{(char)(97 + hexLrf.Level)}{(char)(97 + hexLrf.File)}{hexLrf.Rank+1}"); // hh8
 
             // count all LRF squares mapped to each hexLrf, there should be no double counts
             bool[] hexes = new bool[8*8*8];
@@ -31,10 +37,37 @@
             for(int square = 0; square < BitBoard.SIZE; ++square)
             {
                 hexLrf = new HexLrf(new Lrf(square));
-                Assert.IsFalse(hexes[hexLrf.Level * 64 + hexLrf.Rank * 8 + hexLrf.File]);
+                Assert.IsFalse(hexes[hexLrf.Level * 64 + hexLrf.Rank * 8 + hexLrf.File],
+                    $"Lrf already mapped at offset {square} x{(char)(97 + hexLrf.Level)}{(char)(97 + hexLrf.File)}{hexLrf.Rank+1}");
 
                 hexes[hexLrf.Level * 64 + hexLrf.Rank * 8 + hexLrf.File] = true;
             }
+
+            Lrf lrf = (Lrf) (new HexLrf(0,0,0)); // aa1
+            Assert.IsTrue((lrf.Level == 7) && (lrf.Rank == 0) && (lrf.File == 0),
+                $"HexLrf xaa1 => {(char)(97 + lrf.Level)}{(char)(97 + lrf.File)}{lrf.Rank+1}"); // ha1
+
+            lrf = (Lrf) (new HexLrf(0,7,0)); // ah1
+            Assert.IsTrue((lrf.Level == 7) && (lrf.Rank == 0) && (lrf.File == 7),
+                $"HexLrf xah1 => {(char)(97 + lrf.Level)}{(char)(97 + lrf.File)}{lrf.Rank+1}"); // hh1
+
+            lrf = (Lrf) (new HexLrf(0,7,0)); // aa8
+            Assert.IsTrue((lrf.Level == 0) && (lrf.Rank == 0) && (lrf.File == 0),
+                $"HexLrf xaa8 => {(char)(97 + lrf.Level)}{(char)(97 + lrf.File)}{lrf.Rank+1}"); // aa1
+
+
+
+            lrf = (Lrf) (new HexLrf(7,7,0)); // ha8
+            Assert.IsTrue((lrf.Level == 7) && (lrf.Rank == 7) && (lrf.File == 0),
+                $"HexLrf xha8 => {(char)(97 + lrf.Level)}{(char)(97 + lrf.File)}{lrf.Rank+1}"); // ha8
+
+            lrf = (Lrf) (new HexLrf(7,7,7)); // hh8
+            Assert.IsTrue((lrf.Level == 7) && (lrf.Rank == 7) && (lrf.File == 7),
+                $"HexLrf xhh8 => {(char)(97 + lrf.Level)}{(char)(97 + lrf.File)}{lrf.Rank+1}"); // hh8
+
+            lrf = (Lrf) (new HexLrf(7,0,7)); // hh1
+            Assert.IsTrue((lrf.Level == 14) && (lrf.Rank == 0) && (lrf.File == 0),
+                $"HexLrf xhh1 => {(char)(97 + lrf.Level)}{(char)(97 + lrf.File)}{lrf.Rank+1}"); // oa1
         }
 
         [TestMethod()]
