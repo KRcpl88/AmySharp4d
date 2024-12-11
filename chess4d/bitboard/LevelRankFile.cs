@@ -28,10 +28,10 @@ namespace tgreiner.amy.bitboard
     /// </summary>
     /// Board position coordinates in level, rank and file
     /// </author>
-    public class Lrf 
+    public class Lfr 
     {
-        public Lrf() {}
-        public Lrf(int level, int rank, int file) 
+        public Lfr() {}
+        public Lfr(int level, int file, int rank) 
         {
             Level = level;
             Rank = rank;
@@ -40,7 +40,7 @@ namespace tgreiner.amy.bitboard
             Validate();
         }
 
-        public Lrf(int offset) 
+        public Lfr(int offset) 
         {
             ValidateOffset(offset);
 
@@ -102,15 +102,15 @@ namespace tgreiner.amy.bitboard
         }   
 
         /// <summary>Explicit conversion from LRF to square offset.</summary>
-        public static explicit operator int(Lrf obj)
+        public static explicit operator int(Lfr obj)
         {
             return BitBoard.BitOffset(obj.Level, obj.Rank, obj.File);
         }
 
         /// <summary>Explicit conversion from square offset to LRF.</summary>
-        public static explicit operator Lrf(int offset)
+        public static explicit operator Lfr(int offset)
         {
-            return new Lrf(offset);
+            return new Lfr(offset);
         }
     };
 }

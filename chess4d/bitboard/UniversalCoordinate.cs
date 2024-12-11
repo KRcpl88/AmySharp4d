@@ -85,7 +85,7 @@ namespace tgreiner.amy.bitboard
         /// <summary>Explicit conversion from UCoord to square offset.</summary>
         public static explicit operator int(UCoord obj)
         {
-            if(Lrf.IsValid(obj.Level, obj.Rank, obj.File))
+            if(Lfr.IsValid(obj.Level, obj.Rank, obj.File))
             {
                 return BitBoard.BitOffset(obj.Level, obj.Rank, obj.File);
             }
@@ -98,17 +98,17 @@ namespace tgreiner.amy.bitboard
         /// <summary>Explicit conversion from square offset to UCoord.</summary>
         public static explicit operator UCoord(int offset)
         {
-            return (UCoord)(Lrf)(offset);
+            return (UCoord)(Lfr)(offset);
         }
 
         /// <summary>Explicit conversion from UCoord to LRF.</summary>
-        public static explicit operator Lrf(UCoord obj)
+        public static explicit operator Lfr(UCoord obj)
         {
-            return new Lrf(obj.Level, obj.Rank, obj.File);
+            return new Lfr(obj.Level, obj.File, obj.Rank);
         }
 
         /// <summary>Explicit conversion from LRF to UCoord.</summary>
-        public static explicit operator UCoord(Lrf lrf)
+        public static explicit operator UCoord(Lfr lrf)
         {
             var result = new UCoord();
             result.Level = lrf.Level;

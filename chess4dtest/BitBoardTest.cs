@@ -7,27 +7,27 @@
         [TestMethod()]
         public void hexLrfTest()
         {
-            HexLrf hexLrf = new HexLrf(new Lrf(0,0,0)); // aa1
+            HexLfr hexLrf = new HexLfr(new Lfr(0,0,0)); // aa1
             Assert.IsTrue((hexLrf.Level == 0) && (hexLrf.Rank == 7) && (hexLrf.File == 0),
                 $"Lrf aa1 => x{(char)(97 + hexLrf.Level)}{(char)(97 + hexLrf.File)}{hexLrf.Rank+1}"); // aa8
 
-            hexLrf = new HexLrf(new Lrf(14,0,0)); // oa1
+            hexLrf = new HexLfr(new Lfr(14,0,0)); // oa1
             Assert.IsTrue((hexLrf.Level == 7) && (hexLrf.Rank == 0) && (hexLrf.File == 7),
                 $"Lrf oa1 => x{(char)(97 + hexLrf.Level)}{(char)(97 + hexLrf.File)}{hexLrf.Rank+1}"); // hh1
 
-            hexLrf = new HexLrf(new Lrf(7,0,0)); // ha1
+            hexLrf = new HexLfr(new Lfr(7,0,0)); // ha1
             Assert.IsTrue((hexLrf.Level == 0) && (hexLrf.Rank == 0) && (hexLrf.File == 0),
                 $"Lrf ha1 => x{(char)(97 + hexLrf.Level)}{(char)(97 + hexLrf.File)}{hexLrf.Rank+1}"); // aa1
 
-            hexLrf = new HexLrf(new Lrf(7,7,0)); // ha8
+            hexLrf = new HexLfr(new Lfr(7,7,0)); // ha8
             Assert.IsTrue((hexLrf.Level == 7) && (hexLrf.Rank == 7) && (hexLrf.File == 0),
                 $"Lrf ha8 => x{(char)(97 + hexLrf.Level)}{(char)(97 + hexLrf.File)}{hexLrf.Rank+1}"); // ha8
 
-            hexLrf = new HexLrf(new Lrf(7,0,7)); // hh1
+            hexLrf = new HexLfr(new Lfr(7,0,7)); // hh1
             Assert.IsTrue((hexLrf.Level == 0) && (hexLrf.Rank == 0) && (hexLrf.File == 7),
                 $"Lrf hh1 => x{(char)(97 + hexLrf.Level)}{(char)(97 + hexLrf.File)}{hexLrf.Rank+1}"); // ah1
 
-            hexLrf = new HexLrf(new Lrf(7,7,7)); // hh8
+            hexLrf = new HexLfr(new Lfr(7,7,7)); // hh8
             Assert.IsTrue((hexLrf.Level == 7) && (hexLrf.Rank == 7) && (hexLrf.File == 7),
                 $"Lrf hh8 => x{(char)(97 + hexLrf.Level)}{(char)(97 + hexLrf.File)}{hexLrf.Rank+1}"); // hh8
 
@@ -36,36 +36,36 @@
 
             for(int square = 0; square < BitBoard.SIZE; ++square)
             {
-                hexLrf = new HexLrf(new Lrf(square));
+                hexLrf = new HexLfr(new Lfr(square));
                 Assert.IsFalse(hexes[hexLrf.Level * 64 + hexLrf.Rank * 8 + hexLrf.File],
                     $"Lrf already mapped at offset {square} x{(char)(97 + hexLrf.Level)}{(char)(97 + hexLrf.File)}{hexLrf.Rank+1}");
 
                 hexes[hexLrf.Level * 64 + hexLrf.Rank * 8 + hexLrf.File] = true;
             }
 
-            Lrf lrf = (Lrf) (new HexLrf(0,0,0)); // aa1
+            Lfr lrf = (Lfr) (new HexLfr(0,0,0)); // aa1
             Assert.IsTrue((lrf.Level == 7) && (lrf.Rank == 0) && (lrf.File == 0),
                 $"HexLrf xaa1 => {(char)(97 + lrf.Level)}{(char)(97 + lrf.File)}{lrf.Rank+1}"); // ha1
 
-            lrf = (Lrf) (new HexLrf(0,7,0)); // ah1
+            lrf = (Lfr) (new HexLfr(0,7,0)); // ah1
             Assert.IsTrue((lrf.Level == 7) && (lrf.Rank == 0) && (lrf.File == 7),
                 $"HexLrf xah1 => {(char)(97 + lrf.Level)}{(char)(97 + lrf.File)}{lrf.Rank+1}"); // hh1
 
-            lrf = (Lrf) (new HexLrf(0,7,0)); // aa8
+            lrf = (Lfr) (new HexLfr(0,7,0)); // aa8
             Assert.IsTrue((lrf.Level == 0) && (lrf.Rank == 0) && (lrf.File == 0),
                 $"HexLrf xaa8 => {(char)(97 + lrf.Level)}{(char)(97 + lrf.File)}{lrf.Rank+1}"); // aa1
 
 
 
-            lrf = (Lrf) (new HexLrf(7,7,0)); // ha8
+            lrf = (Lfr) (new HexLfr(7,7,0)); // ha8
             Assert.IsTrue((lrf.Level == 7) && (lrf.Rank == 7) && (lrf.File == 0),
                 $"HexLrf xha8 => {(char)(97 + lrf.Level)}{(char)(97 + lrf.File)}{lrf.Rank+1}"); // ha8
 
-            lrf = (Lrf) (new HexLrf(7,7,7)); // hh8
+            lrf = (Lfr) (new HexLfr(7,7,7)); // hh8
             Assert.IsTrue((lrf.Level == 7) && (lrf.Rank == 7) && (lrf.File == 7),
                 $"HexLrf xhh8 => {(char)(97 + lrf.Level)}{(char)(97 + lrf.File)}{lrf.Rank+1}"); // hh8
 
-            lrf = (Lrf) (new HexLrf(7,0,7)); // hh1
+            lrf = (Lfr) (new HexLfr(7,0,7)); // hh1
             Assert.IsTrue((lrf.Level == 14) && (lrf.Rank == 0) && (lrf.File == 0),
                 $"HexLrf xhh1 => {(char)(97 + lrf.Level)}{(char)(97 + lrf.File)}{lrf.Rank+1}"); // oa1
         }
@@ -74,79 +74,79 @@
         public void levelRankFileTest()
         {
             int transSquare = 0;
-            Lrf lrf;
+            Lfr lrf;
 
-            lrf = (Lrf)(BoardConstants_Fields.LA);
+            lrf = (Lfr)(BoardConstants_Fields.LA);
             Assert.IsTrue(lrf.Level == 0);
             Assert.IsTrue(lrf.Rank == 0);
             Assert.IsTrue(lrf.File == 0);
            
-            lrf = (Lrf)(BoardConstants_Fields.LB);
+            lrf = (Lfr)(BoardConstants_Fields.LB);
             Assert.IsTrue(lrf.Level == 1);
             Assert.IsTrue(lrf.Rank == 0);
             Assert.IsTrue(lrf.File == 0);
             
-            lrf = (Lrf)(BoardConstants_Fields.LC);
+            lrf = (Lfr)(BoardConstants_Fields.LC);
             Assert.IsTrue(lrf.Level == 2);
             Assert.IsTrue(lrf.Rank == 0);
             Assert.IsTrue(lrf.File == 0);
            
-            lrf = (Lrf)(BoardConstants_Fields.LH);
+            lrf = (Lfr)(BoardConstants_Fields.LH);
             Assert.IsTrue(lrf.Level == 7);
             Assert.IsTrue(lrf.Rank == 0);
             Assert.IsTrue(lrf.File == 0);
 
-            lrf = (Lrf)(BoardConstants_Fields.LI);
+            lrf = (Lfr)(BoardConstants_Fields.LI);
             Assert.IsTrue(lrf.Level == 8);
             Assert.IsTrue(lrf.Rank == 0);
             Assert.IsTrue(lrf.File == 0);
 
-            lrf = (Lrf)(BoardConstants_Fields.LO);
+            lrf = (Lfr)(BoardConstants_Fields.LO);
             Assert.IsTrue(lrf.Level == 14);
             Assert.IsTrue(lrf.Rank == 0);
             Assert.IsTrue(lrf.File == 0);
 
-            lrf = (Lrf)(BoardConstants_Fields.HA1);
+            lrf = (Lfr)(BoardConstants_Fields.HA1);
             Assert.IsTrue(lrf.Level == 7);
             Assert.IsTrue(lrf.Rank == 0);
             Assert.IsTrue(lrf.File == 0);
             
-            lrf = (Lrf)(BoardConstants_Fields.HH1);
+            lrf = (Lfr)(BoardConstants_Fields.HH1);
             Assert.IsTrue(lrf.Level == 7);
             Assert.IsTrue(lrf.Rank == 0);
             Assert.IsTrue(lrf.File == 7);
             
-            lrf = (Lrf)(BoardConstants_Fields.HA8);
+            lrf = (Lfr)(BoardConstants_Fields.HA8);
             Assert.IsTrue(lrf.Level == 7);
             Assert.IsTrue(lrf.Rank == 7);
             Assert.IsTrue(lrf.File == 0);
             
-            lrf = (Lrf)(BoardConstants_Fields.HH8);
+            lrf = (Lfr)(BoardConstants_Fields.HH8);
             Assert.IsTrue(lrf.Level == 7);
             Assert.IsTrue(lrf.Rank == 7);
             Assert.IsTrue(lrf.File == 7);
 
             Assert.IsTrue(BoardConstants_Fields.HH8 == (int)lrf);
 
-            Assert.IsFalse(Lrf.IsValid(-1));
-            Assert.IsFalse(Lrf.IsValid(BitBoard.SIZE));
-            Assert.IsTrue(Lrf.IsValid(0));
-            Assert.IsTrue(Lrf.IsValid(BitBoard.SIZE-1));
+            Assert.IsFalse(Lfr.IsValid(-1));
+            Assert.IsFalse(Lfr.IsValid(BitBoard.SIZE));
+            Assert.IsTrue(Lfr.IsValid(0));
+            Assert.IsTrue(Lfr.IsValid(BitBoard.SIZE-1));
             
-            Assert.IsFalse(Lrf.IsValid(8,7,7));
-            Assert.IsFalse(Lrf.IsValid(0,0,2));
-            Assert.IsFalse(Lrf.IsValid(0,2,0));
-            Assert.IsFalse(Lrf.IsValid(-1,-1,-1));
-            Assert.IsFalse(Lrf.IsValid(BitBoard.NUM_LEVELS,0,0));            
+            Assert.IsFalse(Lfr.IsValid(8,7,7));
+            Assert.IsFalse(Lfr.IsValid(0,0,2));
+            Assert.IsFalse(Lfr.IsValid(0,2,0));
+            Assert.IsFalse(Lfr.IsValid(-1,-1,-1));
+            Assert.IsFalse(Lfr.IsValid(BitBoard.NUM_LEVELS,0,0));            
 
-            Assert.IsTrue(Lrf.IsValid(0,0,0));
-            Assert.IsTrue(Lrf.IsValid(7,0,0));
-            Assert.IsTrue(Lrf.IsValid(7,7,7));
+            Assert.IsTrue(Lfr.IsValid(0,0,0));
+            Assert.IsTrue(Lfr.IsValid(7,0,0));
+            Assert.IsTrue(Lfr.IsValid(7,7,7));
 
             bool caughtException = false;
             try
             {
-                lrf = (Lrf)(BitBoard.SIZE);
+                lrf = (Lfr)(BitBoard.SIZE);
             }
             catch(IndexOutOfRangeException e)
             {
@@ -156,7 +156,7 @@
 
             for(int square = 0; BitBoard.SIZE > square; ++square)
             {
-                lrf = (Lrf)square;
+                lrf = (Lfr)square;
                 transSquare = BitBoard.BitOffset(lrf.Level, lrf.Rank, lrf.File);
                 Assert.IsTrue(transSquare == square);
             }
