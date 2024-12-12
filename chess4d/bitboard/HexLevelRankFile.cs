@@ -580,8 +580,8 @@ a  \ / \ / \ / \ / \ / \ / \ / \ /
             */
             
             ret.Level =  7 + hexLrf.Level - hexLrf.Rank;
-            ret.File = hexLrf.File - NegRelu16[hexLrf.Rank + 8 - hexLrf.Level];
-            ret.Rank = hexLrf.Level - NegRelu16[hexLrf.Rank + 8 - hexLrf.Level];
+            ret.File = hexLrf.File - NegRelu16[hexLrf.Rank + 7 - hexLrf.Level];
+            ret.Rank = hexLrf.Level - NegRelu16[hexLrf.Rank + 7 - hexLrf.Level];
 
 
 
