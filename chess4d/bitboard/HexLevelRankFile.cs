@@ -575,8 +575,8 @@ a  \ / \ / \ / \ / \ / \ / \ / \ /
             Using formula:
 
             Level = hexLevel+7-hexRank
-            File = hexFile - NegRelu[8 + hexRank - hexLevel]
-            Rank = hexLEvel - NegRelu[8 + hexRank - hexLevel]
+            File = hexFile - NegRelu[7 + hexRank - hexLevel]
+            Rank = hexLEvel - NegRelu[7 + hexRank - hexLevel]
             */
             
             ret.Level =  7 + hexLrf.Level - hexLrf.Rank;
