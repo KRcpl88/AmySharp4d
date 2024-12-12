@@ -575,13 +575,13 @@ a  \ / \ / \ / \ / \ / \ / \ / \ /
             Using formula:
 
             Level = hexLevel+7-hexRank
-            File = hexFile - Relu[8 + hexRank - hexLevel]
-            Rank = hexLEvel - Relu[8 + hexRank - hexLevel]
+            File = hexFile - NegRelu[8 + hexRank - hexLevel]
+            Rank = hexLEvel - NegRelu[8 + hexRank - hexLevel]
             */
             
             ret.Level =  7 + hexLrf.Level - hexLrf.Rank;
-            ret.File = hexLrf.File - Relu16[hexLrf.Rank + 8 - hexLrf.Level];
-            ret.Rank = hexLrf.Level - Relu16[hexLrf.Rank + 8 - hexLrf.Level];
+            ret.File = hexLrf.File - NegRelu16[hexLrf.Rank + 8 - hexLrf.Level];
+            ret.Rank = hexLrf.Level - NegRelu16[hexLrf.Rank + 8 - hexLrf.Level];
 
 
 
