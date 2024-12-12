@@ -571,11 +571,18 @@ a  \ / \ / \ / \ / \ / \ / \ / \ /
         public static explicit operator Lfr(HexLfr hexLrf)
         {
             Lfr ret = new Lfr();
-            //Relu16[hexLrf.Level]; // {0,0,0,0,0,0,0,0,1,2,3,4,5,6,7};
-            //NegRelu16[hexLrf.Level]; // {7,6,5,4,3,2,1,0,0,0,0,0,0,0,0};
+            /*
+            Using formula:
+
+            Level = hexLevel+7-hexRank
+            File = hexFile - Relu[8 + hexRank - hexLevel]
+            Rank = hexLEvel - Relu[8 + hexRank - hexLevel]
+            */
+            
             ret.Level =  7 + hexLrf.Level - hexLrf.Rank;
-            ret.Rank = hexLrf.Rank;
-            ret.File = hexLrf.File - NegRelu16[hexLrf.Rank + 7 - hexLrf.Level];
+            ret.File = hexLrf.File - Relu16[hexLrf.Rank + 8 - hexLrf.Level];
+            ret.Rank = hexLrf.Level - Relu16[hexLrf.Rank + 8 - hexLrf.Level];
+
 
 
             // HF  HR   F
