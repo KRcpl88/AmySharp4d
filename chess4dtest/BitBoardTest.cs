@@ -19,11 +19,11 @@
             Assert.IsTrue((hexLrf.Level == 0) && (hexLrf.Rank == 0) && (hexLrf.File == 0),
                 $"Lrf ha1 => x{(char)(97 + hexLrf.Level)}{(char)(97 + hexLrf.File)}{hexLrf.Rank+1}"); // aa1
 
-            hexLrf = new HexLfr(new Lfr(7,7,0)); // ha8
+            hexLrf = new HexLfr(new Lfr(7,0,7)); // ha8
             Assert.IsTrue((hexLrf.Level == 7) && (hexLrf.Rank == 7) && (hexLrf.File == 0),
                 $"Lrf ha8 => x{(char)(97 + hexLrf.Level)}{(char)(97 + hexLrf.File)}{hexLrf.Rank+1}"); // ha8
 
-            hexLrf = new HexLfr(new Lfr(7,0,7)); // hh1
+            hexLrf = new HexLfr(new Lfr(7,7,0)); // hh1
             Assert.IsTrue((hexLrf.Level == 0) && (hexLrf.Rank == 0) && (hexLrf.File == 7),
                 $"Lrf hh1 => x{(char)(97 + hexLrf.Level)}{(char)(97 + hexLrf.File)}{hexLrf.Rank+1}"); // ah1
 

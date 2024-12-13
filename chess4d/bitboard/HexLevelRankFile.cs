@@ -481,8 +481,6 @@ a  \ / \ / \ / \ / \ / \ / \ / \ /
             Level = level;
             Rank = rank;
             File = file;
-
-            Validate();
         }
 
         /// <summary>
@@ -516,15 +514,7 @@ a  \ / \ / \ / \ / \ / \ / \ / \ /
             }
         }   
 
-        private static void ValidateOffset(int offset)
-        {
-            if (!IsValid(offset))
-            {
-                throw new IndexOutOfRangeException("LRF.ValidateOffset(offset) offset");
-            }
-        }   
-
-        public bool IsValid()
+       public bool IsValid()
         {
             return IsValid(Level, Rank, File);
         }
@@ -536,10 +526,26 @@ a  \ / \ / \ / \ / \ / \ / \ / \ /
                 return false;
             }
 
-            if ((rank < 0) || (rank >= BitBoard.LEVEL_WIDTH[level])
-                || (file < 0) || (file >= BitBoard.LEVEL_WIDTH[level]))
+            if ((rank < 0) || (rank >= BitBoard.MAX_LEVEL_WIDTH))
             {
                 return false;
+            }
+
+            if (rank < level)
+            {
+                if( (file < (BitBoard.MAX_LEVEL_WIDTH - RankWidth(level,rank) ) )
+                  || (file >= BitBoard.MAX_LEVEL_WIDTH) )
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if( (file < 0)
+                  || (file >= ( BitBoard.MAX_LEVEL_WIDTH - RankWidth(level,rank) ) ) )
+                {
+                    return false;
+                }
             }
 
             return true;
