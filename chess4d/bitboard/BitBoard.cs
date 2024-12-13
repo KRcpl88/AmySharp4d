@@ -252,7 +252,7 @@ namespace tgreiner.amy.bitboard
             }
         }
 
-        public int this[int level, int rank, int file]
+        public int this[int level, int file, int rank]
         {
             get { return GetBit(BitOffset(level, file, rank)); }
             set 
@@ -287,7 +287,7 @@ namespace tgreiner.amy.bitboard
 
 
 
-        public int GetBit(int level, int rank, int file)
+        public int GetBit(int level, int file, int rank)
         {
             return GetBit(BitOffset(level, file, rank));
         }
@@ -302,7 +302,7 @@ namespace tgreiner.amy.bitboard
         }
 
 
-        public void SetBit(int level, int rank, int file)
+        public void SetBit(int level, int file, int rank)
         {
             SetBit(BitOffset(level, file, rank));
         }
@@ -328,7 +328,7 @@ namespace tgreiner.amy.bitboard
             return (countUlongOffset * ULONG_SIZE_BITS);
         }
 
-        public void ClearBit(int level, int rank, int file)
+        public void ClearBit(int level, int file, int rank)
         {
             ClearBit(BitOffset(level, file, rank));
         }
