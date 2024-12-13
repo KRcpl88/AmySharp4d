@@ -476,7 +476,7 @@ a  \ / \ / \ / \ / \ / \ / \ / \ /
         */
 
         public HexLfr() {}
-        public HexLfr(int level, int rank, int file) 
+        public HexLfr(int level, int file, int rank) 
         {
             Level = level;
             Rank = rank;
@@ -516,10 +516,10 @@ a  \ / \ / \ / \ / \ / \ / \ / \ /
 
        public bool IsValid()
         {
-            return IsValid(Level, Rank, File);
+            return IsValid(Level, File, Rank);
         }
         
-        public static bool IsValid(int level, int rank, int file)
+        public static bool IsValid(int level, int file, int rank)
         {
             if ((level < 0) || (level >= BitBoard.NUM_LEVELS))
             {
@@ -564,7 +564,7 @@ a  \ / \ / \ / \ / \ / \ / \ / \ /
         /// <summary>Explicit conversion from LRF to square offset.</summary>
         public static explicit operator int(HexLfr obj)
         {
-            return BitBoard.BitOffset(obj.Level, obj.Rank, obj.File);
+            return BitBoard.BitOffset(obj.Level, obj.File, obj.Rank);
         }
 
         /// <summary>Explicit conversion from Lrf to HexLrf.</summary>

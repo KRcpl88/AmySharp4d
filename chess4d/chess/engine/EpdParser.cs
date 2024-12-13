@@ -73,13 +73,13 @@ namespace tgreiner.amy.chess.engine
                         throw new IllegalEpdException(
                             $"EPD file {file} out of bounds on  Level: {level} Rank: {rank}");
                     }
-                    if (!Lfr.IsValid(level, rank, file))
+                    if (!Lfr.IsValid(level, file, rank))
                     {
                         throw new IllegalEpdException(
                             $"EPD contains invalid posiiton on Level: {level} Rank: {rank} File: {file}");
                     }
                 }
-                int square = BitBoard.BitOffset(level, rank, file);
+                int square = BitBoard.BitOffset(level, file, rank);
                 switch (ch)
                 {
 
@@ -223,7 +223,7 @@ namespace tgreiner.amy.chess.engine
                     throw new IllegalEpdException("Illegal en passant square");
                 }
 
-                enPassant = BitBoard.BitOffset(epLevel, epRank, epFile);
+                enPassant = BitBoard.BitOffset(epLevel, epFile, epRank);
             }
 
             return new BoardPosition(board, whiteToMove, enPassant, wCastleK, wCastleQ, bCastleK, bCastleQ, this);

@@ -85,9 +85,9 @@ namespace tgreiner.amy.bitboard
         /// <summary>Explicit conversion from UCoord to square offset.</summary>
         public static explicit operator int(UCoord obj)
         {
-            if(Lfr.IsValid(obj.Level, obj.Rank, obj.File))
+            if(Lfr.IsValid(obj.Level, obj.File, obj.Rank))
             {
-                return BitBoard.BitOffset(obj.Level, obj.Rank, obj.File);
+                return BitBoard.BitOffset(obj.Level, obj.File, obj.Rank);
             }
             else
             {

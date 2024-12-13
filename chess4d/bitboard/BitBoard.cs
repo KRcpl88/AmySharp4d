@@ -254,10 +254,10 @@ namespace tgreiner.amy.bitboard
 
         public int this[int level, int rank, int file]
         {
-            get { return GetBit(BitOffset(level, rank, file)); }
+            get { return GetBit(BitOffset(level, file, rank)); }
             set 
             {
-                int offset = BitOffset(level, rank, file);
+                int offset = BitOffset(level, file, rank);
                 if (value == 0)
                 {
                     ClearBit(offset);
@@ -289,7 +289,7 @@ namespace tgreiner.amy.bitboard
 
         public int GetBit(int level, int rank, int file)
         {
-            return GetBit(BitOffset(level, rank, file));
+            return GetBit(BitOffset(level, file, rank));
         }
 
         public void SetBit(int offset)
@@ -304,7 +304,7 @@ namespace tgreiner.amy.bitboard
 
         public void SetBit(int level, int rank, int file)
         {
-            SetBit(BitOffset(level, rank, file));
+            SetBit(BitOffset(level, file, rank));
         }
 
         public void SetBits(int[] offsets)
@@ -330,10 +330,10 @@ namespace tgreiner.amy.bitboard
 
         public void ClearBit(int level, int rank, int file)
         {
-            ClearBit(BitOffset(level, rank, file));
+            ClearBit(BitOffset(level, file, rank));
         }
 
-        public static int BitOffset(int level, int rank, int file)
+        public static int BitOffset(int level, int file, int rank)
         {
             return LEVEL_OFFSET[level] + rank * LEVEL_WIDTH[level] + file;
         }

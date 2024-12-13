@@ -1589,9 +1589,9 @@ namespace tgreiner.amy.chess.engine
         /// <returns> the type of the piece on <code>square</code> (0,
         /// <code>Pawn</code> ... <code>King</code>
         /// </returns>
-        public int getPieceAt(int level, int rank, int file)
+        public int getPieceAt(int level, int file, int rank)
         {
-            return System.Math.Abs(board[BitBoard.BitOffset(level, rank, file)]);
+            return System.Math.Abs(board[BitBoard.BitOffset(level, file, rank)]);
         }
 
         /// <summary> Get the color of the piece on <code>square</code>.
@@ -1615,9 +1615,9 @@ namespace tgreiner.amy.chess.engine
         /// <returns> <code>true</code> if the piece on <code>square</code>
         /// is white, <code>false</code> otherwise.
         /// </returns>
-        public bool isWhiteAt(int level, int rank, int file)
+        public bool isWhiteAt(int level, int file, int rank)
         {
-            return board[BitBoard.BitOffset(level, rank, file)] > 0;
+            return board[BitBoard.BitOffset(level, file, rank)] > 0;
         }
 
         /// <summary> Check if castling is legal in the current position.
@@ -2073,7 +2073,7 @@ namespace tgreiner.amy.chess.engine
                     buffer.Append(' ');
                     for (int file = 0; file < BitBoard.LEVEL_WIDTH[level]; file++)
                     {
-                        int i = BitBoard.BitOffset(level, rank, file);
+                        int i = BitBoard.BitOffset(level, file, rank);
 
                         buffer.Append('|');
                         if (enPassant != 0 && i == enPassant)

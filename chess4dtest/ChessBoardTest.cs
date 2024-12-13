@@ -75,14 +75,14 @@ namespace tgreiner.amy.chess.engine.Tests
         public void parseSanTest()
         {
             var board = new ChessBoard("1/2/2/3/3/3/4/4/4/4/5/5/5/5/5/6/6/6/6/6/6/7/7/7/7/7/7/7/8/8/8/2k2K/1p//6P w - -");
-            Assert.IsTrue(board.getPieceAt(7,4,5) == ChessConstants_Fields.KING);
-            Assert.IsTrue(board.getSideAt(BitBoard.BitOffset(7,4,5)) == Player.white);
-            Assert.IsTrue(board.getPieceAt(7,4,2) == ChessConstants_Fields.KING);
-            Assert.IsTrue(board.getSideAt(BitBoard.BitOffset(7,4,2)) == Player.black);
-            Assert.IsTrue(board.getPieceAt(7,1,6) == ChessConstants_Fields.PAWN);
-            Assert.IsTrue(board.getSideAt(BitBoard.BitOffset(7,1,6)) == Player.white);
-            Assert.IsTrue(board.getPieceAt(7,3,1) == ChessConstants_Fields.PAWN);
-            Assert.IsTrue(board.getSideAt(BitBoard.BitOffset(7,3,1)) == Player.black);
+            Assert.IsTrue(board.getPieceAt(7,5,4) == ChessConstants_Fields.KING);
+            Assert.IsTrue(board.getSideAt(BitBoard.BitOffset(7,5,4)) == Player.white);
+            Assert.IsTrue(board.getPieceAt(7,2,4) == ChessConstants_Fields.KING);
+            Assert.IsTrue(board.getSideAt(BitBoard.BitOffset(7,2,4)) == Player.black);
+            Assert.IsTrue(board.getPieceAt(7,6,1) == ChessConstants_Fields.PAWN);
+            Assert.IsTrue(board.getSideAt(BitBoard.BitOffset(7,6,1)) == Player.white);
+            Assert.IsTrue(board.getPieceAt(7,1,3) == ChessConstants_Fields.PAWN);
+            Assert.IsTrue(board.getSideAt(BitBoard.BitOffset(7,1,3)) == Player.black);
             Assert.IsTrue(board.WhiteToMove == true);
 
             int move = Move.parseSAN(board,"Khf5-hf6");
@@ -138,8 +138,8 @@ namespace tgreiner.amy.chess.engine.Tests
 
             for (int i = 0; 8 > i; ++i)
             {
-                Assert.IsTrue(moves.GetBit(lrfWhiteRook.Level, lrfWhiteRook.Rank, i) == 1);
-                Assert.IsTrue(moves.GetBit(lrfWhiteRook.Level, i, lrfWhiteRook.File) == 1);
+                Assert.IsTrue(moves.GetBit(lrfWhiteRook.Level, i, lrfWhiteRook.Rank) == 1);
+                Assert.IsTrue(moves.GetBit(lrfWhiteRook.Level, lrfWhiteRook.File, i) == 1);
             }
 
             while(moves.IsEmpty() == false)

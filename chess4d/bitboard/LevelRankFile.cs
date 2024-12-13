@@ -77,10 +77,10 @@ namespace tgreiner.amy.bitboard
 
         public bool IsValid()
         {
-            return IsValid(Level, Rank, File);
+            return IsValid(Level, File, Rank);
         }
         
-        public static bool IsValid(int level, int rank, int file)
+        public static bool IsValid(int level, int file, int rank)
         {
             if ((level < 0) || (level >= BitBoard.NUM_LEVELS))
             {
@@ -104,7 +104,7 @@ namespace tgreiner.amy.bitboard
         /// <summary>Explicit conversion from LRF to square offset.</summary>
         public static explicit operator int(Lfr obj)
         {
-            return BitBoard.BitOffset(obj.Level, obj.Rank, obj.File);
+            return BitBoard.BitOffset(obj.Level, obj.File, obj.Rank);
         }
 
         /// <summary>Explicit conversion from square offset to LRF.</summary>
