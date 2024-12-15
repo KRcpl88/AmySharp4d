@@ -93,6 +93,8 @@ namespace tgreiner.amy.chess.engine
 
         private static object syncCmd = new object();
 
+        public bool printHex = false;
+
         AutoResetEvent inputEvt = new AutoResetEvent(false);
 		
 		/// <summary> Create an XBoardEngine.
@@ -184,8 +186,18 @@ namespace tgreiner.amy.chess.engine
                     }
                     timerAlgorithm = new ExtendOnFailLowTimerAlgorithm(0, 0);
                     timer = new AlgorithmBasedTimer(timerAlgorithm);
-                    Console.WriteLine(board.ToStringHex(-1));
+                    PrintBoard(printHex);
                     respond = true;
+                }
+                else if (this.command.StartsWith("printhex"))
+                {
+                    printHex = true;
+                    PrintBoard(printHex);
+                }
+                else if (this.command.StartsWith("printsquare"))
+                {
+                    printHex = false;
+                    PrintBoard(printHex);
                 }
                 else if (this.command.StartsWith("usermove "))
                 {
@@ -308,6 +320,18 @@ namespace tgreiner.amy.chess.engine
             }
 		}
 
+        private void PrintBoard(bool hex)
+        {
+            if (hex)
+            {
+                Console.WriteLine(board.ToStringHex(-1));
+            }
+            else
+            {
+                Console.WriteLine(board.ToString(-1));
+            }
+        }
+
         private void handleMove(bool respond, int move)
         {
             board.doMove(move);
@@ -348,7 +372,7 @@ namespace tgreiner.amy.chess.engine
 				this.comm.OnResponse("move " + Move.toSAN(board, bestMove));
 				board.doMove(bestMove);
 
-                Console.WriteLine(board);
+                PrintBoard(printHex);
 
                 checkGameEnd();
 				
@@ -381,7 +405,7 @@ namespace tgreiner.amy.chess.engine
 			this.comm.OnResponse("move " + Move.toSAN(board, move));
 			board.doMove(move);
 
-            Console.WriteLine(board);
+            PrintBoard(printHex);
 
             checkGameEnd();
 			
