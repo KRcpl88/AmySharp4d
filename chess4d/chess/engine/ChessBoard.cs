@@ -2133,6 +2133,110 @@ namespace tgreiner.amy.chess.engine
             return buffer.ToString();
         }
 
+        /// <summary> Create a textual representatiquion of the current position.
+        /// 
+        /// </summary>
+        /// <returns> the current position as an ASCII graphics board.
+        /// </returns>
+        public System.String ToStringHex(int showMoves)
+        {
+            System.Text.StringBuilder buffer = new System.Text.StringBuilder();
+            
+            for (int level = BitBoard.MAX_LEVEL_WIDTH -1; level >= 0; level--)
+            {
+                /*
+                IndentRowHex(buffer, level, rank);
+
+                buffer.Append("   +");
+                for (int file = 0; file < BitBoard.LEVEL_WIDTH[level]; file++)
+                {
+                    buffer.Append("---+");
+                }
+                buffer.Append("\n");
+                */
+                for (int rank = BitBoard.MAX_LEVEL_WIDTH - 1; rank >= 0; rank--)
+                {
+                    IndentRowHex(buffer, level, rank);
+                    buffer.Append("\\ ");
+                    for (int file = 0; file < HexLfr.RankWidth(level, rank); file++)
+                    {
+
+                        buffer.Append('/');
+                        buffer.Append((char)(97 + file ));
+                        buffer.Append("\\ ");
+                    }
+                    buffer.Append("/\n");
+
+                    buffer.Append((char)('1' + rank ));
+                    IndentRowHex(buffer, level, rank);
+                    for (int file = 0; file < HexLfr.RankWidth(level, rank); file++)
+                    {
+                        var hexLfr = new HexLfr(level, file, rank);
+                        var lfr = (Lfr)hexLfr;
+                        int i = (int)lfr;
+
+
+                        buffer.Append('|');
+                        if (enPassant != 0 && i == enPassant)
+                        {
+                            if ((showMoves < 0) && (attackTo[showMoves].GetBit(i) == 1))
+                            {
+                                buffer.Append(".E.");
+                            }
+                            else
+                            {
+                                buffer.Append("<E>");
+                            }
+                        }
+                        else
+                        {
+                            MarkPieceSide(buffer, i, showMoves);
+
+                            buffer.Append(PIECE_NAME[getPieceAt(i)]);
+
+                            MarkPieceSide(buffer, i, showMoves);
+                        }
+                    }
+                    buffer.Append("|");
+                    if (level == 4)
+                    {
+                        if (rank == 4)
+                        {
+                            buffer.Append("  Hashkey: ");
+                            buffer.Append(System.Convert.ToString(positionHash, 16));
+                        }
+                        if ((rank == (BitBoard.LEVEL_WIDTH[level] - 1) && !whiteToMove) || (rank == 0 && whiteToMove))
+                        {
+                            buffer.Append(" *");
+                        }
+                    }
+                    buffer.Append("\n");
+                }
+
+                buffer.Append((char)(97 + level));
+                IndentRowHex(buffer, level, 0);
+                buffer.Append(" ");
+                for (int file = 0; file < HexLfr.RankWidth(level, 0); file++)
+                {
+                    buffer.Append("\\ / ");
+
+                }
+                buffer.Append("\n\n");
+            }
+            return buffer.ToString();
+        }
+
+        private void IndentRowHex(StringBuilder buffer, int level, int rank)
+        {
+            int File = BitBoard.MAX_LEVEL_WIDTH - HexLfr.RankWidth(level, rank);
+
+            while (File > 0)
+            {
+                buffer.Append("  ");
+                --File;
+            }
+        }
+
         private void MarkPieceSide(StringBuilder buffer, int i, int showMoves)
         {
             if (getSideAt(i) == Player.black)

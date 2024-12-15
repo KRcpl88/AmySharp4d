@@ -184,7 +184,7 @@ namespace tgreiner.amy.chess.engine
                     }
                     timerAlgorithm = new ExtendOnFailLowTimerAlgorithm(0, 0);
                     timer = new AlgorithmBasedTimer(timerAlgorithm);
-                    Console.WriteLine(board);
+                    Console.WriteLine(board.ToStringHex(-1));
                     respond = true;
                 }
                 else if (this.command.StartsWith("usermove "))

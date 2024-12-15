@@ -476,6 +476,7 @@ a  \ / \ / \ / \ / \ / \ / \ / \ /
         */
 
         public HexLfr() {}
+
         public HexLfr(int level, int file, int rank) 
         {
             Level = level;
@@ -492,6 +493,8 @@ a  \ / \ / \ / \ / \ / \ / \ / \ /
         /// Offest to the HexLrf rank for each Lrf level
         /// </summary>
         public static int[] NegRelu16 = new int[] {7,6,5,4,3,2,1,0,0,0,0,0,0,0,0};
+
+
 
         public HexLfr(Lfr lrf) 
         {
@@ -521,7 +524,7 @@ a  \ / \ / \ / \ / \ / \ / \ / \ /
         
         public static bool IsValid(int level, int file, int rank)
         {
-            if ((level < 0) || (level >= BitBoard.NUM_LEVELS))
+            if ((level < 0) || (level >= BitBoard.MAX_LEVEL_WIDTH))
             {
                 return false;
             }
@@ -553,7 +556,7 @@ a  \ / \ / \ / \ / \ / \ / \ / \ /
 
         public static int RankWidth(int level, int rank)
         {
-            return 8 - Relu16[level + rank] - NegRelu16[level + rank];
+            return 8 - Relu16[7 + rank - level] - NegRelu16[7 + rank - level];
         }
 
         public static bool IsValid(int offset)
