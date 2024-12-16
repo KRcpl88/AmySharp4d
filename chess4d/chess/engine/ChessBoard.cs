@@ -2157,7 +2157,15 @@ namespace tgreiner.amy.chess.engine
                 for (int rank = BitBoard.MAX_LEVEL_WIDTH - 1; rank >= 0; rank--)
                 {
                     IndentRowHex(buffer, level, rank);
-                    buffer.Append("\\ ");
+                    if ((rank == BitBoard.MAX_LEVEL_WIDTH - 1) || (HexLfr.RankWidth(level, rank) >= HexLfr.RankWidth(level, rank+1)))
+                    {
+                        buffer.Append("  ");
+                    }
+                    else
+                    {
+                        buffer.Append("\\ ");
+                    }
+
                     for (int file = 0; file < HexLfr.RankWidth(level, rank); file++)
                     {
 
@@ -2165,7 +2173,14 @@ namespace tgreiner.amy.chess.engine
                         buffer.Append((char)(97 + file ));
                         buffer.Append("\\ ");
                     }
-                    buffer.Append("/\n");
+                    if ((rank == BitBoard.MAX_LEVEL_WIDTH - 1) || (HexLfr.RankWidth(level, rank) >= HexLfr.RankWidth(level, rank+1)))
+                    {
+                        buffer.Append("\n");
+                    }
+                    else
+                    {
+                        buffer.Append(" \n");
+                    }
 
                     buffer.Append((char)('1' + rank ));
                     IndentRowHex(buffer, level, rank);
