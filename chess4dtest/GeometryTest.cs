@@ -106,16 +106,16 @@ namespace tgreiner.amy.chess.engine.Tests
                     {
                             Assert.IsTrue(( nextDir.Rank >= (start.Rank - 1)) && (nextDir.Rank <= (start.Rank + 1))
                                 && (nextDir.File >= (start.File - 1)) && (nextDir.File >= (start.File - 1)), 
-                                $"NEXT_POS is {(char)(97 + nextDir.File)}{nextDir.Rank+1} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}") ;
+                                $"NEXT_POS is {(char)(97 + nextDir.File)}{nextDir.Rank+1} at piece:{piece}, start {(char)(97 + start.Level)}{(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.Level)} {(char)(97 + dest.File)}{dest.Rank+1}") ;
 
                             Assert.IsFalse((nextDir.Rank == start.Rank) && (nextDir.File == start.File), 
-                                $"NEXT_POS is {(char)(97 + nextDir.File)}{nextDir.Rank+1} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}") ;
+                                $"NEXT_POS is {(char)(97 + nextDir.File)}{nextDir.Rank+1} at piece:{piece}, start {(char)(97 + start.Level)}{(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.Level)} {(char)(97 + dest.File)}{dest.Rank+1}") ;
                     }
                     else
                     {
                         // illegal move
                         Assert.IsTrue(nextDirSquare == -1, 
-                            $"NEXT_POS is {nextDirSquare} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}") ;
+                            $"NEXT_POS is {nextDirSquare} at piece:{piece}, start {(char)(97 + start.Level)}{(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.Level)} {(char)(97 + dest.File)}{dest.Rank+1}") ;
                     }
                 }
             }
@@ -163,14 +163,14 @@ namespace tgreiner.amy.chess.engine.Tests
                                 // this is an edge, but its not the last square in the next_pos sequence
                                 // so it needs to go back to a square within 1 square of the starting square
                                 Assert.IsTrue(Lfr.IsValid(nextSquare), 
-                                    $"NEXT_POS is {nextSquare} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}") ;
+                                    $"NEXT_POS is {nextSquare} at piece:{piece}, start {(char)(97 + start.Level)}{(char)(97 + start.File)}{start.Rank+1} ({(int)start}), dest {(char)(97 + dest.Level)}{(char)(97 + dest.File)}{dest.Rank+1} ({destSquare})") ;
                                 
                                 Assert.IsTrue(( next.Rank >= (start.Rank - 1)) && (next.Rank <= (start.Rank + 1))
                                     && (next.File >= (start.File - 1)) && (next.File >= (start.File - 1)), 
-                                    $"NEXT_POS is {(char)(97 + next.File)}{next.Rank+1} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}") ;
+                                    $"NEXT_POS is {(char)(97 + next.File)}{next.Rank+1} at piece:{piece}, start {(char)(97 + start.Level)}{(char)(97 + start.File)}{start.Rank+1} ({(int)start}), dest {(char)(97 + dest.Level)}{(char)(97 + dest.File)}{dest.Rank+1} ({destSquare})") ;
 
                                 Assert.IsFalse((next.Rank == start.Rank) && (next.File == start.File), 
-                                    $"NEXT_POS is {(char)(97 + next.File)}{next.Rank+1} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}") ;
+                                    $"NEXT_POS is {(char)(97 + next.File)}{next.Rank+1} at piece:{piece}, start {(char)(97 + start.Level)}{(char)(97 + start.File)}{start.Rank+1} ({(int)start}), dest {(char)(97 + dest.Level)}{(char)(97 + dest.File)}{dest.Rank+1} ({destSquare})") ;
                             }
                             continue;
                         }
@@ -180,12 +180,12 @@ namespace tgreiner.amy.chess.engine.Tests
                             if(dest.File < start.File) 
                             {
                                 Assert.IsTrue((next.File == dest.File - 1) && (next.Rank == start.Rank), 
-                                    $"NEXT_POS is {(char)(97 + next.File)}{next.Rank+1} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}") ;
+                                    $"NEXT_POS is {(char)(97 + next.File)}{next.Rank+1} at piece:{piece}, start {(char)(97 + start.Level)}{(char)(97 + start.File)}{start.Rank+1} ({(int)start}), dest {(char)(97 + dest.Level)}{(char)(97 + dest.File)}{dest.Rank+1} ({destSquare})") ;
                             }
                             else
                             {
                                 Assert.IsTrue((next.File == dest.File + 1) && (next.Rank == start.Rank), 
-                                    $"NEXT_POS is {(char)(97 + next.File)}{next.Rank+1} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}") ;
+                                    $"NEXT_POS is {(char)(97 + next.File)}{next.Rank+1} at piece:{piece}, start {(char)(97 + start.Level)}{(char)(97 + start.File)}{start.Rank+1} ({(int)start}), dest {(char)(97 + dest.Level)}{(char)(97 + dest.File)}{dest.Rank+1} ({destSquare})") ;
                             }
                         }
                     }
@@ -203,14 +203,14 @@ namespace tgreiner.amy.chess.engine.Tests
                                 // this is an edgae, but its not the last square in the next_pos sequence
                                 // so it needs to go back to a square within 1 square of the starting square
                                 Assert.IsTrue(Lfr.IsValid(nextSquare), 
-                                    $"NEXT_POS is {nextSquare} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}, last square was {(char)(97 + ((Lfr)lastSquare).File)}{((Lfr)lastSquare).Rank + 1}") ;
+                                    $"NEXT_POS is {nextSquare} at piece:{piece}, start {(char)(97 + start.Level)}{(char)(97 + start.File)}{start.Rank+1} ({(int)start}), dest {(char)(97 + dest.Level)}{(char)(97 + dest.File)}{dest.Rank+1} ({destSquare}), last square was {(char)(97 + ((Lfr)lastSquare).Level)}{(char)(97 + ((Lfr)lastSquare).File)}{((Lfr)lastSquare).Rank + 1} ({(int)(Lfr)lastSquare})") ;
                                 
                                 Assert.IsTrue(( next.Rank >= (start.Rank - 1)) && (next.Rank <= (start.Rank + 1))
                                     && (next.File >= (start.File - 1)) && (next.File >= (start.File - 1)), 
-                                    $"NEXT_POS is {(char)(97 + next.File)}{next.Rank+1} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}") ;
+                                    $"NEXT_POS is {(char)(97 + next.Level)}{(char)(97 + next.File)}{next.Rank+1} at piece:{piece}, start {(char)(97 + start.Level)}{(char)(97 + start.File)}{start.Rank+1} ({(int)start}), dest {(char)(97 + dest.Level)}{(char)(97 + dest.File)}{dest.Rank+1} ({destSquare})") ;
 
                                 Assert.IsFalse((next.Rank == start.Rank) && (next.File == start.File), 
-                                    $"NEXT_POS is {(char)(97 + next.File)}{next.Rank+1} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}") ;
+                                    $"NEXT_POS is {(char)(97 + next.Level)}{(char)(97 + next.File)}{next.Rank+1} at piece:{piece}, start {(char)(97 + start.Level)}{(char)(97 + start.File)}{start.Rank+1} ({(int)start}), dest {(char)(97 + dest.Level)}{(char)(97 + dest.File)}{dest.Rank+1} ({destSquare})") ;
                             }
                             continue;
                         }
@@ -220,12 +220,12 @@ namespace tgreiner.amy.chess.engine.Tests
                             if(dest.Rank < start.Rank) 
                             {
                                 Assert.IsTrue((next.Rank == dest.Rank - 1) && (next.File == start.File), 
-                                    $"NEXT_POS is {(char)(97 + next.File)}{next.Rank+1} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}") ;
+                                    $"NEXT_POS is {(char)(97 + next.Level)}{(char)(97 + next.File)}{next.Rank+1} at piece:{piece}, start {(char)(97 + start.Level)}{(char)(97 + start.File)}{start.Rank+1} ({(int)start}), dest {(char)(97 + dest.Level)}{(char)(97 + dest.File)}{dest.Rank+1} ({destSquare})") ;
                             }
                             else
                             {
                                 Assert.IsTrue((next.Rank == dest.Rank + 1) && (next.File == start.File), 
-                                    $"NEXT_POS is {(char)(97 + next.File)}{next.Rank+1} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}") ;
+                                    $"NEXT_POS is {(char)(97 + next.Level)}{(char)(97 + next.File)}{next.Rank+1} at piece:{piece}, start {(char)(97 + start.Level)}{(char)(97 + start.File)}{start.Rank+1} ({(int)start}), dest {(char)(97 + dest.Level)}{(char)(97 + dest.File)}{dest.Rank+1} ({destSquare})") ;
                             }
                         }
                     }
@@ -233,7 +233,7 @@ namespace tgreiner.amy.chess.engine.Tests
                     {
                         // illegal move
                         Assert.IsTrue(nextSquare == -1, 
-                            $"NEXT_POS is {nextSquare} at piece:{piece}, start {(char)(97 + start.File)}{start.Rank+1}, dest {(char)(97 + dest.File)}{dest.Rank+1}") ;
+                            $"NEXT_POS is {nextSquare} at piece:{piece}, start {(char)(97 + start.Level)}{(char)(97 + start.File)}{start.Rank+1} ({(int)start}), dest {(char)(97 + dest.Level)}{(char)(97 + dest.File)}{dest.Rank+1} ({destSquare})") ;
                     }
                 }
             }

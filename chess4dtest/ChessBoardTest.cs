@@ -138,8 +138,10 @@ namespace tgreiner.amy.chess.engine.Tests
 
             for (int i = 0; 8 > i; ++i)
             {
-                Assert.IsTrue(moves.GetBit(lrfWhiteRook.Level, i, lrfWhiteRook.Rank) == 1);
-                Assert.IsTrue(moves.GetBit(lrfWhiteRook.Level, lrfWhiteRook.File, i) == 1);
+                Assert.IsTrue(moves.GetBit(lrfWhiteRook.Level, i, lrfWhiteRook.Rank) == 1,
+                    $"Move from {(char)(97 + lrfWhiteRook.File)}{lrfWhiteRook.Rank+1} to {(char)(97 + i)}{lrfWhiteRook.Rank+1} not found");
+                Assert.IsTrue(moves.GetBit(lrfWhiteRook.Level, lrfWhiteRook.File, i) == 1,
+                    $"Move from {(char)(97 + lrfWhiteRook.File)}{lrfWhiteRook.Rank+1} to {(char)(97 + lrfWhiteRook.Rank)}{i+1} not found");
             }
 
             while(moves.IsEmpty() == false)

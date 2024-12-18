@@ -256,7 +256,6 @@ namespace tgreiner.amy.chess.engine
 		{
 			for (int square = 0; square < BitBoard.SIZE; square++)
             {
-
                 for (short direction = 0; direction < ATTACK_DELTA[piece].Length; ++direction)
                 {
 					var nextCoord = (UCoord)(Lfr)square;
@@ -293,8 +292,8 @@ namespace tgreiner.amy.chess.engine
 
 					// once we run off of the end of the board, set the last POS and DIR to be 
 					// the start of the next one
-                    //NEXT_POS[piece][square][prevSquare] = (short)nextDirection;
-                    //NEXT_DIR[piece][square][prevSquare] = (short)nextDirection;
+                    NEXT_POS[piece][square][prevSquare] = (short)nextDirection;
+                    NEXT_DIR[piece][square][prevSquare] = (short)nextDirection;
                 }
             }
 		}
