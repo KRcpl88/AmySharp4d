@@ -29,92 +29,82 @@ namespace tgreiner.amy.bitboard
         /// <summary>Cartersian coordinate data.</summary>
         public int[] data = new int[3];
 
-        /// <summary>Data index for level.</summary>
-        public const int idxLevel = 0;
-
-        /// <summary>Data index for half ranks.</summary>
-        public const int idxHalfRank = 1;
-
-        /// <summary>Data index for half files.</summary>
-        public const int idxHalfFile = 2;
-
         public UCoord() {}
 
-        public UCoord(int level, int halfRank, int halfFile) 
+        public UCoord(int x, int y, int z) 
         {
-            Level = level;
-            HalfRank = halfRank;
-            HalfFile = halfFile;
+            X = x;
+            Y = y;
+            Z = z;
         }
 
-        /// <summary>Level.</summary>
-        public int Level
+
+        /// <summary>X axis goes from HA1->HH8</summary>
+        public int X
         {
-            get {return data[idxLevel];}
-            set {data[idxLevel] = value;}
+            get {return data[0];}
+            set {data[0] = value;}
         }
 
-        /// <summary>1/2 ranks.</summary>
-        public int HalfRank
+        /// <summary>Y axis goes from HH1->HA8</summary>
+        public int Y
         {
-            get {return data[idxHalfRank];}
-            set {data[idxHalfRank] = value;}
+            get {return data[1];}
+            set {data[1] = value;}
         }
 
-        /// <summary>1/2 files.</summary>
-        public int HalfFile
-        {
-            get {return data[idxHalfFile];}
-            set {data[idxHalfFile] = value;}
-        }
 
-        /// <summary>Rank adjusted for the current level</summary>
-        public int Rank
+        /// <summary>Level, Z coord goes from AA1->OA1</summary>
+        public int Z
         {
-            get {return (data[idxHalfRank] - (BitBoard.MAX_LEVEL_WIDTH - BitBoard.LEVEL_WIDTH[Level]))/2;}
-            set {data[idxHalfRank] = (value * 2) + (BitBoard.MAX_LEVEL_WIDTH - BitBoard.LEVEL_WIDTH[Level]);}
-        }
-
-        /// <summary>File adjusted for the current level</summary>
-        public int File
-        {
-            get {return (data[idxHalfFile] - (BitBoard.MAX_LEVEL_WIDTH - BitBoard.LEVEL_WIDTH[Level]))/2;}
-            set {data[idxHalfFile] = (value * 2) + (BitBoard.MAX_LEVEL_WIDTH - BitBoard.LEVEL_WIDTH[Level]);}
-        }
-
-        /// <summary>Explicit conversion from UCoord to square offset.</summary>
-        public static explicit operator int(UCoord obj)
-        {
-            if(Lfr.IsValid(obj.Level, obj.File, obj.Rank))
-            {
-                return BitBoard.BitOffset(obj.Level, obj.File, obj.Rank);
-            }
-            else
-            {
-                return -1;
-            }
-        }
-
-        /// <summary>Explicit conversion from square offset to UCoord.</summary>
-        public static explicit operator UCoord(int offset)
-        {
-            return (UCoord)(Lfr)(offset);
+            get {return data[2];}
+            set {data[2] = value;}
         }
 
         /// <summary>Explicit conversion from UCoord to LRF.</summary>
         public static explicit operator Lfr(UCoord obj)
         {
-            return new Lfr(obj.Level, obj.File, obj.Rank);
+            // BUGBUG build an inverse conversion
+            return new Lfr(0, 0, 0);
         }
 
         /// <summary>Explicit conversion from LRF to UCoord.</summary>
         public static explicit operator UCoord(Lfr lrf)
         {
             var result = new UCoord();
-            result.Level = lrf.Level;
-            result.Rank = lrf.Rank;
-            result.File = lrf.File;
+            result.Z = lrf.Level;
+            result.X = (BitBoard.MAX_LEVEL_WIDTH - BitBoard.LEVEL_WIDTH[lrf.Level]) + lrf.File + lrf.Rank;
+            result.Y = (BitBoard.MAX_LEVEL_WIDTH - BitBoard.LEVEL_WIDTH[lrf.Level]) + lrf.Rank - lrf.File + BitBoard.LEVEL_WIDTH[lrf.Level] - 1;
             return result;
+        }
+
+        public static bool operator ==(UCoord a, UCoord b)
+        {
+            var result = new UCoord();
+
+            for (int i = 0; result.data.Length > i; ++i)
+            {
+                if (a.data[i] != b.data[i])
+                {
+                    return false;
+                };
+            }
+
+            return true;
+        }
+        public static bool operator !=(UCoord a, UCoord b)
+        {
+            var result = new UCoord();
+
+            for (int i = 0; result.data.Length > i; ++i)
+            {
+                if (a.data[i] != b.data[i])
+                {
+                    return true;
+                };
+            }
+
+            return false;
         }
 
         public static UCoord operator +(UCoord a, UCoord b)

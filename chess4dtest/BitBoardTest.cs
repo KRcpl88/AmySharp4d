@@ -96,6 +96,51 @@
         }
 
         [TestMethod()]
+        public void universallCoordinateTest()
+        {
+            int transSquare = 0;
+            UCoord coord;
+
+            coord = (UCoord)(Lfr)(BoardConstants_Fields.HA1); //0,7,7
+            coord = (UCoord)(Lfr)(BoardConstants_Fields.HH1); //7,0,7
+            coord = (UCoord)(Lfr)(BoardConstants_Fields.HA8); //7,14,7
+            coord = (UCoord)(Lfr)(BoardConstants_Fields.HH8); //14,7,7
+
+            coord = (UCoord)(Lfr)(BoardConstants_Fields.HA1);
+            Assert.IsTrue(coord.X == 0);
+            Assert.IsTrue(coord.Y == 7);
+            Assert.IsTrue(coord.Z == 7);
+
+            var c2 = new UCoord(0,7,7);
+            Assert.IsTrue(coord == c2);
+
+            coord = (UCoord)(Lfr)(BoardConstants_Fields.HH1);
+            Assert.IsTrue(coord.X == 7);
+            Assert.IsTrue(coord.Y == 0);
+            Assert.IsTrue(coord.Z == 7);
+
+            coord = (UCoord)(Lfr)(BoardConstants_Fields.HA8);
+            Assert.IsTrue(coord.X == 7);
+            Assert.IsTrue(coord.Y == 14);
+            Assert.IsTrue(coord.Z == 7);
+
+            coord = (UCoord)(Lfr)(BoardConstants_Fields.HH8);
+            Assert.IsTrue(coord.X == 14);
+            Assert.IsTrue(coord.Y == 7);
+            Assert.IsTrue(coord.Z == 7);
+
+            coord = (UCoord)(Lfr)(BoardConstants_Fields.LA);
+            Assert.IsTrue(coord.X == 7);
+            Assert.IsTrue(coord.Y == 7);
+            Assert.IsTrue(coord.Z == 0);
+
+            coord = (UCoord)(Lfr)(BoardConstants_Fields.LO);
+            Assert.IsTrue(coord.X == 7);
+            Assert.IsTrue(coord.Y == 7);
+            Assert.IsTrue(coord.Z == 14);
+        }
+
+        [TestMethod()]
         public void levelRankFileTest()
         {
             int transSquare = 0;

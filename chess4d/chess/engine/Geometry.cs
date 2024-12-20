@@ -62,73 +62,73 @@ namespace tgreiner.amy.chess.engine
 		{
 		}
 
-		private static readonly UCoord[][] ATTACK_DELTA = new UCoord [][]
+		private static readonly SemiUCoord[][] ATTACK_DELTA = new SemiUCoord [][]
 		{
 			// first piece 0 is not valid
 			null,
 			// WHITE_PAWN
-			new UCoord[]
+			new SemiUCoord[]
 			{
-				new UCoord(0, 2, -2),
-				new UCoord(0, 2, 2)
+				new SemiUCoord(0, 2, -2),
+				new SemiUCoord(0, 2, 2)
 			},
 			// KNIGHT
-			new UCoord[] 
+			new SemiUCoord[] 
 			{
-				new UCoord(0, -4, -2),
-				new UCoord(0, -4, 2),
-				new UCoord(0, -2, 4),
-				new UCoord(0, 2, 4),
-				new UCoord(0, 4, -2),
-				new UCoord(0, 4, 2),
-				new UCoord(0, -2, -4),
-				new UCoord(0, 2, -4)
+				new SemiUCoord(0, -4, -2),
+				new SemiUCoord(0, -4, 2),
+				new SemiUCoord(0, -2, 4),
+				new SemiUCoord(0, 2, 4),
+				new SemiUCoord(0, 4, -2),
+				new SemiUCoord(0, 4, 2),
+				new SemiUCoord(0, -2, -4),
+				new SemiUCoord(0, 2, -4)
 			},
 			// BISHOP
-			new UCoord[] 
+			new SemiUCoord[] 
 			{
-				new UCoord(0,  2, 2),
-				new UCoord(0,  2, -2),
-				new UCoord(0, -2, -2),
-				new UCoord(0, -2, 2)
+				new SemiUCoord(0,  2, 2),
+				new SemiUCoord(0,  2, -2),
+				new SemiUCoord(0, -2, -2),
+				new SemiUCoord(0, -2, 2)
 			},
 			// ROOK
-			new UCoord[] 
+			new SemiUCoord[] 
 			{
-				new UCoord(0,  0, 2),
-				new UCoord(0,  2, 0),
-				new UCoord(0,  0, -2),
-				new UCoord(0, -2, 0)
+				new SemiUCoord(0,  0, 2),
+				new SemiUCoord(0,  2, 0),
+				new SemiUCoord(0,  0, -2),
+				new SemiUCoord(0, -2, 0)
 			},
 			// QUEEN
-			new UCoord[] 
+			new SemiUCoord[] 
 			{
-				new UCoord(0,  0, 2),
-				new UCoord(0,  2, 2),
-				new UCoord(0,  2, 0),
-				new UCoord(0,  2, -2),
-				new UCoord(0,  0, -2),
-				new UCoord(0, -2, -2),
-				new UCoord(0, -2, 0),
-				new UCoord(0, -2, 2)
+				new SemiUCoord(0,  0, 2),
+				new SemiUCoord(0,  2, 2),
+				new SemiUCoord(0,  2, 0),
+				new SemiUCoord(0,  2, -2),
+				new SemiUCoord(0,  0, -2),
+				new SemiUCoord(0, -2, -2),
+				new SemiUCoord(0, -2, 0),
+				new SemiUCoord(0, -2, 2)
 			},
 			// KING
-			new UCoord[] 
+			new SemiUCoord[] 
 			{
-				new UCoord(0,  0, 2),
-				new UCoord(0,  2, 2),
-				new UCoord(0,  2, 0),
-				new UCoord(0,  2, -2),
-				new UCoord(0,  0, -2),
-				new UCoord(0, -2, -2),
-				new UCoord(0, -2, 0),
-				new UCoord(0, -2, 2)
+				new SemiUCoord(0,  0, 2),
+				new SemiUCoord(0,  2, 2),
+				new SemiUCoord(0,  2, 0),
+				new SemiUCoord(0,  2, -2),
+				new SemiUCoord(0,  0, -2),
+				new SemiUCoord(0, -2, -2),
+				new SemiUCoord(0, -2, 0),
+				new SemiUCoord(0, -2, 2)
 			},
 			// BLACK_PAWN
-			new UCoord[] 
+			new SemiUCoord[] 
 			{
-				new UCoord(0, -2, -2),
-				new UCoord(0, -2, 2)
+				new SemiUCoord(0, -2, -2),
+				new SemiUCoord(0, -2, 2)
 			}
 		};
 		
@@ -258,9 +258,9 @@ namespace tgreiner.amy.chess.engine
             {
                 for (short direction = 0; direction < ATTACK_DELTA[piece].Length; ++direction)
                 {
-					var nextCoord = (UCoord)(Lfr)square;
+					var nextCoord = (SemiUCoord)(Lfr)square;
 					int prevSquare = square;
-					UCoord delta;
+					SemiUCoord delta;
 					long nextDirection = -1;
 
 					if ((direction + 1) < (ATTACK_DELTA[piece].Length ))
@@ -348,9 +348,9 @@ namespace tgreiner.amy.chess.engine
                 Lfr levelRankFile = new Lfr(square);
                 int prevSquare = square;
 
-                foreach (UCoord delta in ATTACK_DELTA[piece])
+                foreach (SemiUCoord delta in ATTACK_DELTA[piece])
                 {
-					UCoord temp = (UCoord)levelRankFile + delta;
+					SemiUCoord temp = (SemiUCoord)levelRankFile + delta;
                     if (Lfr.IsValid(temp.Level, temp.File, temp.Rank))
                     {
                         Lfr nextLrf = (Lfr)temp;
