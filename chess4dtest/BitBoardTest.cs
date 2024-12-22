@@ -101,11 +101,6 @@
             int transSquare = 0;
             UCoord uCoord;
 
-            uCoord = (UCoord)(Lfr)(BoardConstants_Fields.HA1); //0,7,7
-            uCoord = (UCoord)(Lfr)(BoardConstants_Fields.HH1); //7,0,7
-            uCoord = (UCoord)(Lfr)(BoardConstants_Fields.HA8); //7,14,7
-            uCoord = (UCoord)(Lfr)(BoardConstants_Fields.HH8); //14,7,7
-
             uCoord = (UCoord)(Lfr)(BoardConstants_Fields.HA1);
             Assert.IsTrue(uCoord.X == 0);
             Assert.IsTrue(uCoord.Y == 7);
@@ -129,12 +124,37 @@
             Assert.IsTrue(uCoord.Y == 7);
             Assert.IsTrue(uCoord.Z == 7);
 
-            uCoord = (UCoord)(Lfr)(BoardConstants_Fields.LA);
+            uCoord = (UCoord)(Lfr)(BoardConstants_Fields.HA1);
+            Assert.IsTrue(uCoord.X == 0);
+            Assert.IsTrue(uCoord.Y == 7);
+            Assert.IsTrue(uCoord.Z == 7);
+
+            uCoord = (UCoord)(new Lfr(6,0,0)); // ga1
+            Assert.IsTrue(uCoord.X == 1);
+            Assert.IsTrue(uCoord.Y == 7);
+            Assert.IsTrue(uCoord.Z == 6);
+
+            uCoord = (UCoord)(new Lfr(6,0,6)); // ga7
+            Assert.IsTrue(uCoord.X == 7);
+            Assert.IsTrue(uCoord.Y == 13);
+            Assert.IsTrue(uCoord.Z == 6);
+
+            uCoord = (UCoord)(new Lfr(6,6,6)); // gg7
+            Assert.IsTrue(uCoord.X == 13);
+            Assert.IsTrue(uCoord.Y == 7);
+            Assert.IsTrue(uCoord.Z == 6);
+
+            uCoord = (UCoord)(new Lfr(6,6,0)); // gg1
+            Assert.IsTrue(uCoord.X == 7);
+            Assert.IsTrue(uCoord.Y == 1);
+            Assert.IsTrue(uCoord.Z == 6);
+
+            uCoord = (UCoord)(Lfr)(BoardConstants_Fields.LA); // aa1
             Assert.IsTrue(uCoord.X == 7);
             Assert.IsTrue(uCoord.Y == 7);
             Assert.IsTrue(uCoord.Z == 0);
 
-            uCoord = (UCoord)(Lfr)(BoardConstants_Fields.LO);
+            uCoord = (UCoord)(Lfr)(BoardConstants_Fields.LO);   // oa1
             Assert.IsTrue(uCoord.X == 7);
             Assert.IsTrue(uCoord.Y == 7);
             Assert.IsTrue(uCoord.Z == 14);
