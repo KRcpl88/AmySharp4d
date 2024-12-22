@@ -5,36 +5,36 @@
     {
  
         [TestMethod()]
-        public void hexLrfTest()
+        public void hexLfrTest()
         {
             HexLfr hexLfr = new HexLfr(new Lfr(0,0,0)); // aa1
             Assert.IsTrue((hexLfr.Level == 0) && (hexLfr.Rank == 7) && (hexLfr.File == 0),
-                $"Lrf aa1 => x{(char)(97 + hexLfr.Level)}{(char)(97 + hexLfr.File)}{hexLfr.Rank+1}"); // aa8
+                $"Lfr aa1 => x{(char)(97 + hexLfr.Level)}{(char)(97 + hexLfr.File)}{hexLfr.Rank+1}"); // aa8
 
             hexLfr = new HexLfr(new Lfr(14,0,0)); // oa1
             Assert.IsTrue((hexLfr.Level == 7) && (hexLfr.Rank == 0) && (hexLfr.File == 7),
-                $"Lrf oa1 => x{(char)(97 + hexLfr.Level)}{(char)(97 + hexLfr.File)}{hexLfr.Rank+1}"); // hh1
+                $"Lfr oa1 => x{(char)(97 + hexLfr.Level)}{(char)(97 + hexLfr.File)}{hexLfr.Rank+1}"); // hh1
 
             hexLfr = new HexLfr(new Lfr(7,0,0)); // ha1
             Assert.IsTrue((hexLfr.Level == 0) && (hexLfr.Rank == 0) && (hexLfr.File == 0),
-                $"Lrf ha1 => x{(char)(97 + hexLfr.Level)}{(char)(97 + hexLfr.File)}{hexLfr.Rank+1}"); // aa1
+                $"Lfr ha1 => x{(char)(97 + hexLfr.Level)}{(char)(97 + hexLfr.File)}{hexLfr.Rank+1}"); // aa1
 
             hexLfr = new HexLfr(new Lfr(7,0,7)); // ha8
             Assert.IsTrue((hexLfr.Level == 7) && (hexLfr.Rank == 7) && (hexLfr.File == 0),
-                $"Lrf ha8 => x{(char)(97 + hexLfr.Level)}{(char)(97 + hexLfr.File)}{hexLfr.Rank+1}"); // ha8
+                $"Lfr ha8 => x{(char)(97 + hexLfr.Level)}{(char)(97 + hexLfr.File)}{hexLfr.Rank+1}"); // ha8
 
             hexLfr = new HexLfr(new Lfr(7,7,0)); // hh1
             Assert.IsTrue((hexLfr.Level == 0) && (hexLfr.Rank == 0) && (hexLfr.File == 7),
-                $"Lrf hh1 => x{(char)(97 + hexLfr.Level)}{(char)(97 + hexLfr.File)}{hexLfr.Rank+1}"); // ah1
+                $"Lfr hh1 => x{(char)(97 + hexLfr.Level)}{(char)(97 + hexLfr.File)}{hexLfr.Rank+1}"); // ah1
 
             hexLfr = new HexLfr(new Lfr(7,7,7)); // hh8
             Assert.IsTrue((hexLfr.Level == 7) && (hexLfr.Rank == 7) && (hexLfr.File == 7),
-                $"Lrf hh8 => x{(char)(97 + hexLfr.Level)}{(char)(97 + hexLfr.File)}{hexLfr.Rank+1}"); // hh8
+                $"Lfr hh8 => x{(char)(97 + hexLfr.Level)}{(char)(97 + hexLfr.File)}{hexLfr.Rank+1}"); // hh8
 
 
 
 
-            // count all LRF squares mapped to each hexLrf, there should be no double counts
+            // count all LFR squares mapped to each hexLfr, there should be no double counts
             bool[] hexes = new bool[8*8*8];
             Lfr lfr;
 
@@ -42,7 +42,7 @@
             {
                 hexLfr = new HexLfr(new Lfr(square));
                 Assert.IsFalse(hexes[hexLfr.Level * 64 + hexLfr.Rank * 8 + hexLfr.File],
-                    $"Lrf already mapped at offset {square} x{(char)(97 + hexLfr.Level)}{(char)(97 + hexLfr.File)}{hexLfr.Rank+1}");
+                    $"Lfr already mapped at offset {square} x{(char)(97 + hexLfr.Level)}{(char)(97 + hexLfr.File)}{hexLfr.Rank+1}");
 
                 hexes[hexLfr.Level * 64 + hexLfr.Rank * 8 + hexLfr.File] = true;
                 lfr = (Lfr)hexLfr;
@@ -201,59 +201,59 @@
         public void levelRankFileTest()
         {
             int transSquare = 0;
-            Lfr lrf;
+            Lfr lfr;
 
-            lrf = (Lfr)(BoardConstants_Fields.LA);
-            Assert.IsTrue(lrf.Level == 0);
-            Assert.IsTrue(lrf.Rank == 0);
-            Assert.IsTrue(lrf.File == 0);
+            lfr = (Lfr)(BoardConstants_Fields.LA);
+            Assert.IsTrue(lfr.Level == 0);
+            Assert.IsTrue(lfr.Rank == 0);
+            Assert.IsTrue(lfr.File == 0);
            
-            lrf = (Lfr)(BoardConstants_Fields.LB);
-            Assert.IsTrue(lrf.Level == 1);
-            Assert.IsTrue(lrf.Rank == 0);
-            Assert.IsTrue(lrf.File == 0);
+            lfr = (Lfr)(BoardConstants_Fields.LB);
+            Assert.IsTrue(lfr.Level == 1);
+            Assert.IsTrue(lfr.Rank == 0);
+            Assert.IsTrue(lfr.File == 0);
             
-            lrf = (Lfr)(BoardConstants_Fields.LC);
-            Assert.IsTrue(lrf.Level == 2);
-            Assert.IsTrue(lrf.Rank == 0);
-            Assert.IsTrue(lrf.File == 0);
+            lfr = (Lfr)(BoardConstants_Fields.LC);
+            Assert.IsTrue(lfr.Level == 2);
+            Assert.IsTrue(lfr.Rank == 0);
+            Assert.IsTrue(lfr.File == 0);
            
-            lrf = (Lfr)(BoardConstants_Fields.LH);
-            Assert.IsTrue(lrf.Level == 7);
-            Assert.IsTrue(lrf.Rank == 0);
-            Assert.IsTrue(lrf.File == 0);
+            lfr = (Lfr)(BoardConstants_Fields.LH);
+            Assert.IsTrue(lfr.Level == 7);
+            Assert.IsTrue(lfr.Rank == 0);
+            Assert.IsTrue(lfr.File == 0);
 
-            lrf = (Lfr)(BoardConstants_Fields.LI);
-            Assert.IsTrue(lrf.Level == 8);
-            Assert.IsTrue(lrf.Rank == 0);
-            Assert.IsTrue(lrf.File == 0);
+            lfr = (Lfr)(BoardConstants_Fields.LI);
+            Assert.IsTrue(lfr.Level == 8);
+            Assert.IsTrue(lfr.Rank == 0);
+            Assert.IsTrue(lfr.File == 0);
 
-            lrf = (Lfr)(BoardConstants_Fields.LO);
-            Assert.IsTrue(lrf.Level == 14);
-            Assert.IsTrue(lrf.Rank == 0);
-            Assert.IsTrue(lrf.File == 0);
+            lfr = (Lfr)(BoardConstants_Fields.LO);
+            Assert.IsTrue(lfr.Level == 14);
+            Assert.IsTrue(lfr.Rank == 0);
+            Assert.IsTrue(lfr.File == 0);
 
-            lrf = (Lfr)(BoardConstants_Fields.HA1);
-            Assert.IsTrue(lrf.Level == 7);
-            Assert.IsTrue(lrf.Rank == 0);
-            Assert.IsTrue(lrf.File == 0);
+            lfr = (Lfr)(BoardConstants_Fields.HA1);
+            Assert.IsTrue(lfr.Level == 7);
+            Assert.IsTrue(lfr.Rank == 0);
+            Assert.IsTrue(lfr.File == 0);
             
-            lrf = (Lfr)(BoardConstants_Fields.HH1);
-            Assert.IsTrue(lrf.Level == 7);
-            Assert.IsTrue(lrf.Rank == 0);
-            Assert.IsTrue(lrf.File == 7);
+            lfr = (Lfr)(BoardConstants_Fields.HH1);
+            Assert.IsTrue(lfr.Level == 7);
+            Assert.IsTrue(lfr.Rank == 0);
+            Assert.IsTrue(lfr.File == 7);
             
-            lrf = (Lfr)(BoardConstants_Fields.HA8);
-            Assert.IsTrue(lrf.Level == 7);
-            Assert.IsTrue(lrf.Rank == 7);
-            Assert.IsTrue(lrf.File == 0);
+            lfr = (Lfr)(BoardConstants_Fields.HA8);
+            Assert.IsTrue(lfr.Level == 7);
+            Assert.IsTrue(lfr.Rank == 7);
+            Assert.IsTrue(lfr.File == 0);
             
-            lrf = (Lfr)(BoardConstants_Fields.HH8);
-            Assert.IsTrue(lrf.Level == 7);
-            Assert.IsTrue(lrf.Rank == 7);
-            Assert.IsTrue(lrf.File == 7);
+            lfr = (Lfr)(BoardConstants_Fields.HH8);
+            Assert.IsTrue(lfr.Level == 7);
+            Assert.IsTrue(lfr.Rank == 7);
+            Assert.IsTrue(lfr.File == 7);
 
-            Assert.IsTrue(BoardConstants_Fields.HH8 == (int)lrf);
+            Assert.IsTrue(BoardConstants_Fields.HH8 == (int)lfr);
 
             Assert.IsFalse(Lfr.IsValid(-1));
             Assert.IsFalse(Lfr.IsValid(BitBoard.SIZE));
@@ -273,7 +273,7 @@
             bool caughtException = false;
             try
             {
-                lrf = (Lfr)(BitBoard.SIZE);
+                lfr = (Lfr)(BitBoard.SIZE);
             }
             catch(IndexOutOfRangeException e)
             {
@@ -283,8 +283,8 @@
 
             for(int square = 0; BitBoard.SIZE > square; ++square)
             {
-                lrf = (Lfr)square;
-                transSquare = BitBoard.BitOffset(lrf.Level, lrf.File, lrf.Rank);
+                lfr = (Lfr)square;
+                transSquare = BitBoard.BitOffset(lfr.Level, lfr.File, lfr.Rank);
                 Assert.IsTrue(transSquare == square);
             }
         }

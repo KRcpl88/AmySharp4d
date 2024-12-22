@@ -218,11 +218,11 @@ namespace tgreiner.amy.chess.engine
                     System.String squareStr = this.command.Substring(10);
                     try
                     {
-                        Lfr lrf = new Lfr(squareStr[0] - 'a',squareStr[2] - '1', squareStr[1] - 'a');
+                        Lfr lfr = new Lfr(squareStr[0] - 'a',squareStr[2] - '1', squareStr[1] - 'a');
 
-                        if (board.getPieceAt((int)lrf) != 0)
+                        if (board.getPieceAt((int)lfr) != 0)
                         {
-                            Console.WriteLine(board.ToString((int)lrf));
+                            Console.WriteLine(board.ToString((int)lfr));
                         }
                     }
                     catch (IndexOutOfRangeException)

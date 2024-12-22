@@ -353,12 +353,12 @@ namespace tgreiner.amy.chess.engine
 					SemiUCoord temp = (SemiUCoord)levelRankFile + delta;
                     if (Lfr.IsValid(temp.Level, temp.File, temp.Rank))
                     {
-                        Lfr nextLrf = (Lfr)temp;
+                        Lfr nextLfr = (Lfr)temp;
 
-                        NEXT_POS[piece][square][prevSquare] = (short)(int)nextLrf;
-                        NEXT_DIR[piece][square][prevSquare] = (short)(int)nextLrf;
+                        NEXT_POS[piece][square][prevSquare] = (short)(int)nextLfr;
+                        NEXT_DIR[piece][square][prevSquare] = (short)(int)nextLfr;
 
-                        prevSquare = (int)nextLrf;
+                        prevSquare = (int)nextLfr;
                     }
                 }
             }
@@ -383,7 +383,7 @@ namespace tgreiner.amy.chess.engine
 				trfr[i] = 0;
 			}
 			
-			// BUGBUG fix trfr/trto initialization for 3D LRF
+			// BUGBUG fix trfr/trto initialization for 3D LFR
 			for (i = 0; i < 10; i++)
 			{
 				edge[i] = true;

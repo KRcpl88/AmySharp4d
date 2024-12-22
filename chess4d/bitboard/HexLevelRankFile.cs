@@ -191,7 +191,7 @@ Level, rank and file for a hexaganol board layout (from a rectilinear layout)
                a   a
 
 
-Level, rank and file for rectilinear Lrf coordinates (in a hexagonal board layout)
+Level, rank and file for rectilinear Lfr coordinates (in a hexagonal board layout)
 
    /a\ /b\ /c\ /d\ /e\ /f\ /g\ /h\
 8 |ha8|hb8|hc8|hd8|he8|hf8|hg8|hh8|
@@ -485,24 +485,24 @@ a  \ / \ / \ / \ / \ / \ / \ / \ /
         }
 
         /// <summary>
-        /// Offest to the HexLrf level or file for each Lrf level
+        /// Offest to the HexLrf level or file for each Lfr level
         /// </summary>
         public static int[] Relu16 = new int[] {0,0,0,0,0,0,0,0,1,2,3,4,5,6,7};
 
         /// <summary>
-        /// Offest to the HexLrf rank for each Lrf level
+        /// Offest to the HexLrf rank for each Lfr level
         /// </summary>
         public static int[] NegRelu16 = new int[] {7,6,5,4,3,2,1,0,0,0,0,0,0,0,0};
 
 
 
-        public HexLfr(Lfr lrf) 
+        public HexLfr(Lfr lfr) 
         {
-            lrf.Validate();
+            lfr.Validate();
 
-            Level = lrf.Rank + Relu16[lrf.Level];   // {0,0,0,0,0,0,0,0,1,2,3,4,5,6,7};
-            Rank = lrf.Rank + NegRelu16[lrf.Level]; // {7,6,5,4,3,2,1,0,0,0,0,0,0,0,0};
-            File = lrf.File + Relu16[lrf.Level]; // {0,0,0,0,0,0,0,0,1,2,3,4,5,6,7};
+            Level = lfr.Rank + Relu16[lfr.Level];   // {0,0,0,0,0,0,0,0,1,2,3,4,5,6,7};
+            Rank = lfr.Rank + NegRelu16[lfr.Level]; // {7,6,5,4,3,2,1,0,0,0,0,0,0,0,0};
+            File = lfr.File + Relu16[lfr.Level]; // {0,0,0,0,0,0,0,0,1,2,3,4,5,6,7};
         }
 
         public int Level=0; 
@@ -513,7 +513,7 @@ a  \ / \ / \ / \ / \ / \ / \ / \ /
         {
             if (!IsValid())
             {
-                throw new IndexOutOfRangeException("LRF.Validate()");
+                throw new IndexOutOfRangeException("LFR.Validate()");
             }
         }   
 
@@ -564,20 +564,20 @@ a  \ / \ / \ / \ / \ / \ / \ / \ /
             return ((offset < BitBoard.SIZE) && (offset >= 0));
         }   
 
-        /// <summary>Explicit conversion from LRF to square offset.</summary>
+        /// <summary>Explicit conversion from LFR to square offset.</summary>
         public static explicit operator int(HexLfr obj)
         {
             return BitBoard.BitOffset(obj.Level, obj.File, obj.Rank);
         }
 
-        /// <summary>Explicit conversion from Lrf to HexLrf.</summary>
-        public static explicit operator HexLfr(Lfr lrf)
+        /// <summary>Explicit conversion from Lfr to HexLrf.</summary>
+        public static explicit operator HexLfr(Lfr lfr)
         {
-            return new HexLfr(lrf);
+            return new HexLfr(lfr);
         }
 
-        /// <summary>Explicit conversion from HexLrf to Lrf.</summary>
-        public static explicit operator Lfr(HexLfr hexLrf)
+        /// <summary>Explicit conversion from HexLrf to Lfr.</summary>
+        public static explicit operator Lfr(HexLfr hexLfr)
         {
             Lfr ret = new Lfr();
             /*
@@ -588,9 +588,9 @@ a  \ / \ / \ / \ / \ / \ / \ / \ /
             Rank = hexLEvel - NegRelu[7 + hexRank - hexLevel]
             */
             
-            ret.Level =  7 + hexLrf.Level - hexLrf.Rank;
-            ret.File = hexLrf.File - NegRelu16[hexLrf.Rank + 7 - hexLrf.Level];
-            ret.Rank = hexLrf.Level - NegRelu16[hexLrf.Rank + 7 - hexLrf.Level];
+            ret.Level =  7 + hexLfr.Level - hexLfr.Rank;
+            ret.File = hexLfr.File - NegRelu16[hexLfr.Rank + 7 - hexLfr.Level];
+            ret.Rank = hexLfr.Level - NegRelu16[hexLfr.Rank + 7 - hexLfr.Level];
 
 
 
@@ -601,7 +601,7 @@ a  \ / \ / \ / \ / \ / \ / \ / \ /
             // 2   6    1
             // 2   5    0
             // 3   4    0
-            //ret.File = hexLrf.File - 7 + hexLrf.Rank;
+            //ret.File = hexLfr.File - 7 + hexLfr.Rank;
 
             // L 3
             // HF  HR   F
@@ -613,7 +613,7 @@ a  \ / \ / \ / \ / \ / \ / \ / \ /
             // 1   2    0
             // 2   1    0
             // 3   0    0                                                             // {0,0,0,0,0,0,0,0,1,2,3,4,5,6,7};
-            //ret.File = hexLrf.Level + HexLrfRankOffset[hexLrf.Level + hexLrf.Rank]; // {7,6,5,4,3,2,1,0,0,0,0,0,0,0,0}; ;
+            //ret.File = hexLfr.Level + HexLrfRankOffset[hexLfr.Level + hexLfr.Rank]; // {7,6,5,4,3,2,1,0,0,0,0,0,0,0,0}; ;
 
             return ret;
         }

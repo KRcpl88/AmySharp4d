@@ -94,20 +94,20 @@ namespace tgreiner.amy.chess.engine.Tests
             /*
             BitBoard pieces = board.getMask(false, ChessConstants_Fields.PAWN);
             int count = 0;
-            LRF lrf;
+            LFR lfr;
             while (pieces.IsEmpty() == false)
             {
-                lrf = (LRF)pieces.findFirstOne();
+                lfr = (LFR)pieces.findFirstOne();
                 switch(count)
                 {
                     case 0:
-                        Assert.IsTrue(lrf.Level == 7 && lrf.Rank == 3 && lrf.File == 1) ;
+                        Assert.IsTrue(lfr.Level == 7 && lfr.Rank == 3 && lfr.File == 1) ;
                         break;
                     case 1:
-                        Assert.IsTrue(lrf.Level == 7 && lrf.Rank == 5 && lrf.File == 4) ;
+                        Assert.IsTrue(lfr.Level == 7 && lfr.Rank == 5 && lfr.File == 4) ;
                         break;
                 }
-                pieces.ClearBit((int)lrf);
+                pieces.ClearBit((int)lfr);
                 ++count;
             }
             */

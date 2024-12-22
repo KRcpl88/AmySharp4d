@@ -63,14 +63,14 @@ namespace tgreiner.amy.bitboard
 
         /*
         
-        K = levelOffset = BitBoard.MAX_LEVEL_WIDTH - BitBoard.LEVEL_WIDTH[lrf.Level];
-        C = fileOffset = BitBoard.LEVEL_WIDTH[lrf.Level] - 1;
+        K = levelOffset = BitBoard.MAX_LEVEL_WIDTH - BitBoard.LEVEL_WIDTH[lfr.Level];
+        C = fileOffset = BitBoard.LEVEL_WIDTH[lfr.Level] - 1;
 
-        f = lrf.File 
-        r = lrf.Rank
+        f = lfr.File 
+        r = lfr.Rank
 
-        uCoord.X = x = levelOffset + lrf.File + lrf.Rank;
-        uCoord.Y = y = levelOffset + lrf.Rank - lrf.File + fileOffset;
+        uCoord.X = x = levelOffset + lfr.File + lfr.Rank;
+        uCoord.Y = y = levelOffset + lfr.Rank - lfr.File + fileOffset;
 
 
         x = K + f + r;
@@ -81,42 +81,41 @@ namespace tgreiner.amy.bitboard
 
         */
 
-        /// <summary>Explicit conversion from UCoord to LRF.</summary>
+        /// <summary>Explicit conversion from UCoord to LFR.</summary>
         public static explicit operator Lfr(UCoord uCoord)
         {
-            // BUGBUG build an inverse conversion
-            var lrf = new Lfr();
-            lrf.Level = uCoord.Z;
+            var lfr = new Lfr();
+            lfr.Level = uCoord.Z;
 
-            int levelOffset = BitBoard.MAX_LEVEL_WIDTH - BitBoard.LEVEL_WIDTH[lrf.Level];
-            int fileOffset = BitBoard.LEVEL_WIDTH[lrf.Level] - 1;
+            int levelOffset = BitBoard.MAX_LEVEL_WIDTH - BitBoard.LEVEL_WIDTH[lfr.Level];
+            int fileOffset = BitBoard.LEVEL_WIDTH[lfr.Level] - 1;
 
             int doubleFile = uCoord.X - uCoord.Y + fileOffset;
             if ((doubleFile & 1) != 0)
             {
                 throw new InvalidCastException("Invalid coordinates, X-Y is not an even number and can not be converted to Lfr");
             }
-            lrf.File = doubleFile >> 1;
+            lfr.File = doubleFile >> 1;
 
             int doubleRank = uCoord.X + uCoord.Y - fileOffset;
             if ((doubleRank & 1) != 0)
             {
                 throw new InvalidCastException("Invalid coordinates, X+Y is not an even number and can not be converted to Lfr");
             }
-            lrf.Rank = (doubleRank >> 1) - levelOffset;
+            lfr.Rank = (doubleRank >> 1) - levelOffset;
 
-            return lrf;
+            return lfr;
         }
 
-        /// <summary>Explicit conversion from LRF to UCoord.</summary>
-        public static explicit operator UCoord(Lfr lrf)
+        /// <summary>Explicit conversion from LFR to UCoord.</summary>
+        public static explicit operator UCoord(Lfr lfr)
         {
             var uCoord = new UCoord();
-            uCoord.Z = lrf.Level;
-            int levelOffset = BitBoard.MAX_LEVEL_WIDTH - BitBoard.LEVEL_WIDTH[lrf.Level];
-            int fileOffset = BitBoard.LEVEL_WIDTH[lrf.Level] - 1;
-            uCoord.X = levelOffset + lrf.File + lrf.Rank;
-            uCoord.Y = levelOffset + lrf.Rank - lrf.File + fileOffset;
+            uCoord.Z = lfr.Level;
+            int levelOffset = BitBoard.MAX_LEVEL_WIDTH - BitBoard.LEVEL_WIDTH[lfr.Level];
+            int fileOffset = BitBoard.LEVEL_WIDTH[lfr.Level] - 1;
+            uCoord.X = levelOffset + lfr.File + lfr.Rank;
+            uCoord.Y = levelOffset + lfr.Rank - lfr.File + fileOffset;
             return uCoord;
         }
 
