@@ -61,21 +61,63 @@ namespace tgreiner.amy.bitboard
             set {data[2] = value;}
         }
 
+        /*
+        
+        K = levelOffset = BitBoard.MAX_LEVEL_WIDTH - BitBoard.LEVEL_WIDTH[lrf.Level];
+        C = fileOffset = BitBoard.LEVEL_WIDTH[lrf.Level] - 1;
+
+        f = lrf.File 
+        r = lrf.Rank
+
+        uCoord.X = x = levelOffset + lrf.File + lrf.Rank;
+        uCoord.Y = y = levelOffset + lrf.Rank - lrf.File + fileOffset;
+
+
+        x = K + f + r;
+        y = K + r - f + C
+
+        f = (x - y + C) / 2
+        r = (x + y - C) / 2 - K
+
+        */
+
         /// <summary>Explicit conversion from UCoord to LRF.</summary>
-        public static explicit operator Lfr(UCoord obj)
+        public static explicit operator Lfr(UCoord uCoord)
         {
             // BUGBUG build an inverse conversion
-            return new Lfr(0, 0, 0);
+            var lrf = new Lfr();
+            lrf.Level = uCoord.Z;
+
+            int levelOffset = BitBoard.MAX_LEVEL_WIDTH - BitBoard.LEVEL_WIDTH[lrf.Level];
+            int fileOffset = BitBoard.LEVEL_WIDTH[lrf.Level] - 1;
+
+            int doubleFile = uCoord.X - uCoord.Y + fileOffset;
+            if ((doubleFile & 1) != 0)
+            {
+                throw new InvalidCastException("Invalid coordinates, X-Y is not an even number and can not be converted to Lfr");
+            }
+            lrf.File = doubleFile >> 1;
+
+            int doubleRank = uCoord.X + uCoord.Y - fileOffset;
+            if ((doubleRank & 1) != 0)
+            {
+                throw new InvalidCastException("Invalid coordinates, X+Y is not an even number and can not be converted to Lfr");
+            }
+            lrf.Rank = (doubleRank >> 1) - levelOffset;
+
+            return lrf;
         }
 
         /// <summary>Explicit conversion from LRF to UCoord.</summary>
         public static explicit operator UCoord(Lfr lrf)
         {
-            var result = new UCoord();
-            result.Z = lrf.Level;
-            result.X = (BitBoard.MAX_LEVEL_WIDTH - BitBoard.LEVEL_WIDTH[lrf.Level]) + lrf.File + lrf.Rank;
-            result.Y = (BitBoard.MAX_LEVEL_WIDTH - BitBoard.LEVEL_WIDTH[lrf.Level]) + lrf.Rank - lrf.File + BitBoard.LEVEL_WIDTH[lrf.Level] - 1;
-            return result;
+            var uCoord = new UCoord();
+            uCoord.Z = lrf.Level;
+            int levelOffset = BitBoard.MAX_LEVEL_WIDTH - BitBoard.LEVEL_WIDTH[lrf.Level];
+            int fileOffset = BitBoard.LEVEL_WIDTH[lrf.Level] - 1;
+            uCoord.X = levelOffset + lrf.File + lrf.Rank;
+            uCoord.Y = levelOffset + lrf.Rank - lrf.File + fileOffset;
+            return uCoord;
         }
 
         public static bool operator ==(UCoord a, UCoord b)
