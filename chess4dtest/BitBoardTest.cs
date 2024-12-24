@@ -181,7 +181,7 @@
             Assert.AreEqual(0, lfr.File);
             Assert.AreEqual(0, lfr.Rank);
 
-            // HH!
+            // HH1
             uCoord = new UCoord(7, 0, 7);
             lfr = (Lfr)uCoord;
             Assert.AreEqual(7, lfr.Level);
@@ -208,6 +208,7 @@
             Assert.AreEqual(0, lfr.Level);
             Assert.AreEqual(0, lfr.File);
             Assert.AreEqual(0, lfr.Rank);
+            Assert.AreEqual((int)lfr, BoardConstants_Fields.LA);
 
             // OA1
             uCoord = new UCoord(7, 7, 14);
@@ -215,7 +216,8 @@
             Assert.AreEqual(14, lfr.Level);
             Assert.AreEqual(0, lfr.File);
             Assert.AreEqual(0, lfr.Rank);
-        }        
+            Assert.AreEqual((int)lfr, BoardConstants_Fields.LO);
+        }
 
         [TestMethod()]
         public void levelRankFileTest()

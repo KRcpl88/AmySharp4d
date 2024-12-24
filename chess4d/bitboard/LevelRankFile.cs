@@ -102,9 +102,10 @@ namespace tgreiner.amy.bitboard
         }   
 
         /// <summary>Explicit conversion from LRF to square offset.</summary>
-        public static explicit operator int(Lfr obj)
+        public static explicit operator int(Lfr lfr)
         {
-            return BitBoard.BitOffset(obj.Level, obj.File, obj.Rank);
+            lfr.Validate();
+            return BitBoard.BitOffset(lfr.Level, lfr.File, lfr.Rank);
         }
 
         /// <summary>Explicit conversion from square offset to LRF.</summary>

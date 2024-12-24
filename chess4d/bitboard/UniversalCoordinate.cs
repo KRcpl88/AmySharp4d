@@ -87,22 +87,38 @@ namespace tgreiner.amy.bitboard
             var lfr = new Lfr();
             lfr.Level = uCoord.Z;
 
-            int levelOffset = BitBoard.MAX_LEVEL_WIDTH - BitBoard.LEVEL_WIDTH[lfr.Level];
-            int fileOffset = BitBoard.LEVEL_WIDTH[lfr.Level] - 1;
+            int levelOffset;
+            int fileOffset;
+            if (lfr.Level >= 0 && lfr.Level < BitBoard.LEVEL_WIDTH.Length)
+            {
+                levelOffset = BitBoard.MAX_LEVEL_WIDTH - BitBoard.LEVEL_WIDTH[lfr.Level];
+                fileOffset = BitBoard.LEVEL_WIDTH[lfr.Level] - 1;
+            }
+            else
+            {
+                levelOffset = BitBoard.MAX_LEVEL_WIDTH;
+                fileOffset = 0;
+            }
 
             int doubleFile = uCoord.X - uCoord.Y + fileOffset;
             if ((doubleFile & 1) != 0)
             {
-                throw new InvalidCastException("Invalid coordinates, X-Y is not an even number and can not be converted to Lfr");
+                lfr.File = -1;
             }
-            lfr.File = doubleFile >> 1;
+            else
+            {
+                lfr.File = doubleFile >> 1;
+            }
 
             int doubleRank = uCoord.X + uCoord.Y - fileOffset;
             if ((doubleRank & 1) != 0)
             {
-                throw new InvalidCastException("Invalid coordinates, X+Y is not an even number and can not be converted to Lfr");
+                lfr.Rank = -1;
             }
-            lfr.Rank = (doubleRank >> 1) - levelOffset;
+            else
+            {
+                lfr.Rank = (doubleRank >> 1) - levelOffset;
+            }
 
             return lfr;
         }
