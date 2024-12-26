@@ -69,66 +69,66 @@ namespace tgreiner.amy.chess.engine
 			// WHITE_PAWN
 			new UCoord[]
 			{
-				new UCoord(2, -2, 0),
-				new UCoord(2,  2, 0)
+				new UCoord(2, 0, 0),
+				new UCoord(0, 2, 0)
 			},
 			// KNIGHT
 			new UCoord[] 
 			{
-				new UCoord(-4, -2, 0),
-				new UCoord(-4,  2, 0),
-				new UCoord(-2,  4, 0),
-				new UCoord(2,   4, 0),
-				new UCoord(4,  -2, 0),
-				new UCoord(4,   2, 0),
-				new UCoord(-2, -4, 0),
-				new UCoord(2,  -4, 0)
+				new UCoord( 3,  1, 0),
+				new UCoord( 3, -1, 0),
+				new UCoord( 1, -3, 0),
+				new UCoord(-1, -3, 0),
+				new UCoord(-3,  1, 0),
+				new UCoord(-3, -1, 0),
+				new UCoord( 1,  3, 0),
+				new UCoord(-1,  3, 0)
 			},
 			// BISHOP
 			new UCoord[] 
 			{
-				new UCoord(2,   2, 0),
-				new UCoord(2,  -2, 0),
-				new UCoord(-2, -2, 0),
-				new UCoord(-2,  2, 0)
+				new UCoord( 2,  0, 0),
+				new UCoord( 0, -2, 0),
+				new UCoord(-2,  0, 0),
+				new UCoord( 0,  2, 0)
 			},
 			// ROOK
 			new UCoord[] 
 			{
-				new UCoord(0,  2, 0),
-				new UCoord(2,  0, 0),
-				new UCoord(0, -2, 0),
-				new UCoord(-2, 0, 0)
+				new UCoord( 1,  1, 0),
+				new UCoord( 1, -1, 0),
+				new UCoord(-1, -1, 0),
+				new UCoord(-1,  1, 0)
 			},
 			// QUEEN
 			new UCoord[] 
 			{
-				new UCoord(0,   2, 0),
-				new UCoord(2,   2, 0),
-				new UCoord(2,   0, 0),
-				new UCoord(2,  -2, 0),
-				new UCoord(0,  -2, 0),
-				new UCoord(-2, -2, 0),
+				new UCoord( 1,  1, 0),
+				new UCoord( 2,  0, 0),
+				new UCoord( 1, -1, 0),
+				new UCoord( 0, -2, 0),
+				new UCoord(-1, -1, 0),
 				new UCoord(-2,  0, 0),
-				new UCoord(-2,  2, 0)
+				new UCoord(-1,  1, 0),
+				new UCoord( 0,  2, 0)
 			},
 			// KING
 			new UCoord[] 
 			{
-				new UCoord(0,   2, 0),
-				new UCoord(2,   2, 0),
-				new UCoord(2,   0, 0),
-				new UCoord(2,  -2, 0),
-				new UCoord(0,  -2, 0),
-				new UCoord(-2, -2, 0),
+				new UCoord( 1,  1, 0),
+				new UCoord( 2,  0, 0),
+				new UCoord( 1, -1, 0),
+				new UCoord( 0, -2, 0),
+				new UCoord(-1, -1, 0),
 				new UCoord(-2,  0, 0),
-				new UCoord(-2,  2, 0)
+				new UCoord(-1,  1, 0),
+				new UCoord( 0,  2, 0)
 			},
 			// BLACK_PAWN
 			new UCoord[] 
 			{
-				new UCoord(-2, -2, 0),
-				new UCoord(-2,  2, 0)
+				new UCoord( 0, -2, 0),
+				new UCoord(-2,  0, 0)
 			}
 		};
 		
