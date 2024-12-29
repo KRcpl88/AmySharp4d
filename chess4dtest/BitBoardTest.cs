@@ -292,6 +292,23 @@
             Assert.IsTrue(Lfr.IsValid(7,0,0));
             Assert.IsTrue(Lfr.IsValid(7,7,7));
 
+            Assert.AreEqual(0, (int)(Lfr)(new Lfr(0,0,0))); //AA1
+
+            Assert.AreEqual(1, (int)(Lfr)(new Lfr(1,0,0))); // ba1
+            Assert.AreEqual(2, (int)(Lfr)(new Lfr(1,1,0))); // bb1
+            Assert.AreEqual(3, (int)(Lfr)(new Lfr(1,0,1))); // ba2
+            Assert.AreEqual(4, (int)(Lfr)(new Lfr(1,1,1))); // bb2
+
+            Assert.AreEqual(5, (int)(Lfr)(new Lfr(2,0,0))); // ca1
+            Assert.AreEqual(6, (int)(Lfr)(new Lfr(2,1,0))); // cb1
+            Assert.AreEqual(7, (int)(Lfr)(new Lfr(2,2,0))); // cc1
+            Assert.AreEqual(8, (int)(Lfr)(new Lfr(2,0,1))); // ca2
+            Assert.AreEqual(9, (int)(Lfr)(new Lfr(2,1,1))); // cb2
+            Assert.AreEqual(10, (int)(Lfr)(new Lfr(2,2,1))); // cc2
+            Assert.AreEqual(11, (int)(Lfr)(new Lfr(2,0,2))); // ca3
+            Assert.AreEqual(12, (int)(Lfr)(new Lfr(2,1,2))); // cb3
+            Assert.AreEqual(13, (int)(Lfr)(new Lfr(2,2,2))); // cc3
+
             bool caughtException = false;
             try
             {

@@ -256,35 +256,39 @@ namespace tgreiner.amy.chess.engine
 		{
 			for (int square = 0; square < BitBoard.SIZE; square++)
             {
-                for (short direction = 0; direction < ATTACK_DELTA[piece].Length; ++direction)
+				long nextDirection = -1;
+				long nextNextDirection = -1;
+				NEXT_DIR[piece][square][square] = -1;
+                for (int idxDirection = ATTACK_DELTA[piece].Length - 1; idxDirection >= 0; --idxDirection)
                 {
-					var nextCoord = (UCoord)(Lfr)square;
-					int prevSquare = square;
-					UCoord delta;
-					long nextDirection = -1;
-					Lfr nextLfr;
-
-					if ((direction + 1) < (ATTACK_DELTA[piece].Length ))
+					UCoord delta = ATTACK_DELTA[piece][idxDirection];
+					var nextCoord = (UCoord)(Lfr)square + delta;
+					Lfr nextLfr = (Lfr)nextCoord;
+					int prevSquare = square;	// prevSquare is the previous square from which to determine NEXT_POS, NEXT_DIR and NEXT_SQ
+					
+					// if nextLfr is a valid square, set the FIRST square in this direction as the next square 
+					// for the end of the next direction
+					if (nextLfr.IsValid())
 					{
-						delta = ATTACK_DELTA[piece][direction+1];
-						nextLfr = (Lfr)(delta + nextCoord);
-						if (nextLfr.IsValid())
-						{
-							// BUGBUG this is off the edge of the board, we need tp pre-initialize nextDriection to the next valid direction
-							nextDirection = (int)nextLfr;
-						}
+						//prevSquare = (int)nextLfr;
+						
+						// initialize the next pos from the origian square to the first valid next square 
+                        NEXT_POS[piece][square][square] = (short)nextLfr;
+
+						// set next next direction to the first pos in the next valid direction
+						nextNextDirection = (int)nextLfr;
 					}
 
-					delta = ATTACK_DELTA[piece][direction];
+					if (nextDirection != -1)
+					{
+						NEXT_DIR[piece][square][square] = (short)nextDirection;
+					}
 
-					nextLfr = (Lfr) nextCoord;
-
-					prevSquare = (int)nextLfr;
-					NEXT_DIR[piece][square][prevSquare] = (short)nextDirection;
-
+					// enumerate all squares in this direction and update NEXT_POS, NEXT_DIR, and NEXT_SQ if thie piece is the queen
                     while (nextLfr.IsValid())
                     {
-                        NEXT_POS[piece][square][prevSquare] = (short)(Lfr)nextCoord;
+						//prevSquare = (int)nextLfr;
+                        NEXT_POS[piece][square][prevSquare] = (short)nextLfr;
 
 						if((piece == QUEEN) && (square != prevSquare))
 						{
@@ -304,6 +308,9 @@ namespace tgreiner.amy.chess.engine
 					// the start of the next one
                     NEXT_POS[piece][square][prevSquare] = (short)nextDirection;
                     NEXT_DIR[piece][square][prevSquare] = (short)nextDirection;
+
+					// now update nextDir to point to the begining of THIS direction, because we are enumareratiing bacckwards
+					nextDirection = nextNextDirection;
                 }
             }
 		}
@@ -312,19 +319,19 @@ namespace tgreiner.amy.chess.engine
 		private static void  initMoves()
         {
             // conversion array to convert offset into 16x16 board array to an 8x8 board 
-            int square, square2;
+            int square, prevSquare;
             int piece;
 
             for (square = 0; square < BitBoard.SIZE; square++)
             {
-                for (square2 = 0; square2 < BitBoard.SIZE; square2++)
+                for (prevSquare = 0; prevSquare < BitBoard.SIZE; prevSquare++)
                 {
                     for (piece = WHITE_PAWN; piece <= BLACK_PAWN; piece++)
                     {
-                        NEXT_POS[piece][square][square2] = -1;
-                        NEXT_DIR[piece][square][square2] = -1;
+                        NEXT_POS[piece][square][prevSquare] = -1;
+                        NEXT_DIR[piece][square][prevSquare] = -1;
                     }
-                    NEXT_SQ[square][square2] = -1;
+                    NEXT_SQ[square][prevSquare] = -1;
                 }
             }
 
@@ -355,12 +362,12 @@ namespace tgreiner.amy.chess.engine
         {
             for (int square = 0; square < BitBoard.SIZE; square++)
             {
-                Lfr levelRankFile = new Lfr(square);
+                Lfr levelFileRank = new Lfr(square);
                 int prevSquare = square;
 
                 foreach (UCoord delta in ATTACK_DELTA[piece])
                 {
-					UCoord temp = (UCoord)levelRankFile + delta;
+					UCoord temp = (UCoord)levelFileRank + delta;
                     Lfr nextLfr = (Lfr)temp;
                     if (nextLfr.IsValid())
                     {
