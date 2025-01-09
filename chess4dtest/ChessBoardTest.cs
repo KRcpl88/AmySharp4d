@@ -149,6 +149,7 @@ namespace tgreiner.amy.chess.engine.Tests
                 Lfr square = (Lfr)(moves.findFirstOne());
                 Assert.IsTrue(square.Level == lrfWhiteRook.Level);
                 Assert.IsTrue((square.Rank == lrfWhiteRook.Rank) || (square.File == lrfWhiteRook.File));
+                moves.ClearBit((int)square);
             }
         }
 
