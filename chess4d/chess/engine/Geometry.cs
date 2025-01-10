@@ -62,7 +62,8 @@ namespace tgreiner.amy.chess.engine
 		{
 		}
 
-		private static readonly UCoord[][] ATTACK_DELTA = new UCoord [][]
+		// thse attack deltas are for 2D chess
+		private static readonly UCoord[][] ATTACK_DELTA_2D = new UCoord [][]
 		{
 			// first piece 0 is not valid
 			null,
@@ -129,6 +130,136 @@ namespace tgreiner.amy.chess.engine
 			{
 				new UCoord( 0, -2, 0),
 				new UCoord(-2,  0, 0)
+			}
+		};
+		
+		private static readonly UCoord[][] ATTACK_DELTA = new UCoord [][]
+		{
+			// first piece 0 is not valid
+			null,
+			// WHITE_PAWN
+			new UCoord[]
+			{
+				new UCoord(2, 0, 0),
+				new UCoord(0, 2, 0),
+				new UCoord(0, 0, 2),
+				new UCoord(0, 0, -2)
+			},
+			// KNIGHT
+			new UCoord[] 
+			{
+				new UCoord( 0,  1,  3),
+				new UCoord(-1,  0,  3),
+				new UCoord( 0, -1,  3),
+				new UCoord( 1,  0,  3),
+				new UCoord( 0,  3,  1),
+				new UCoord(-3,  0,  1),
+				new UCoord( 0, -3,  1),
+				new UCoord( 3,  0,  1),
+
+				new UCoord( 3,  1, 0),
+				new UCoord( 3, -1, 0),
+				new UCoord( 1, -3, 0),
+				new UCoord(-1, -3, 0),
+				new UCoord(-3,  1, 0),
+				new UCoord(-3, -1, 0),
+				new UCoord( 1,  3, 0),
+				new UCoord(-1,  3, 0),
+
+				new UCoord( 0,  1, -3),
+				new UCoord(-1,  0, -3),
+				new UCoord( 0, -1, -3),
+				new UCoord( 1,  0, -3),
+				new UCoord( 0,  3, -1),
+				new UCoord(-3,  0, -1),
+				new UCoord( 0, -3, -1),
+				new UCoord( 3,  0, -1),
+			},
+			// BISHOP
+			new UCoord[] 
+			{
+				new UCoord( 0,  0,  2),
+				new UCoord( 2,  0,  0),
+				new UCoord( 0, -2,  0),
+				new UCoord(-2,  0,  0),
+				new UCoord( 0,  2,  0),
+				new UCoord( 0,  0, -2)
+			},
+			// ROOK
+			new UCoord[] 
+			{
+				new UCoord( 0,  1,  1),
+				new UCoord(-1,  0,  1),
+				new UCoord( 0, -1,  1),
+				new UCoord( 1,  0,  1),
+
+				new UCoord( 1,  1,  0),
+				new UCoord( 1, -1,  0),
+				new UCoord(-1, -1,  0),
+				new UCoord(-1,  1,  0),
+
+				new UCoord( 0,  1, -1),
+				new UCoord(-1,  0, -1),
+				new UCoord( 0, -1, -1),
+				new UCoord( 1,  0, -1)
+			},
+			// QUEEN
+			new UCoord[] 
+			{
+				new UCoord( 0,  0,  2),
+				new UCoord( 2,  0,  0),
+				new UCoord( 0, -2,  0),
+				new UCoord(-2,  0,  0),
+				new UCoord( 0,  2,  0),
+				new UCoord( 0,  0, -2),
+
+				new UCoord( 0,  1,  1),
+				new UCoord(-1,  0,  1),
+				new UCoord( 0, -1,  1),
+				new UCoord( 1,  0,  1),
+
+				new UCoord( 1,  1,  0),
+				new UCoord( 1, -1,  0),
+				new UCoord(-1, -1,  0),
+				new UCoord(-1,  1,  0),
+
+				new UCoord( 0,  1, -1),
+				new UCoord(-1,  0, -1),
+				new UCoord( 0, -1, -1),
+				new UCoord( 1,  0, -1)
+			},
+			// KING
+			new UCoord[] 
+			{
+				new UCoord( 0,  0,  2),
+				new UCoord( 2,  0,  0),
+				new UCoord( 0, -2,  0),
+				new UCoord(-2,  0,  0),
+				new UCoord( 0,  2,  0),
+				new UCoord( 0,  0, -2),
+
+				new UCoord( 0,  1,  1),
+				new UCoord(-1,  0,  1),
+				new UCoord( 0, -1,  1),
+				new UCoord( 1,  0,  1),
+
+				new UCoord( 1,  1,  0),
+				new UCoord( 1, -1,  0),
+				new UCoord(-1, -1,  0),
+				new UCoord(-1,  1,  0),
+
+				new UCoord( 0,  1, -1),
+				new UCoord(-1,  0, -1),
+				new UCoord( 0, -1, -1),
+				new UCoord( 1,  0, -1)
+			},
+			// BLACK_PAWN
+			new UCoord[] 
+			{
+				new UCoord( 0, -2, 0),
+				new UCoord(-2,  0, 0),
+				new UCoord( 0,  0, 2),
+				new UCoord( 0,  0, -2)
 			}
 		};
 		

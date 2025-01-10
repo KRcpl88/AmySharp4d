@@ -44,7 +44,7 @@ namespace tgreiner.amy.chess.engine.Tests
 			var plm = new IntVector();
 			board.generatePseudoLegalMoves(plm);
 
-            Assert.IsTrue(plm.size() == 10);
+            Assert.IsTrue(plm.size() == 20, $"King moves: {plm.size()}");
             Assert.IsTrue(plm.contains(Move.makeMove(BoardConstants_Fields.HF5, BoardConstants_Fields.HF6)));
             Assert.IsTrue(plm.contains(Move.makeMove(BoardConstants_Fields.HF5, BoardConstants_Fields.HG6)));
             Assert.IsTrue(plm.contains(Move.makeMove(BoardConstants_Fields.HF5, BoardConstants_Fields.HG5)));
@@ -147,8 +147,17 @@ namespace tgreiner.amy.chess.engine.Tests
             while(moves.IsEmpty() == false)
             {
                 Lfr square = (Lfr)(moves.findFirstOne());
-                Assert.IsTrue(square.Level == lrfWhiteRook.Level);
-                Assert.IsTrue((square.Rank == lrfWhiteRook.Rank) || (square.File == lrfWhiteRook.File));
+                if(square.Level == lrfWhiteRook.Level)
+                {
+                    Assert.IsTrue((square.Rank == lrfWhiteRook.Rank) || (square.File == lrfWhiteRook.File));
+                }
+                else
+                {
+                    Assert.IsTrue((square.Rank == lrfWhiteRook.Rank + 1) 
+                        || (square.Rank == lrfWhiteRook.Rank - 1) 
+                        || (square.File == lrfWhiteRook.File + 1) 
+                        || (square.File == lrfWhiteRook.File - 1));
+                }
                 moves.ClearBit((int)square);
             }
         }
