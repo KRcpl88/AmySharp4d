@@ -114,7 +114,7 @@ namespace tgreiner.amy.chess.engine.Tests
 
         }
 
-                [TestMethod()]
+        [TestMethod()]
         public void attackTests()
         {
             var board = new ChessBoard("1/2/2/3/3/3/4/4/4/4/5/5/5/5/5/6/6/6/6/6/6/7/7/7/7/7/7/7/8/1r/6R/2k2K/1p//7P w - -");
@@ -160,6 +160,184 @@ namespace tgreiner.amy.chess.engine.Tests
                 }
                 moves.ClearBit((int)square);
             }
+        }
+
+/*
+  /a\ /b\ /c\ /d\ /e\ /f\ /g\ /h\ 
+8| K |   |   |   |   |   |   |   |
+  \ /b\ /c\ /d\ /e\ /f\ /g\ /h\ /
+7  |   |   |   |   |   |   |   |
+    \ /c\ /d\ /e\ /f\ /g\ /h\ /
+6    |   |   |   |   |   |   |
+      \ /d\ /e\ /f\ /g\ /h\ /
+5      |   |   |   |   |   |
+        \ /e\ /f\ /g\ /h\ /
+4        |   |   |   |   |
+          \ /f\ /g\ /h\ /
+3          |   |   |   |
+            \ /g\ /h\ /
+2            |   |   |
+              \ /h\ /
+1              |   |
+h               \ / 
+
+    /a\ /b\ /c\ /d\ /e\ /f\ /g\ 
+8  |   |   |   |   |   |   |   |
+  /a\ /b\ /c\ /d\ /e\ /f\ /g\ /h\ 
+7|   |   |   |   |   |   |   |   |
+  \ /b\ /c\ /d\ /e\ /f\ /g\ /h\ /
+6  |   |   |   |   |   |   |   |
+    \ /c\ /d\ /e\ /f\ /g\ /h\ /
+5    |   |   |   |   |   |   |
+      \ /d\ /e\ /f\ /g\ /h\ /
+4      |   |   |   |   |   |
+        \ /e\ /f\ /g\ /h\ /
+3        |   |   |   |   |
+          \ /f\ /g\ /h\ /
+2          |   |   |   |
+            \ /g\ /h\ /
+1            |   |   |
+g             \ / \ / 
+
+      /a\ /b\ /c\ /d\ /e\ /f\ 
+8    |   |   |   |   |   |   |
+    /a\ /b\ /c\ /d\ /e\ /f\ /g\ 
+7  |   |   |   |   |   |   |   |
+  /a\ /b\ /c\ /d\ /e\ /f\ /g\ /h\ 
+6|   |   |. .|   |. .|   |   |   |
+  \ /b\ /c\ /d\ /e\ /f\ /g\ /h\ /
+5  |   |. .|   |   |. .|   |   |
+    \ /c\ /d\ /e\ /f\ /g\ /h\ /
+4    |   |   |   |   |   |   |
+      \ /d\ /e\ /f\ /g\ /h\ /
+3      |   |. .|. .|   |   |
+        \ /e\ /f\ /g\ /h\ /
+2        |   |   |   |   |
+          \ /f\ /g\ /h\ /
+1          |   |   |   |
+f           \ / \ / \ / 
+
+        /a\ /b\ /c\ /d\ /e\ 
+8      |   |   |   |   |   |
+      /a\ /b\ /c\ /d\ /e\ /f\ 
+7    |   |   |   |   |   |   |
+    /a\ /b\ /c\ /d\ /e\ /f\ /g\ 
+6  |   |. .|   |   |. .|   |   |
+  /a\ /b\ /c\ /d\ /e\ /f\ /g\ /h\ 
+5|   |. .|   |   |   |. .|   |   |  Hashkey: d1e4bacbf27ed539
+  \ /b\ /c\ /d\ /e\ /f\ /g\ /h\ /
+4  |   |   |   |   |   |   |   |
+    \ /c\ /d\ /e\ /f\ /g\ /h\ /
+3    |   |   |   |   |   |   |
+      \ /d\ /e\ /f\ /g\ /h\ /
+2      |   |. .|. .|   |   |
+        \ /e\ /f\ /g\ /h\ /
+1        |   |   |   |   | *
+e         \ / \ / \ / \ / 
+
+          /a\ /b\ /c\ /d\ 
+8        |   |   |   |   |
+        /a\ /b\ /c\ /d\ /e\ 
+7      |   |   |   |   |   |
+      /a\ /b\ /c\ /d\ /e\ /f\ 
+6    |   |   |   |   |   |   |
+    /a\ /b\ /c\ /d\ /e\ /f\ /g\ 
+5  |   |   |   |   |   |   |   |
+  /a\ /b\ /c\ /d\ /e\ /f\ /g\ /h\ 
+4|   |   |   | N |   |   |   |   |
+  \ /b\ /c\ /d\ /e\ /f\ /g\ /h\ /
+3  |   |   |   |   |   |   |   |
+    \ /c\ /d\ /e\ /f\ /g\ /h\ /
+2    |   |   |   |   |   |   |
+      \ /d\ /e\ /f\ /g\ /h\ /
+1      |   |   |   |   |   |
+d       \ / \ / \ / \ / \ / 
+
+            /a\ /b\ /c\ 
+8          |   |   |   |
+          /a\ /b\ /c\ /d\ 
+7        |   |   |   |   |
+        /a\ /b\ /c\ /d\ /e\ 
+6      |   |. .|. .|   |   |
+      /a\ /b\ /c\ /d\ /e\ /f\ 
+5    |   |   |   |   |   |   |
+    /a\ /b\ /c\ /d\ /e\ /f\ /g\ 
+4  |   |   |   |   |   |   |   |
+  /a\ /b\ /c\ /d\ /e\ /f\ /g\ /h\ 
+3|   |. .|   |   |   |. .|   |   |
+  \ /b\ /c\ /d\ /e\ /f\ /g\ /h\ /
+2  |   |. .|   |   |. .|   |   |
+    \ /c\ /d\ /e\ /f\ /g\ /h\ /
+1    |   |   |   |   |   |   |
+c     \ / \ / \ / \ / \ / \ / 
+
+              /a\ /b\ 
+8            |   |   |
+            /a\ /b\ /c\ 
+7          |   |   |   |
+          /a\ /b\ /c\ /d\ 
+6        |   |   |   |   |
+        /a\ /b\ /c\ /d\ /e\ 
+5      |   |. .|. .|   |   |
+      /a\ /b\ /c\ /d\ /e\ /f\ 
+4    |   |   |   |   |   |   |
+    /a\ /b\ /c\ /d\ /e\ /f\ /g\ 
+3  |   |. .|   |   |. .|   |   |
+  /a\ /b\ /c\ /d\ /e\ /f\ /g\ /h\ 
+2|   |   |. .|   |. .|   |   |   |
+  \ /b\ /c\ /d\ /e\ /f\ /g\ /h\ /
+1  |   |   |   |   |   |   |   |
+b   \ / \ / \ / \ / \ / \ / \ / 
+
+                /a\ 
+8              |   |
+              /a\ /b\ 
+7            |   |   |
+            /a\ /b\ /c\ 
+6          |   |   |   |
+          /a\ /b\ /c\ /d\ 
+5        |   |   |   |   |
+        /a\ /b\ /c\ /d\ /e\ 
+4      |   |   |   |   |   |
+      /a\ /b\ /c\ /d\ /e\ /f\ 
+3    |   |   |   |   |   |   |
+    /a\ /b\ /c\ /d\ /e\ /f\ /g\ 
+2  |   |   |   |   |   |   |   |
+  /a\ /b\ /c\ /d\ /e\ /f\ /g\ /h\ 
+1|   |   |   |   |   |   |   |*K*|
+a \ / \ / \ / \ / \ / \ / \ / \ / 
+
+*/
+        [TestMethod()]
+        public void knightAttackTests()
+        {
+            var board = new ChessBoard("1/2/2/3/3/3/4/4/4/4/5/5/5/5/5/6/6/6/6/6/6/7/7/7/7/7/7/7/K/8/8/8/3N/8/8/7k w - -");
+
+            BitBoard pieces = board.getMask(true, ChessConstants_Fields.KING);
+            Assert.IsTrue(pieces.countBits() == 1);
+            int squareKing = pieces.findFirstOne();
+            Lfr lfrKing = (Lfr) squareKing;
+            Assert.IsTrue(squareKing == BoardConstants_Fields.HA8);
+
+            pieces = board.getMask(false, ChessConstants_Fields.KING);
+            Assert.IsTrue(pieces.countBits() == 1);
+            squareKing = pieces.findFirstOne();
+            lfrKing = (Lfr) squareKing;
+            Assert.IsTrue(squareKing == BoardConstants_Fields.HH1);
+
+            pieces = board.getMask(true, ChessConstants_Fields.KNIGHT);
+            Assert.IsTrue(pieces.countBits() == 1);
+
+
+            int squareKnight = pieces.findFirstOne();
+            Lfr lrfKnight = (Lfr) squareKnight;
+            Assert.IsTrue(squareKnight == BoardConstants_Fields.HD4);
+
+            String knightAttcks = board.ToStringHex(squareKnight);
+
+            BitBoard moves = board.getAttackTo(squareKnight);
+            moves.SetBit(BoardConstants_Fields.HG6);
+
         }
 
 
