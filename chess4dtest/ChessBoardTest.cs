@@ -1,4 +1,6 @@
 
+using System.Reflection;
+using System.Runtime.Intrinsics.Arm;
 using tgreiner.amy.bitboard;
 using tgreiner.amy.chess.engine;
 using tgreiner.amy.common.engine;
@@ -112,54 +114,6 @@ namespace tgreiner.amy.chess.engine.Tests
             }
             */
 
-        }
-
-        [TestMethod()]
-        public void attackTests()
-        {
-            var board = new ChessBoard("1/2/2/3/3/3/4/4/4/4/5/5/5/5/5/6/6/6/6/6/6/7/7/7/7/7/7/7/8/1r/6R/2k2K/1p//7P w - -");
-
-            BitBoard pieces = board.getMask(false, ChessConstants_Fields.PAWN);
-            Assert.IsTrue(pieces.countBits() == 1);
-            pieces = board.getMask(true, ChessConstants_Fields.PAWN);
-            Assert.IsTrue(pieces.countBits() == 1);
-            pieces = board.getMask(false, ChessConstants_Fields.ROOK);
-            Assert.IsTrue(pieces.countBits() == 1);
-            pieces = board.getMask(true, ChessConstants_Fields.ROOK);
-            Assert.IsTrue(pieces.countBits() == 1);
-
-
-            int squareWhiteRook = pieces.findFirstOne();
-            Lfr lrfWhiteRook = (Lfr) squareWhiteRook;
-            Assert.IsTrue(squareWhiteRook == BoardConstants_Fields.HG6);
-
-            BitBoard moves = board.getAttackTo(squareWhiteRook);
-            moves.SetBit(BoardConstants_Fields.HG6);
-
-            for (int i = 0; 8 > i; ++i)
-            {
-                Assert.IsTrue(moves.GetBit(lrfWhiteRook.Level, i, lrfWhiteRook.Rank) == 1,
-                    $"Move from {(char)(97 + lrfWhiteRook.File)}{lrfWhiteRook.Rank+1} to {(char)(97 + i)}{lrfWhiteRook.Rank+1} not found");
-                Assert.IsTrue(moves.GetBit(lrfWhiteRook.Level, lrfWhiteRook.File, i) == 1,
-                    $"Move from {(char)(97 + lrfWhiteRook.File)}{lrfWhiteRook.Rank+1} to {(char)(97 + lrfWhiteRook.Rank)}{i+1} not found");
-            }
-
-            while(moves.IsEmpty() == false)
-            {
-                Lfr square = (Lfr)(moves.findFirstOne());
-                if(square.Level == lrfWhiteRook.Level)
-                {
-                    Assert.IsTrue((square.Rank == lrfWhiteRook.Rank) || (square.File == lrfWhiteRook.File));
-                }
-                else
-                {
-                    Assert.IsTrue((square.Rank == lrfWhiteRook.Rank + 1) 
-                        || (square.Rank == lrfWhiteRook.Rank - 1) 
-                        || (square.File == lrfWhiteRook.File + 1) 
-                        || (square.File == lrfWhiteRook.File - 1));
-                }
-                moves.ClearBit((int)square);
-            }
         }
 
 /*
@@ -693,34 +647,62 @@ a \ / \ / \ / \ / \ / \ / \ / \ /
             String rookAttacks = board.ToStringHex(squareRook);
 
             BitBoard moves = board.getAttackTo(squareRook);
+            moves[BoardConstants_Fields.HD4] = 1;
 
-/*
-            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(7,7,7))) ==1); //hh8
+            int count = moves.countBits();
 
-            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(6,6,6))) ==1); //gg7
-            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(6,6,0))) ==1); //gg1
-            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(6,0,6))) ==1); //ga7
+            Assert.AreEqual(count, 41);
 
-            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(5,5,5))) ==1); //ff6
-            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(5,5,1))) ==1); //ff2
-            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(5,1,5))) ==1); //fb6
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(7,3,7))) ==1); //hb8
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(7,7,3))) ==1); //hh4
 
-            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(4,4,4))) ==1); //ee5
-            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(4,4,2))) ==1); //ee3
-            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(4,2,4))) ==1); //ec5
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(6,3,6))) ==1); //gd7
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(6,6,3))) ==1); //gg4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(6,3,3))) ==1); //gd4
 
-            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(2,2,4))) ==1); //cc5
-            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(2,4,2))) ==1); //ce3
-            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(2,2,4))) ==1); //cc3
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(5,3,5))) ==1); //fd6
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(5,5,3))) ==1); //ff4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(5,3,3))) ==1); //fd4
 
-            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(1,1,5))) ==1); //bb6
-            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(1,5,1))) ==1); //bf2
-            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(1,1,1))) ==1); //bb2
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(4,3,4))) ==1); //ed5
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(4,4,3))) ==1); //ee4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(4,3,3))) ==1); //ed4
 
-            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(0,0,6))) ==1); //aa7
-            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(0,6,0))) ==1); //ag1
-            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(0,0,0))) ==1); //aa1
-*/
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,0,6))) ==1); //da7
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,1,5))) ==1); //db6
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,2,4))) ==1); //dc5
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,3,3))) ==1); //dd4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,4,2))) ==1); //de3
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,5,1))) ==1); //df2
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,6,0))) ==1); //dg1  
+
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,3,7))) ==1); //dd8
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,3,6))) ==1); //dd7
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,3,5))) ==1); //dd6
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,3,4))) ==1); //dd5
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,3,2))) ==1); //dd3
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,3,1))) ==1); //dd2
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,3,0))) ==1); //dd1
+
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,0,3))) ==1); //da4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,1,3))) ==1); //db4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,2,3))) ==1); //dc4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,4,3))) ==1); //de4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,5,3))) ==1); //df4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,6,3))) ==1); //dg4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,7,3))) ==1); //dh4
+
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(2,2,3))) ==1); //cc4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(2,3,3))) ==1); //cd4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(2,3,2))) ==1); //cd3
+
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(1,1,3))) ==1); //bb4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(1,3,3))) ==1); //bd4 
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(1,3,1))) ==1); //bd2
+
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(0,0,3))) ==1); //aa4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(0,3,3))) ==1); //ad4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(0,3,0))) ==1); //ad1          
         }
 
         /*
@@ -898,6 +880,12 @@ a \ / \ / \ / \ / \ / \ / \ / \ /
             String queenAttacks = board.ToStringHex(squareQueen);
 
             BitBoard moves = board.getAttackTo(squareQueen);
+            moves[BoardConstants_Fields.HD4] = 1;
+
+            int count = moves.countBits();
+
+            Assert.AreEqual(count, 60);
+
 
             Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(7,7,7))) ==1); //hh8
 
@@ -924,6 +912,58 @@ a \ / \ / \ / \ / \ / \ / \ / \ /
             Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(0,0,6))) ==1); //aa7
             Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(0,6,0))) ==1); //ag1
             Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(0,0,0))) ==1); //aa1
+
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(7,3,7))) ==1); //hb8
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(7,7,3))) ==1); //hh4
+
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(6,3,6))) ==1); //gd7
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(6,6,3))) ==1); //gg4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(6,3,3))) ==1); //gd4
+
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(5,3,5))) ==1); //fd6
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(5,5,3))) ==1); //ff4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(5,3,3))) ==1); //fd4
+
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(4,3,4))) ==1); //ed5
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(4,4,3))) ==1); //ee4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(4,3,3))) ==1); //ed4
+
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,0,6))) ==1); //da7
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,1,5))) ==1); //db6
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,2,4))) ==1); //dc5
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,3,3))) ==1); //dd4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,4,2))) ==1); //de3
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,5,1))) ==1); //df2
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,6,0))) ==1); //dg1  
+
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,3,7))) ==1); //dd8
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,3,6))) ==1); //dd7
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,3,5))) ==1); //dd6
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,3,4))) ==1); //dd5
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,3,2))) ==1); //dd3
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,3,1))) ==1); //dd2
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,3,0))) ==1); //dd1
+
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,0,3))) ==1); //da4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,1,3))) ==1); //db4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,2,3))) ==1); //dc4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,4,3))) ==1); //de4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,5,3))) ==1); //df4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,6,3))) ==1); //dg4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(3,7,3))) ==1); //dh4
+
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(2,2,3))) ==1); //cc4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(2,3,3))) ==1); //cd4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(2,3,2))) ==1); //cd3
+
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(1,1,3))) ==1); //bb4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(1,3,3))) ==1); //bd4 
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(1,3,1))) ==1); //bd2
+
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(0,0,3))) ==1); //aa4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(0,3,3))) ==1); //ad4
+            Assert.IsTrue(moves.GetBit((int)(Lfr)(new HexLfr(0,3,0))) ==1); //ad1          
+
         }
 
 
