@@ -790,7 +790,10 @@ namespace tgreiner.amy.chess.engine
 
             0};
 		
-		/// <summary>The piece/square table.  </summary>
+		/// <summary>
+		/// The piece/square table.  
+		/// these scores are used for updating a board position score based on a score for each piece
+		/// </summary>
 		internal int[][] pieceSquare = new int[][]{null, pawnPos, knightPos, bishopPos, rookPos, queenPos, null};
 		
 		/// <summary>Multiplier for bishop mobility. </summary>
@@ -886,7 +889,7 @@ namespace tgreiner.amy.chess.engine
 				{
 					int square = all.findFirstOne();
 					all.ClearBit(square);
-					posScore -= pieceSquare[type][Geometry.flipX(square)];
+					posScore -= pieceSquare[type][Geometry.invertRank(square)];
 				}
 			}
 		}
@@ -903,7 +906,7 @@ namespace tgreiner.amy.chess.engine
 			}
 			else
 			{
-				posScore -= (pq[Geometry.flipX(to)] - pq[Geometry.flipX(from)]);
+				posScore -= (pq[Geometry.invertRank(to)] - pq[Geometry.invertRank(from)]);
 			}
 		}
 		
@@ -919,7 +922,7 @@ namespace tgreiner.amy.chess.engine
 			else
 			{
 				blackMaterial -= pieceValues[type];
-				posScore += pieceSquare[type][Geometry.flipX(square)];
+				posScore += pieceSquare[type][Geometry.invertRank(square)];
 			}
 		}
 		
@@ -935,7 +938,7 @@ namespace tgreiner.amy.chess.engine
 			else
 			{
 				blackMaterial += pieceValues[type];
-				posScore -= pieceSquare[type][Geometry.flipX(square)];
+				posScore -= pieceSquare[type][Geometry.invertRank(square)];
 			}
 		}
 		

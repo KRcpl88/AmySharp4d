@@ -357,19 +357,22 @@ namespace tgreiner.amy.chess.engine
 		private static readonly int[] DIRS_QUEEN_16 = new int[]{16, 1, - 16, - 1, 15, 17, - 15, - 17};
 		
 		/// <summary>Constant for 0x88 algorithm. </summary>
+		/// BUGBUG not sure what this is but it probably wont work on a 3D board
 		private const int OX88 = 0x88;
 		
-		/// <summary> Flip a square along the X-axis. Example: the square a1 becomes
+		/// <summary> Invert the rank. Example: the square a1 becomes
 		/// a8, e4 becomes e5.
 		/// 
 		/// </summary>
 		/// <param name="square">the square.
 		/// </param>
-		/// <returns> the square flipped along the X-axis.
+		/// <returns> the square flipped along the Rasnk axis.
 		/// </returns>
-		public static int flipX(int square)
+		public static int invertRank(int square)
 		{
-			return square ^ 0x38;
+			Lfr lfr = new Lfr(square);
+			lfr.Rank = BitBoard.LEVEL_WIDTH[lfr.Level] - lfr.Rank - 1;
+			return (int)lfr;
 		}
 		
 		/// <summary> Initialize nextPos/nextDir arrays.
