@@ -74,7 +74,7 @@ namespace tgreiner.amy.chess.engine.Tests
         }
         
         [TestMethod()]
-        public void parseSanTest()
+        public void parseSquareSanTest()
         {
             var board = new ChessBoard("1/2/2/3/3/3/4/4/4/4/5/5/5/5/5/6/6/6/6/6/6/7/7/7/7/7/7/7/8/8/8/2k2K/1p//6P w - -");
             Assert.IsTrue(board.getPieceAt(7,5,4) == ChessConstants_Fields.KING);
@@ -87,7 +87,7 @@ namespace tgreiner.amy.chess.engine.Tests
             Assert.IsTrue(board.getSideAt(BitBoard.BitOffset(7,1,3)) == Player.black);
             Assert.IsTrue(board.WhiteToMove == true);
 
-            int move = Move.parseSAN(board,"Khf5-hf6");
+            int move = Move.parseSquareSan(board,"Khf5-hf6");
             var from = Move.getFrom(move);
             Assert.IsTrue(from == BoardConstants_Fields.HF5);
             var to = Move.getTo(move);
@@ -113,6 +113,181 @@ namespace tgreiner.amy.chess.engine.Tests
                 ++count;
             }
             */
+
+        }
+
+        [TestMethod()]
+        public void parseHexSanTest()
+        {
+            var board = new ChessBoard("1/2/2/3/3/3/4/4/4/4/5/5/5/5/5/6/6/6/6/6/6/7/7/7/7/7/7/7/8/8/8/2k2K/1p//6P w - -");
+            Assert.IsTrue(board.getPieceAt(7,5,4) == ChessConstants_Fields.KING);
+            Assert.IsTrue(board.getSideAt(BitBoard.BitOffset(7,5,4)) == Player.white);
+            Assert.IsTrue(board.getPieceAt(7,2,4) == ChessConstants_Fields.KING);
+            Assert.IsTrue(board.getSideAt(BitBoard.BitOffset(7,2,4)) == Player.black);
+            Assert.IsTrue(board.getPieceAt(7,6,1) == ChessConstants_Fields.PAWN);
+            Assert.IsTrue(board.getSideAt(BitBoard.BitOffset(7,6,1)) == Player.white);
+            Assert.IsTrue(board.getPieceAt(7,1,3) == ChessConstants_Fields.PAWN);
+            Assert.IsTrue(board.getSideAt(BitBoard.BitOffset(7,1,3)) == Player.black);
+
+            var  hexBoard = board.ToStringHex(-1);
+
+            /*
+
+              /a\ /b\ /c\ /d\ /e\ /f\ /g\ /h\ 
+8|   |   |   |   |   |   |   |   |
+  \ /b\ /c\ /d\ /e\ /f\ /g\ /h\ /
+7  |   |   |   |   |   |   |   |
+    \ /c\ /d\ /e\ /f\ /g\ /h\ /
+6    |   |   |   |   |   |   |
+      \ /d\ /e\ /f\ /g\ /h\ /
+5      |   |   |   |   |   |
+        \ /e\ /f\ /g\ /h\ /
+4        |   |   |   |   |
+          \ /f\ /g\ /h\ /
+3          |   |   |   |
+            \ /g\ /h\ /
+2            |   |   |
+              \ /h\ /
+1              |   |
+h               \ / 
+
+    /a\ /b\ /c\ /d\ /e\ /f\ /g\ 
+8  |   |   |   |   |   |   |   |
+  /a\ /b\ /c\ /d\ /e\ /f\ /g\ /h\ 
+7|   |   |   |   |   |   |   |   |
+  \ /b\ /c\ /d\ /e\ /f\ /g\ /h\ /
+6  |   |   |   |   |   |   |   |
+    \ /c\ /d\ /e\ /f\ /g\ /h\ /
+5    |   |   |   |   |   |   |
+      \ /d\ /e\ /f\ /g\ /h\ /
+4      |   |   |   |   |   |
+        \ /e\ /f\ /g\ /h\ /
+3        |   |   |   |   |
+          \ /f\ /g\ /h\ /
+2          |   |   |   |
+            \ /g\ /h\ /
+1            |   |   |
+g             \ / \ / 
+
+      /a\ /b\ /c\ /d\ /e\ /f\ 
+8    |   |   |   |   |   |   |
+    /a\ /b\ /c\ /d\ /e\ /f\ /g\ 
+7  |   |   |   |   |   |   |   |
+  /a\ /b\ /c\ /d\ /e\ /f\ /g\ /h\ 
+6|   |   |   |   |   |   |   |   |
+  \ /b\ /c\ /d\ /e\ /f\ /g\ /h\ /
+5  |   |   |   |   |   |   |   |
+    \ /c\ /d\ /e\ /f\ /g\ /h\ /
+4    |   |   |   |   |   |   |
+      \ /d\ /e\ /f\ /g\ /h\ /
+3      |   |   |   |   |   |
+        \ /e\ /f\ /g\ /h\ /
+2        |   |   |   |   |
+          \ /f\ /g\ /h\ /
+1          |   |   |   |
+f           \ / \ / \ / 
+
+        /a\ /b\ /c\ /d\ /e\ 
+8      |   |   |   |   |   |
+      /a\ /b\ /c\ /d\ /e\ /f\ 
+7    |   |   |   |   |   |   |
+    /a\ /b\ /c\ /d\ /e\ /f\ /g\ 
+6  |   |   |   |   |   |   |   |
+  /a\ /b\ /c\ /d\ /e\ /f\ /g\ /h\ 
+5|   |   |*K*|   |   | K |   |   |  Hashkey: fd7e7324c5f77f41
+  \ /b\ /c\ /d\ /e\ /f\ /g\ /h\ /
+4  |   |   |   |   |   |   |   |
+    \ /c\ /d\ /e\ /f\ /g\ /h\ /
+3    |   |   |   |   |   |   |
+      \ /d\ /e\ /f\ /g\ /h\ /
+2      |   |   |   |   |   |
+        \ /e\ /f\ /g\ /h\ /
+1        |   |   |   |   | *
+e         \ / \ / \ / \ / 
+
+          /a\ /b\ /c\ /d\ 
+8        |   |   |   |   |
+        /a\ /b\ /c\ /d\ /e\ 
+7      |   |   |   |   |   |
+      /a\ /b\ /c\ /d\ /e\ /f\ 
+6    |   |   |   |   |   |   |
+    /a\ /b\ /c\ /d\ /e\ /f\ /g\ 
+5  |   |   |   |   |   |   |   |
+  /a\ /b\ /c\ /d\ /e\ /f\ /g\ /h\ 
+4|   |*P*|   |   |   |   |   |   |
+  \ /b\ /c\ /d\ /e\ /f\ /g\ /h\ /
+3  |   |   |   |   |   |   |   |
+    \ /c\ /d\ /e\ /f\ /g\ /h\ /
+2    |   |   |   |   |   |   |
+      \ /d\ /e\ /f\ /g\ /h\ /
+1      |   |   |   |   |   |
+d       \ / \ / \ / \ / \ / 
+
+            /a\ /b\ /c\ 
+8          |   |   |   |
+          /a\ /b\ /c\ /d\ 
+7        |   |   |   |   |
+        /a\ /b\ /c\ /d\ /e\ 
+6      |   |   |   |   |   |
+      /a\ /b\ /c\ /d\ /e\ /f\ 
+5    |   |   |   |   |   |   |
+    /a\ /b\ /c\ /d\ /e\ /f\ /g\ 
+4  |   |   |   |   |   |   |   |
+  /a\ /b\ /c\ /d\ /e\ /f\ /g\ /h\ 
+3|   |   |   |   |   |   |   |   |
+  \ /b\ /c\ /d\ /e\ /f\ /g\ /h\ /
+2  |   |   |   |   |   |   |   |
+    \ /c\ /d\ /e\ /f\ /g\ /h\ /
+1    |   |   |   |   |   |   |
+c     \ / \ / \ / \ / \ / \ / 
+
+              /a\ /b\ 
+8            |   |   |
+            /a\ /b\ /c\ 
+7          |   |   |   |
+          /a\ /b\ /c\ /d\ 
+6        |   |   |   |   |
+        /a\ /b\ /c\ /d\ /e\ 
+5      |   |   |   |   |   |
+      /a\ /b\ /c\ /d\ /e\ /f\ 
+4    |   |   |   |   |   |   |
+    /a\ /b\ /c\ /d\ /e\ /f\ /g\ 
+3  |   |   |   |   |   |   |   |
+  /a\ /b\ /c\ /d\ /e\ /f\ /g\ /h\ 
+2|   |   |   |   |   |   | P |   |
+  \ /b\ /c\ /d\ /e\ /f\ /g\ /h\ /
+1  |   |   |   |   |   |   |   |
+b   \ / \ / \ / \ / \ / \ / \ / 
+
+                /a\ 
+8              |   |
+              /a\ /b\ 
+7            |   |   |
+            /a\ /b\ /c\ 
+6          |   |   |   |
+          /a\ /b\ /c\ /d\ 
+5        |   |   |   |   |
+        /a\ /b\ /c\ /d\ /e\ 
+4      |   |   |   |   |   |
+      /a\ /b\ /c\ /d\ /e\ /f\ 
+3    |   |   |   |   |   |   |
+    /a\ /b\ /c\ /d\ /e\ /f\ /g\ 
+2  |   |   |   |   |   |   |   |
+  /a\ /b\ /c\ /d\ /e\ /f\ /g\ /h\ 
+1|   |   |   |   |   |   |   |   |
+a \ / \ / \ / \ / \ / \ / \ / \ / 
+
+
+            */
+
+            Assert.IsTrue(board.WhiteToMove == true);
+
+            int move = Move.parseHexSan(board,"Kef5-ef6");
+            var from = Move.getFrom(move);
+            Assert.IsTrue(from == BoardConstants_Fields.HF5);
+            Assert.IsTrue(from == (int)(SquareLfr)(new HexLfr(4,5,4)));
+            var to = Move.getTo(move);
+            Assert.IsTrue(to == (int)(SquareLfr)(new HexLfr(4,5,5)));
 
         }
 

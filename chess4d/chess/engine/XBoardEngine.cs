@@ -204,7 +204,7 @@ namespace tgreiner.amy.chess.engine
                     System.String moveStr = this.command.Substring(9);
                     try
                     {
-                        int move = Move.parseSAN(board, moveStr);
+                        int move = Move.parseSquareSan(board, moveStr);
 
                         handleMove(respond, move);
                     }

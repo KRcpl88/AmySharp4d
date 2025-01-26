@@ -371,34 +371,136 @@ namespace tgreiner.amy.chess.engine
 		/// <returns> the move
 		/// </returns>
 		/// <throws>  IllegalSANException if the SAN is not legal </throws>
-		public static int parseSAN(ChessBoard board, System.String san)
-		{
-			int toRank = - 1, toFile = - 1;
-			int fromRank = - 1, fromFile = - 1;
-			int fromLevel = -1, toLevel = -1;
-			int type = 0;
-			int promotion = 0;
-			int castle = 0;
-			
+		public static int parseSquareSan(ChessBoard board, System.String san)
+        {
+            int toRank = -1, toFile = -1;
+            int fromRank = -1, fromFile = -1;
+            int fromLevel = -1, toLevel = -1;
+            int type = 0;
+            int promotion = 0;
+            int castle = 0;
+
+            ParseSan(san, 
+				ref toLevel, 
+				ref toFile, 
+				ref toRank, 
+				ref fromLevel, 
+				ref fromFile, 
+				ref fromRank, 
+				ref type, 
+				ref promotion, 
+				ref castle);
+
+            IntVector mvs = new IntVector();
+            board.generatePseudoLegalMoves(mvs);
+
+            int move = 0;
+            move = getMoveSquare(board,
+                toLevel,
+                toFile,
+                toRank,
+                fromLevel,
+                fromFile,
+                fromRank,
+                type,
+                promotion,
+                castle,
+                move,
+                mvs);
+
+            if (move == 0)
+            {
+                throw new IllegalSANException("No matching move.");
+            }
+
+            return move;
+        }
+
+		/// <summary> Parse a move in SAN (Standard Algebraic Notation).
+		/// 
+		/// </summary>
+		/// <param name="board">the chess board
+		/// </param>
+		/// <param name="san">the SAN to parse
+		/// </param>
+		/// <returns> the move
+		/// </returns>
+		/// <throws>  IllegalSANException if the SAN is not legal </throws>
+		public static int parseHexSan(ChessBoard board, System.String san)
+        {
+            int toRank = -1, toFile = -1;
+            int fromRank = -1, fromFile = -1;
+            int fromLevel = -1, toLevel = -1;
+            int type = 0;
+            int promotion = 0;
+            int castle = 0;
+
+            ParseSan(san, 
+				ref toLevel, 
+				ref toFile, 
+				ref toRank, 
+				ref fromLevel, 
+				ref fromFile, 
+				ref fromRank, 
+				ref type, 
+				ref promotion, 
+				ref castle);
+
+            IntVector mvs = new IntVector();
+            board.generatePseudoLegalMoves(mvs);
+
+            int move = 0;
+            move = getMoveHex(board,
+                toLevel,
+                toFile,
+                toRank,
+                fromLevel,
+                fromFile,
+                fromRank,
+                type,
+                promotion,
+                castle,
+                move,
+                mvs);
+
+            if (move == 0)
+            {
+                throw new IllegalSANException("No matching move.");
+            }
+
+            return move;
+        }
+
+        private static void ParseSan(string san, 
+			ref int toLevel, 
+			ref int toFile, 
+			ref int toRank, 
+			ref int fromLevel, 
+			ref int fromFile, 
+			ref int fromRank, 
+			ref int type, 
+			ref int promotion, 
+			ref int castle)
+        {
 			SupportClass.StringIterator iter = new SupportClass.StringIterator(san);
-			
+
 			for (int c = iter.First; c != '\uFFFF'; c = iter.Next())
 			{
-				
+
 				switch (c)
 				{
-					
-					case 'a': 
-					case 'b': 
-					case 'c': 
-					case 'd': 
-					case 'e': 
-					case 'f': 
-					case 'g': 
-					case 'h': 
+
+					case 'a':
+					case 'b':
+					case 'c':
+					case 'd':
+					case 'e':
+					case 'f':
+					case 'g':
+					case 'h':
 						if (toLevel == -1)
 						{
-							toLevel = c - 'a';							
+							toLevel = c - 'a';
 						}
 						else if ((toFile >= 0) && (fromLevel == -1))
 						{
@@ -412,16 +514,16 @@ namespace tgreiner.amy.chess.engine
 						}
 						break;
 
-					case 'i': 
-					case 'j': 
-					case 'k': 
-					case 'l': 
-					case 'm': 
-					case 'n': 
-					case 'o': 
+					case 'i':
+					case 'j':
+					case 'k':
+					case 'l':
+					case 'm':
+					case 'n':
+					case 'o':
 						if (fromLevel == -1)
 						{
-							fromLevel = c - 'a';							
+							fromLevel = c - 'a';
 						}
 						else if (toLevel == -1)
 						{
@@ -430,118 +532,127 @@ namespace tgreiner.amy.chess.engine
 						break;
 
 
-					case '1': 
-					case '2': 
-					case '3': 
-					case '4': 
-					case '5': 
-					case '6': 
-					case '7': 
-					case '8': 
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
 						fromRank = toRank;
 						toRank = c - '1';
 						break;
-					
-					case 'N': 
+
+					case 'N':
 						type = ChessConstants_Fields.KNIGHT;
 						break;
-					
-					case 'B': 
+
+					case 'B':
 						type = ChessConstants_Fields.BISHOP;
 						break;
-					
-					case 'R': 
+
+					case 'R':
 						type = ChessConstants_Fields.ROOK;
 						break;
-					
-					case 'Q': 
+
+					case 'Q':
 						type = ChessConstants_Fields.QUEEN;
 						break;
-					
-					case 'K': 
+
+					case 'K':
 						type = ChessConstants_Fields.KING;
 						break;
-					
-					case '=': 
+
+					case '=':
 						c = iter.Next();
 						switch (c)
 						{
-							
-							case 'Q': 
+
+							case 'Q':
 								promotion = PROMO_QUEEN;
 								break;
-							
-							case 'R': 
+
+							case 'R':
 								promotion = PROMO_ROOK;
 								break;
-							
-							case 'B': 
+
+							case 'B':
 								promotion = PROMO_BISHOP;
 								break;
-							
-							case 'N': 
+
+							case 'N':
 								promotion = PROMO_KNIGHT;
 								break;
-							
-							default: 
+
+							default:
 								throw new IllegalSANException("Illegal promotion");
-							
+
 						}
 						break;
-					
-					case 'O': 
-					case '0': 
+
+					case 'O':
+					case '0':
 						castle++;
 						break;
-					
-					
-					case 'x': 
-					case '+': 
-					case '#': 
-					case '-': 
-						
+
+
+					case 'x':
+					case '+':
+					case '#':
+					case '-':
+
 						// We simply ignore these
-						
+
 						break;
-					
-					
-					default: 
+
+
+					default:
 						throw new IllegalSANException("Illegal character " + c);
-					
+
 				}
 			}
-			
-			int move = 0;
-			
-			if (castle != 0)
-			{
-				if (castle < 2 || castle > 3)
-				{
-					throw new IllegalSANException("Illegal castle");
-				}
-				type = ChessConstants_Fields.KING;
-			}
-			if (type == 0)
-			{
-				type = ChessConstants_Fields.PAWN;
-			}
-			
-			IntVector mvs = new IntVector();
-			board.generatePseudoLegalMoves(mvs);
-			
-			for (int i = 0; i < mvs.size(); i++)
-			{
-				int m = mvs.get_Renamed(i);
-				
+
+            if (castle != 0)
+            {
+                if (castle < 2 || castle > 3)
+                {
+                    throw new IllegalSANException("Illegal castle");
+                }
+                type = ChessConstants_Fields.KING;
+            }
+            if (type == 0)
+            {
+                type = ChessConstants_Fields.PAWN;
+            }
+        }
+
+        private static int getMoveSquare(ChessBoard board, 
+			int toLevel, 
+			int toFile, 
+			int toRank, 
+			int fromLevel, 
+			int fromFile, 
+			int fromRank, 
+			int type, 
+			int promotion, 
+			int castle, 
+			int move, 
+			IntVector mvs)
+        {
+            for (int i = 0; i < mvs.size(); i++)
+            {
+                int m = mvs.get_Renamed(i);
+
                 int from = getFrom(m);
                 if (board.getPieceAt(from) != type) { continue; }
-				SquareLfr fromLrf = (SquareLfr)from;
+                SquareLfr fromLrf = (SquareLfr)from;
                 if (fromLevel != -1 && fromLrf.Level != fromLevel) { continue; }
                 if (fromRank != -1 && fromLrf.Rank != fromRank) { continue; }
                 if (fromFile != -1 && fromLrf.File != fromFile) { continue; }
 
                 int to = getTo(m);
-				SquareLfr toLrf = (SquareLfr)to;
+                SquareLfr toLrf = (SquareLfr)to;
                 if (toLevel != -1 && toLrf.Level != toLevel) { continue; }
                 if (toRank != -1 && toLrf.Rank != toRank) { continue; }
                 if (toFile != -1 && toLrf.File != toFile) { continue; }
@@ -552,33 +663,87 @@ namespace tgreiner.amy.chess.engine
                 if (castle == 3 && ((m & CASTLE_QSIDE) == 0)) { continue; }
 
                 if ((m & CASTLE) != 0 && !board.isCastleLegal(m)) { continue; }
-				
-				board.doMove(m);
-				bool inCheck = board.OppInCheck;
-				board.undoMove();
-				
-				if (inCheck)
-				{
-					continue;
-				}
-				
-				if (move == 0)
-				{
-					move = m;
-				}
-				else
-				{
-					throw new IllegalSANException("Ambiguous move");
-				}
-			}
-			
-			if (move == 0)
-			{
-				throw new IllegalSANException("No matching move.");
-			}
-			
-			return move;
-		}
+
+                board.doMove(m);
+                bool inCheck = board.OppInCheck;
+                board.undoMove();
+
+                if (inCheck)
+                {
+                    continue;
+                }
+
+                if (move == 0)
+                {
+                    move = m;
+                }
+                else
+                {
+                    throw new IllegalSANException("Ambiguous move");
+                }
+            }
+
+            return move;
+        }
+
+        private static int getMoveHex(ChessBoard board, 
+			int toLevel, 
+			int toFile, 
+			int toRank, 
+			int fromLevel, 
+			int fromFile, 
+			int fromRank, 
+			int type, 
+			int promotion, 
+			int castle, 
+			int move, 
+			IntVector mvs)
+        {
+            for (int i = 0; i < mvs.size(); i++)
+            {
+                int m = mvs.get_Renamed(i);
+
+                int from = getFrom(m);
+                if (board.getPieceAt(from) != type) { continue; }
+                var fromLrf = (HexLfr)(SquareLfr)from;
+                if (fromLevel != -1 && fromLrf.Level != fromLevel) { continue; }
+                if (fromRank != -1 && fromLrf.Rank != fromRank) { continue; }
+                if (fromFile != -1 && fromLrf.File != fromFile) { continue; }
+
+                int to = getTo(m);
+                var toLrf = (HexLfr)(SquareLfr)to;
+                if (toLevel != -1 && toLrf.Level != toLevel) { continue; }
+                if (toRank != -1 && toLrf.Rank != toRank) { continue; }
+                if (toFile != -1 && toLrf.File != toFile) { continue; }
+
+                if (promotion != 0 && (m & PROMOTION) != promotion) { continue; }
+
+                if (castle == 2 && ((m & CASTLE_KSIDE) == 0)) { continue; }
+                if (castle == 3 && ((m & CASTLE_QSIDE) == 0)) { continue; }
+
+                if ((m & CASTLE) != 0 && !board.isCastleLegal(m)) { continue; }
+
+                board.doMove(m);
+                bool inCheck = board.OppInCheck;
+                board.undoMove();
+
+                if (inCheck)
+                {
+                    continue;
+                }
+
+                if (move == 0)
+                {
+                    move = m;
+                }
+                else
+                {
+                    throw new IllegalSANException("Ambiguous move");
+                }
+            }
+
+            return move;
+        }
 
         public static int GetMove(ChessBoard board, string move)
         {
