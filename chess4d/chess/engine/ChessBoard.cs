@@ -1846,7 +1846,7 @@ namespace tgreiner.amy.chess.engine
 
                 // white pawns
 
-                Lfr next = (Lfr)from;
+                SquareLfr next = (SquareLfr)from;
                 next.Rank++;
                 if (board[(int)next] == 0)
                 {
@@ -1878,7 +1878,7 @@ namespace tgreiner.amy.chess.engine
             else
             {
                 // black pawns
-                Lfr next = (Lfr)from;
+                SquareLfr next = (SquareLfr)from;
                 next.Rank--;
                 if (board[(int)next] == 0)
                 {
@@ -1999,7 +1999,7 @@ namespace tgreiner.amy.chess.engine
                 }
                 if (getPieceAt(from) == ChessConstants_Fields.PAWN)
                 {
-                    Lfr next = (Lfr)from;
+                    SquareLfr next = (SquareLfr)from;
                     next.Rank = whiteToMove?next.Rank + 1:next.Rank - 1;
                     if ((move & Move.PAWN_DOUBLE) != 0)
                     {
@@ -2182,7 +2182,7 @@ namespace tgreiner.amy.chess.engine
                         file++)
                     {
                         var hexLfr = new HexLfr(level, file, rank);
-                        var lfr = (Lfr)hexLfr;
+                        var lfr = (SquareLfr)hexLfr;
                         int i = (int)lfr;
 
 

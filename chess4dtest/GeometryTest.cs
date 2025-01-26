@@ -26,7 +26,7 @@ namespace tgreiner.amy.chess.engine.Tests
 
             for (int square = 0; (square + 16) < BitBoard.SIZE; ++square)
             {
-                Lfr nextSquare = new Lfr(square);
+                SquareLfr nextSquare = new SquareLfr(square);
                 nextSquare.Rank += 1;
 
                 if (nextSquare.IsValid() && nextSquare.Rank < (BitBoard.LEVEL_WIDTH[nextSquare.Rank] - 1))

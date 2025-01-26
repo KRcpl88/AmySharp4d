@@ -82,9 +82,9 @@ namespace tgreiner.amy.bitboard
         */
 
         /// <summary>Explicit conversion from UCoord to LFR.</summary>
-        public static explicit operator Lfr(UCoord uCoord)
+        public static explicit operator SquareLfr(UCoord uCoord)
         {
-            var lfr = new Lfr();
+            var lfr = new SquareLfr();
             lfr.Level = uCoord.Z;
 
             int levelOffset;
@@ -124,7 +124,7 @@ namespace tgreiner.amy.bitboard
         }
 
         /// <summary>Explicit conversion from LFR to UCoord.</summary>
-        public static explicit operator UCoord(Lfr lfr)
+        public static explicit operator UCoord(SquareLfr lfr)
         {
             var uCoord = new UCoord();
             uCoord.Z = lfr.Level;

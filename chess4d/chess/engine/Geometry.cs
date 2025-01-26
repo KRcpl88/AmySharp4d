@@ -370,7 +370,7 @@ namespace tgreiner.amy.chess.engine
 		/// </returns>
 		public static int invertRank(int square)
 		{
-			Lfr lfr = new Lfr(square);
+			SquareLfr lfr = new SquareLfr(square);
 			lfr.Rank = BitBoard.LEVEL_WIDTH[lfr.Level] - lfr.Rank - 1;
 			return (int)lfr;
 		}
@@ -396,8 +396,8 @@ namespace tgreiner.amy.chess.engine
                 for (int idxDirection = ATTACK_DELTA[piece].Length - 1; idxDirection >= 0; --idxDirection)
                 {
 					UCoord delta = ATTACK_DELTA[piece][idxDirection];
-					var nextCoord = (UCoord)(Lfr)square + delta;
-					Lfr nextLfr = (Lfr)nextCoord;
+					var nextCoord = (UCoord)(SquareLfr)square + delta;
+					SquareLfr nextLfr = (SquareLfr)nextCoord;
 					int prevSquare = square;	// prevSquare is the previous square from which to determine NEXT_POS, NEXT_DIR and NEXT_SQ
 					
 					// if nextLfr is a valid square, set the FIRST square in this direction as the next square 
@@ -433,7 +433,7 @@ namespace tgreiner.amy.chess.engine
 						prevSquare = (int)nextLfr;
 
 						nextCoord += delta;
-                        nextLfr = (Lfr) nextCoord;
+                        nextLfr = (SquareLfr) nextCoord;
 
                         NEXT_DIR[piece][square][prevSquare] = (short)nextDirection;
                     }
@@ -496,13 +496,13 @@ namespace tgreiner.amy.chess.engine
         {
             for (int square = 0; square < BitBoard.SIZE; square++)
             {
-                Lfr levelFileRank = new Lfr(square);
+                SquareLfr levelFileRank = new SquareLfr(square);
                 int prevSquare = square;
 
                 foreach (UCoord delta in ATTACK_DELTA[piece])
                 {
 					UCoord temp = (UCoord)levelFileRank + delta;
-                    Lfr nextLfr = (Lfr)temp;
+                    SquareLfr nextLfr = (SquareLfr)temp;
                     if (nextLfr.IsValid())
                     {
                         NEXT_POS[piece][square][prevSquare] = (short)(int)nextLfr;

@@ -218,7 +218,7 @@ namespace tgreiner.amy.chess.engine
                     System.String squareStr = this.command.Substring(10);
                     try
                     {
-                        Lfr lfr = new Lfr(squareStr[0] - 'a', squareStr[1] - 'a',squareStr[2] - '1');
+                        SquareLfr lfr = new SquareLfr(squareStr[0] - 'a', squareStr[1] - 'a',squareStr[2] - '1');
 
                         if (board.getPieceAt((int)lfr) != 0)
                         {

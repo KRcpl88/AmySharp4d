@@ -535,13 +535,13 @@ namespace tgreiner.amy.chess.engine
 				
                 int from = getFrom(m);
                 if (board.getPieceAt(from) != type) { continue; }
-				Lfr fromLrf = (Lfr)from;
+				SquareLfr fromLrf = (SquareLfr)from;
                 if (fromLevel != -1 && fromLrf.Level != fromLevel) { continue; }
                 if (fromRank != -1 && fromLrf.Rank != fromRank) { continue; }
                 if (fromFile != -1 && fromLrf.File != fromFile) { continue; }
 
                 int to = getTo(m);
-				Lfr toLrf = (Lfr)to;
+				SquareLfr toLrf = (SquareLfr)to;
                 if (toLevel != -1 && toLrf.Level != toLevel) { continue; }
                 if (toRank != -1 && toLrf.Rank != toRank) { continue; }
                 if (toFile != -1 && toLrf.File != toFile) { continue; }
