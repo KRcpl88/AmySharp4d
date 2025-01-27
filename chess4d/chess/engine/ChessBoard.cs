@@ -337,7 +337,7 @@ namespace tgreiner.amy.chess.engine
         {
             get
             {
-                return new BoardPosition(board, whiteToMove, enPassant, canWhiteCastleKingSide(), canWhiteCastleQueenSide(), canBlackCastleKingSide(), canBlackCastleQueenSide(), null);
+                return new BoardPosition(board, whiteToMove, enPassant, canWhiteCastleKingSide(), canWhiteCastleQueenSide(), canBlackCastleKingSide(), canBlackCastleQueenSide());
             }
 
             set
@@ -2627,10 +2627,6 @@ namespace tgreiner.amy.chess.engine
         {
         }
         
-        /// <summary>Parses EPD positions. </summary>
-        //UPGRADE_NOTE: Final was removed from the declaration of 'EPD_PARSER '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
-        private static readonly EpdParser EPD_PARSER = new EpdParser();
-        
         /// <summary> Construct a board from an EPD description.
         /// 
         /// </summary>
@@ -2638,7 +2634,7 @@ namespace tgreiner.amy.chess.engine
         /// </param>
         /// <exception cref="IllegalEpdException">if the EPD is invalid.
         /// </exception>
-        public ChessBoard(System.String epd):this(EPD_PARSER.parse(epd))
+        public ChessBoard(System.String epd):this(EpdParser.parse(epd))
         {
         }
         

@@ -7,11 +7,11 @@ namespace tgreiner.amy.chess.engine
 {
     public class BoardPosition : IPosition
     {
-        public BoardPosition(int[] board, bool whiteToMove, int enPassant, bool canWhiteCastleKingSide, bool canWhiteCastleQueenSide, bool canBlackCastleKingSide, bool canBlackCastleQueenSide, EpdParser enclosingInstance)
+        public BoardPosition(int[] board, bool whiteToMove, int enPassant, bool canWhiteCastleKingSide, bool canWhiteCastleQueenSide, bool canBlackCastleKingSide, bool canBlackCastleQueenSide)
         {
-            InitBlock(board, whiteToMove, enPassant, canWhiteCastleKingSide, canWhiteCastleQueenSide, canBlackCastleKingSide, canBlackCastleQueenSide, enclosingInstance);
+            InitBlock(board, whiteToMove, enPassant, canWhiteCastleKingSide, canWhiteCastleQueenSide, canBlackCastleKingSide, canBlackCastleQueenSide);
         }
-        private void InitBlock(int[] board, bool whiteToMove, int enPassant, bool canWhiteCastleKingSide, bool canWhiteCastleQueenSide, bool canBlackCastleKingSide, bool canBlackCastleQueenSide, EpdParser enclosingInstance)
+        private void InitBlock(int[] board, bool whiteToMove, int enPassant, bool canWhiteCastleKingSide, bool canWhiteCastleQueenSide, bool canBlackCastleKingSide, bool canBlackCastleQueenSide)
         {
             this.board = board;
             this.whiteToMove = whiteToMove;
@@ -20,7 +20,6 @@ namespace tgreiner.amy.chess.engine
             this.canWhiteCastleQueenSide = canWhiteCastleQueenSide;
             this.canBlackCastleKingSide = canBlackCastleKingSide;
             this.canBlackCastleQueenSide = canBlackCastleQueenSide;
-            this.enclosingInstance = enclosingInstance;
         }
         //UPGRADE_NOTE: Final variable board was copied into class AnonymousClassPosition. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1023'"
         private int[] board;
@@ -36,7 +35,6 @@ namespace tgreiner.amy.chess.engine
         private bool canBlackCastleKingSide;
         //UPGRADE_NOTE: Final variable canBlackCastleQueenSide was copied into class AnonymousClassPosition. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1023'"
         private bool canBlackCastleQueenSide;
-        private EpdParser enclosingInstance;
         virtual public int[] Board
         {
             get
@@ -58,14 +56,6 @@ namespace tgreiner.amy.chess.engine
             get
             {
                 return enPassant;
-            }
-
-        }
-        public EpdParser Enclosing_Instance
-        {
-            get
-            {
-                return enclosingInstance;
             }
 
         }

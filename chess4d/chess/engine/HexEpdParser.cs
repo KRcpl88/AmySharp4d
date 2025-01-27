@@ -38,10 +38,15 @@ namespace tgreiner.amy.chess.engine
 	/// </summary>
 	/// <author>  <a href = "mailto:thorsten.greiner@googlemail.com">Thorsten Greiner</a>
 	/// </author>
-	public class EpdParser
+	public class HexEpdParser
 	{
-		
-		/// <summary> Parse a position in EPD format.
+		int x;
+
+        public HexEpdParser()
+        {
+            x = 0;
+        }
+		/// <summary> Parse a position in EPD format using hes positions.
 		/// 
 		/// </summary>
 		/// <param name="epd">the EPD string
@@ -49,7 +54,7 @@ namespace tgreiner.amy.chess.engine
 		/// <returns> the position
 		/// </returns>
 		/// <throws>  IllegalEpdException if the EPD is not valid </throws>
-        public static IPosition parse(System.String epd)
+        public IPosition parse(System.String epd)
         {
             //UPGRADE_NOTE: Final was removed from the declaration of 'board '. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1003'"
             int[] board = new int[BitBoard.SIZE];
@@ -60,8 +65,8 @@ namespace tgreiner.amy.chess.engine
                 throw new Exception("Invalid EPD");
             }
 
-            int level = BitBoard.NUM_LEVELS -1;
-            int rank = BitBoard.LEVEL_WIDTH[level]-1;
+            int level = BitBoard.MAX_LEVEL_WIDTH -1;
+            int rank = BitBoard.MAX_LEVEL_WIDTH -1;
             int file = 0;
 
             foreach (char ch in fenParts[0])
@@ -79,7 +84,9 @@ namespace tgreiner.amy.chess.engine
                             $"EPD contains invalid posiiton on Level: {level} Rank: {rank} File: {file}");
                     }
                 }
-                int square = BitBoard.BitOffset(level, file, rank);
+
+                var hexLfr = new HexLfr(level, file, rank);
+                int square = (int)(SquareLfr)hexLfr;
                 switch (ch)
                 {
 

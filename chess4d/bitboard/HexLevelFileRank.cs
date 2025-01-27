@@ -552,22 +552,25 @@ a  \ / \ / \ / \ / \ / \ / \ / \ /
             }
 
             return true;
-        }   
+        }
 
+        //<summary>Get the first file of a level and rank</summary>
+        public static int FirstFile(int level, int rank)
+        {
+            return Relu16[7 + rank - level];
+        }
+
+        //<summary>Get the width of a row for a level and rank</summary>
         public static int RankWidth(int level, int rank)
         {
             return 8 - Relu16[7 + rank - level] - NegRelu16[7 + rank - level];
         }
 
-        public static bool IsValid(int offset)
-        {
-            return ((offset < BitBoard.SIZE) && (offset >= 0));
-        }   
-
         /// <summary>Explicit conversion from LFR to square offset.</summary>
         public static explicit operator int(HexLfr obj)
         {
-            return BitBoard.BitOffset(obj.Level, obj.File, obj.Rank);
+            var squareLfr = (SquareLfr)obj;
+            return BitBoard.BitOffset(squareLfr.Level, squareLfr.File, squareLfr.Rank);
         }
 
         /// <summary>Explicit conversion from Lfr to HexLrf.</summary>
