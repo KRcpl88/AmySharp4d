@@ -203,7 +203,9 @@ namespace tgreiner.amy.chess.engine
                     System.String moveStr = this.command.Substring(9);
                     try
                     {
-                        int move = Move.parseSquareSan(board, moveStr);
+                        int move = printHex ? 
+                            Move.parseHexSan(board, moveStr) : 
+                            Move.parseSquareSan(board, moveStr);
 
                         handleMove(respond, move, printHex);
                     }
@@ -217,11 +219,15 @@ namespace tgreiner.amy.chess.engine
                     System.String squareStr = this.command.Substring(10);
                     try
                     {
-                        SquareLfr lfr = new SquareLfr(squareStr[0] - 'a', squareStr[1] - 'a',squareStr[2] - '1');
+                        int square = printHex ? 
+                            (int)(new HexLfr(squareStr[0] - 'a', squareStr[1] - 'a', squareStr[2] - '1') ) :
+                            (int)(new SquareLfr(squareStr[0] - 'a', squareStr[1] - 'a',squareStr[2] - '1') );
 
-                        if (board.getPieceAt((int)lfr) != 0)
+                        if (board.getPieceAt(square) != 0)
                         {
-                            Console.WriteLine(board.ToString((int)lfr));
+                            Console.WriteLine(printHex ? 
+                                board.ToStringHex(square): 
+                                board.ToString(square));
                         }
                     }
                     catch (IndexOutOfRangeException)
