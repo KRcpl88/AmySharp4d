@@ -93,8 +93,6 @@ namespace tgreiner.amy.chess.engine
 
         private static object syncCmd = new object();
 
-        public bool printHex = false;
-
         AutoResetEvent inputEvt = new AutoResetEvent(false);
 		
 		/// <summary> Create an XBoardEngine.
@@ -145,6 +143,7 @@ namespace tgreiner.amy.chess.engine
 		private void  commandLoop()
 		{		
 			bool respond = true;
+            bool printHex = true;
 
             Regex levelPattern = new Regex("level (\\d+) (\\d+)(:(\\d+))? (\\d+)");
 
@@ -206,7 +205,7 @@ namespace tgreiner.amy.chess.engine
                     {
                         int move = Move.parseSquareSan(board, moveStr);
 
-                        handleMove(respond, move);
+                        handleMove(respond, move, printHex);
                     }
                     catch (IllegalSANException)
                     {
@@ -239,17 +238,19 @@ namespace tgreiner.amy.chess.engine
                     }
                     respond = false;
                 }
+                /* BUGBUG - pondering is not working, need to fix other BUGBUG firat then see if its still broken
                 else if ("hard".Equals(this.command))
                 {
                     ponder = true;
                 }
+                */
                 else if ("easy".Equals(this.command))
                 {
                     ponder = false;
                 }
                 else if ("go".Equals(this.command))
                 {
-                    go();
+                    go(printHex);
                     respond = true;
                 }
                 else if ("undo".Equals(this.command))
@@ -332,7 +333,7 @@ namespace tgreiner.amy.chess.engine
             }
         }
 
-        private void handleMove(bool respond, int move)
+        private void handleMove(bool respond, int move, bool printHex)
         {
             board.doMove(move);
 
@@ -353,7 +354,7 @@ namespace tgreiner.amy.chess.engine
                     }
                 }
 
-                go();
+                go(printHex);
             }
         }
 		
@@ -361,7 +362,7 @@ namespace tgreiner.amy.chess.engine
 		/// 
 		/// </summary>
 		/// <throws>  Exception if an error occurs </throws>
-		private void  go()
+		private void  go(bool printHex)
 		{
 			if (ponderThread != null)
 			{

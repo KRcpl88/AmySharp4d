@@ -245,7 +245,7 @@ Level, rank and file for rectilinear Lfr coordinates (in a hexagonal board layou
   3 |ia3|ib3|ic3|id3|ie3|if3|ig3|
      \ /c\ /d\ /e\ /f\ /g\ /h\ /
     2 |ja2|jb2|jc2|jd2|je2|jf2|
-       \ /d\ /e\ /f\ /fg /h\ /
+       \ /d\ /e\ /f\ /g\ /h\ /
       1 |ka1|kb1|kc1|kd1|ke1|
       d  \ / \ / \ / \ / \ /
 
@@ -557,7 +557,14 @@ a  \ / \ / \ / \ / \ / \ / \ / \ /
         //<summary>Get the first file of a level and rank</summary>
         public static int FirstFile(int level, int rank)
         {
-            return Relu16[7 + rank - level];
+            if (rank < level)
+            {
+                return BitBoard.MAX_LEVEL_WIDTH - RankWidth(level, rank);
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         //<summary>Get the width of a row for a level and rank</summary>

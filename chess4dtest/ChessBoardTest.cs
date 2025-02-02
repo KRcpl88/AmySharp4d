@@ -1,4 +1,5 @@
 
+using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.Intrinsics.Arm;
 using tgreiner.amy.bitboard;
@@ -117,6 +118,37 @@ namespace tgreiner.amy.chess.engine.Tests
         }
 
         [TestMethod()]
+        public void hexFirstFileTest()
+        {
+
+            Assert.AreEqual(HexLfr.FirstFile(0, 0), 0);
+            Assert.AreEqual(HexLfr.FirstFile(0, 7), 0);
+            Assert.AreEqual(HexLfr.FirstFile(4, 0), 4);
+            Assert.AreEqual(HexLfr.FirstFile(4, 4), 0);
+            Assert.AreEqual(HexLfr.FirstFile(4, 7), 0);
+            Assert.AreEqual(HexLfr.FirstFile(7, 0), 7);
+            Assert.AreEqual(HexLfr.FirstFile(7, 7), 0);
+
+            for (int level = 0; BitBoard.MAX_LEVEL_WIDTH > level; ++level)
+            {
+                for (int rank = 0; BitBoard.MAX_LEVEL_WIDTH > rank; ++rank)
+                {
+                    if (rank < level)
+                    {
+                        Assert.IsTrue(HexLfr.FirstFile(level, rank) == BitBoard.MAX_LEVEL_WIDTH - HexLfr.RankWidth(level,rank),
+                            $"level: {level} rank: {rank} firstFile: {HexLfr.FirstFile(level, rank)}");
+                    }
+                    else
+                    {
+                        Assert.IsTrue(HexLfr.FirstFile(level, rank) == 0,
+                            $"level: {level} rank: {rank} firstFile: {HexLfr.FirstFile(level, rank)}");
+                    }
+
+                }
+            }
+        }
+
+        [TestMethod()]
         public void parseHexSanTest()
         {
             var board = new ChessBoard("1/2/2/3/3/3/4/4/4/4/5/5/5/5/5/6/6/6/6/6/6/7/7/7/7/7/7/7/8/8/8/2k2K/1p//6P w - -");
@@ -133,7 +165,7 @@ namespace tgreiner.amy.chess.engine.Tests
 
             /*
 
-              /a\ /b\ /c\ /d\ /e\ /f\ /g\ /h\ 
+  /a\ /b\ /c\ /d\ /e\ /f\ /g\ /h\ 
 8|   |   |   |   |   |   |   |   |
   \ /b\ /c\ /d\ /e\ /f\ /g\ /h\ /
 7  |   |   |   |   |   |   |   |
