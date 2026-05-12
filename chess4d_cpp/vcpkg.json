@@ -1,0 +1,6 @@
+{
+  "name": "chess4d-cpp",
+  "version": "1.0.0",
+  "description": "4D Chess Engine - C++ port",
+  "dependencies": []
+}

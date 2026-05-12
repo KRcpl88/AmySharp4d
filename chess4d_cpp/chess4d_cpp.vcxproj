@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <ProjectGuid>{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}</ProjectGuid>
+    <RootNamespace>chess4d_cpp</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Program.cpp" />
+    <ClCompile Include="ConsoleComm.cpp" />
+    <ClCompile Include="SupportClass.cpp" />
+    <ClCompile Include="bitboard\BitBoard.cpp" />
+    <ClCompile Include="bitboard\LevelRankFile.cpp" />
+    <ClCompile Include="bitboard\HexLevelRankFile.cpp" />
+    <ClCompile Include="bitboard\UniversalCoordinate.cpp" />
+    <ClCompile Include="common\engine\AbstractCache.cpp" />
+    <ClCompile Include="common\engine\EvalCache.cpp" />
+    <ClCompile Include="common\engine\IntVector.cpp" />
+    <ClCompile Include="common\timer\Clock.cpp" />
+    <ClCompile Include="common\timer\ClockImpl.cpp" />
+    <ClCompile Include="common\timer\AbstractTimer.cpp" />
+    <ClCompile Include="common\timer\AlgorithmBasedTimer.cpp" />
+    <ClCompile Include="common\timer\ExtendOnFailLowTimerAlgorithm.cpp" />
+    <ClCompile Include="common\timer\FixedDepthTimerAlgorithm.cpp" />
+    <ClCompile Include="common\timer\FixedTimeTimerAlgorithm.cpp" />
+    <ClCompile Include="common\timer\LowerBoundTimerAlgorithm.cpp" />
+    <ClCompile Include="common\timer\PonderingTimerDecorator.cpp" />
+    <ClCompile Include="common\timer\QuotaTimeControl.cpp" />
+    <ClCompile Include="common\timer\SuddenDeathTimeControl.cpp" />
+    <ClCompile Include="chess\engine\ChessBoard.cpp" />
+    <ClCompile Include="chess\engine\Move.cpp" />
+    <ClCompile Include="chess\engine\MoveGenerator.cpp" />
+    <ClCompile Include="chess\engine\MoveGenerator2.cpp" />
+    <ClCompile Include="chess\engine\MVVLVAGenerator.cpp" />
+    <ClCompile Include="chess\engine\NonLoosingCaptureMoveGenerator.cpp" />
+    <ClCompile Include="chess\engine\CheckingMoveGenerator.cpp" />
+    <ClCompile Include="chess\engine\CheckEvasionMoveGenerator.cpp" />
+    <ClCompile Include="chess\engine\ExtendedQuiescenceMoveGenerator.cpp" />
+    <ClCompile Include="chess\engine\Geometry.cpp" />
+    <ClCompile Include="chess\engine\Hashing.cpp" />
+    <ClCompile Include="chess\engine\EvalMasks.cpp" />
+    <ClCompile Include="chess\engine\EvaluatorImpl.cpp" />
+    <ClCompile Include="chess\engine\Formatter.cpp" />
+    <ClCompile Include="chess\engine\GamePhase.cpp" />
+    <ClCompile Include="chess\engine\Futility.cpp" />
+    <ClCompile Include="chess\engine\HistoryTable.cpp" />
+    <ClCompile Include="chess\engine\Swapper.cpp" />
+    <ClCompile Include="chess\engine\PVSaver.cpp" />
+    <ClCompile Include="chess\engine\RootMoveList.cpp" />
+    <ClCompile Include="chess\engine\SelectivityImpl.cpp" />
+    <ClCompile Include="chess\engine\TransTableImpl.cpp" />
+    <ClCompile Include="chess\engine\TransTableImpl2.cpp" />
+    <ClCompile Include="chess\engine\TTEntry.cpp" />
+    <ClCompile Include="chess\engine\AlphaBeta.cpp" />
+    <ClCompile Include="chess\engine\NegaScout.cpp" />
+    <ClCompile Include="chess\engine\QuiescenceSearch.cpp" />
+    <ClCompile Include="chess\engine\ExtendedQuiescenceSearch.cpp" />
+    <ClCompile Include="chess\engine\Driver.cpp" />
+    <ClCompile Include="chess\engine\SearchOutputTextUI.cpp" />
+    <ClCompile Include="chess\engine\BoardPosition.cpp" />
+    <ClCompile Include="chess\engine\Position.cpp" />
+    <ClCompile Include="chess\engine\XBoardEngine.cpp" />
+    <ClCompile Include="chess\engine\PonderThread.cpp" />
+    <ClCompile Include="chess\engine\GameEndRecognizer.cpp" />
+    <ClCompile Include="chess\engine\SearchOutputXBoard.cpp" />
+    <ClCompile Include="chess\engine\OutsidePassedPawnIdentifier.cpp" />
+    <ClCompile Include="chess\engine\PawnEvalCache.cpp" />
+    <ClCompile Include="chess\engine\recognizer\RecognizerMap.cpp" />
+    <ClCompile Include="chess\engine\recognizer\KBPKRecognizer.cpp" />
+    <ClCompile Include="chess\engine\recognizer\KBPKPRecognizer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="bitboard\BitBoard.h" />
+    <ClInclude Include="bitboard\BoardConstants.h" />
+    <ClInclude Include="bitboard\LevelRankFile.h" />
+    <ClInclude Include="bitboard\HexLevelRankFile.h" />
+    <ClInclude Include="bitboard\UniversalCoordinate.h" />
+    <ClInclude Include="common\engine\AbstractCache.h" />
+    <ClInclude Include="common\engine\EvalCache.h" />
+    <ClInclude Include="common\engine\Generator.h" />
+    <ClInclude Include="common\engine\IComm.h" />
+    <ClInclude Include="common\engine\IMoveList.h" />
+    <ClInclude Include="common\engine\IntVector.h" />
+    <ClInclude Include="common\engine\NodeType.h" />
+    <ClInclude Include="common\timer\IChessTimer.h" />
+    <ClInclude Include="common\timer\AbstractTimer.h" />
+    <ClInclude Include="common\timer\AlgorithmBasedTimer.h" />
+    <ClInclude Include="common\timer\Clock.h" />
+    <ClInclude Include="common\timer\ClockImpl.h" />
+    <ClInclude Include="common\timer\ExtendOnFailLowTimerAlgorithm.h" />
+    <ClInclude Include="common\timer\FixedDepthTimerAlgorithm.h" />
+    <ClInclude Include="common\timer\FixedTimeTimerAlgorithm.h" />
+    <ClInclude Include="common\timer\LowerBoundTimerAlgorithm.h" />
+    <ClInclude Include="common\timer\PonderingTimerDecorator.h" />
+    <ClInclude Include="common\timer\QuotaTimeControl.h" />
+    <ClInclude Include="common\timer\SuddenDeathTimeControl.h" />
+    <ClInclude Include="common\timer\TimeControl.h" />
+    <ClInclude Include="common\timer\TimeOutException.h" />
+    <ClInclude Include="common\timer\TimerAlgorithm.h" />
+    <ClInclude Include="chess\engine\ChessBoard.h" />
+    <ClInclude Include="chess\engine\ChessConstants.h" />
+    <ClInclude Include="chess\engine\Move.h" />
+    <ClInclude Include="chess\engine\MoveGenerator.h" />
+    <ClInclude Include="chess\engine\MoveGenerator2.h" />
+    <ClInclude Include="chess\engine\MVVLVAGenerator.h" />
+    <ClInclude Include="chess\engine\NonLoosingCaptureMoveGenerator.h" />
+    <ClInclude Include="chess\engine\CheckingMoveGenerator.h" />
+    <ClInclude Include="chess\engine\CheckEvasionMoveGenerator.h" />
+    <ClInclude Include="chess\engine\ExtendedQuiescenceMoveGenerator.h" />
+    <ClInclude Include="chess\engine\Geometry.h" />
+    <ClInclude Include="chess\engine\Hashing.h" />
+    <ClInclude Include="chess\engine\EvalMasks.h" />
+    <ClInclude Include="chess\engine\EvaluatorImpl.h" />
+    <ClInclude Include="chess\engine\Formatter.h" />
+    <ClInclude Include="chess\engine\GamePhase.h" />
+    <ClInclude Include="chess\engine\Futility.h" />
+    <ClInclude Include="chess\engine\HistoryTable.h" />
+    <ClInclude Include="chess\engine\Swapper.h" />
+    <ClInclude Include="chess\engine\PVSaver.h" />
+    <ClInclude Include="chess\engine\RootMoveList.h" />
+    <ClInclude Include="chess\engine\SelectivityImpl.h" />
+    <ClInclude Include="chess\engine\TransTableImpl.h" />
+    <ClInclude Include="chess\engine\TransTableImpl2.h" />
+    <ClInclude Include="chess\engine\TTEntry.h" />
+    <ClInclude Include="chess\engine\ITransTable.h" />
+    <ClInclude Include="chess\engine\AlphaBeta.h" />
+    <ClInclude Include="chess\engine\NegaScout.h" />
+    <ClInclude Include="chess\engine\QuiescenceSearch.h" />
+    <ClInclude Include="chess\engine\ExtendedQuiescenceSearch.h" />
+    <ClInclude Include="chess\engine\Driver.h" />
+    <ClInclude Include="chess\engine\SearchOutputTextUI.h" />
+    <ClInclude Include="chess\engine\Position.h" />
+    <ClInclude Include="chess\engine\BoardPosition.h" />
+    <ClInclude Include="chess\engine\IEvaluator.h" />
+    <ClInclude Include="chess\engine\ISearcher.h" />
+    <ClInclude Include="chess\engine\ISearchOutput.h" />
+    <ClInclude Include="chess\engine\ISelectivity.h" />
+    <ClInclude Include="chess\engine\IEngine.h" />
+    <ClInclude Include="chess\engine\XBoardEngine.h" />
+    <ClInclude Include="chess\engine\PonderThread.h" />
+    <ClInclude Include="chess\engine\GameEndRecognizer.h" />
+    <ClInclude Include="chess\engine\SearchOutputXBoard.h" />
+    <ClInclude Include="chess\engine\OutsidePassedPawnIdentifier.h" />
+    <ClInclude Include="chess\engine\PawnEvalCache.h" />
+    <ClInclude Include="chess\engine\recognizer\IRecognizer.h" />
+    <ClInclude Include="chess\engine\recognizer\RecognizerMap.h" />
+    <ClInclude Include="chess\engine\recognizer\KBPKRecognizer.h" />
+    <ClInclude Include="chess\engine\recognizer\KBPKPRecognizer.h" />
+    <ClInclude Include="ConsoleComm.h" />
+    <ClInclude Include="SupportClass.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
