@@ -1,0 +1,88 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build .NET Projects",
+            "type": "shell",
+            "command": "dotnet",
+            "args": [
+                "build",
+                "${workspaceFolder}/chess4d/Chess4d.sln",
+                "--configuration",
+                "Debug"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": "$msCompile",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Run .NET Unit Tests",
+            "type": "shell",
+            "command": "dotnet",
+            "args": [
+                "test",
+                "${workspaceFolder}/chess4dtest/chess4dtest.csproj",
+                "--configuration",
+                "Debug",
+                "--logger",
+                {
+                    "value": "console;verbosity=detailed",
+                    "quoting": "strong"
+                }
+            ],
+            "group": {
+                "kind": "test",
+                "isDefault": false
+            },
+            "problemMatcher": "$msCompile",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Build C++ Projects",
+            "type": "shell",
+            "command": "C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/MSBuild/Current/Bin/MSBuild.exe",
+            "args": [
+                "${workspaceFolder}/chess4d_cpp/chess4d_cpp.sln",
+                "/p:Configuration=Debug",
+                "/p:Platform=x64",
+                "/m"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": "$msCompile",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Run C++ Unit Tests",
+            "type": "shell",
+            "command": "vstest.console.exe",
+            "args": [
+                "${workspaceFolder}/chess4d_cpp/bin/Debug/chess4dtest_cpp.dll"
+            ],
+            "group": {
+                "kind": "test",
+                "isDefault": false
+            },
+            "dependsOn": "Build C++ Projects",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        }
+    ]
+}
